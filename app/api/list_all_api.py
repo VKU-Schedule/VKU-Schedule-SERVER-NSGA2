@@ -4,7 +4,26 @@ list_all_bp = Blueprint("list_all", __name__)
 
 @list_all_bp.route("/list-all", methods=["GET"])
 def list_all():
-    """Endpoint để liệt kê tất cả document trong collection (dùng cho debug)"""
+    """
+    Liệt kê tất cả documents trong collection (dùng cho debug)
+    ---
+    tags:
+      - Debug
+    responses:
+      200:
+        description: Danh sách tất cả documents
+        schema:
+          type: object
+          properties:
+            count:
+              type: integer
+            documents:
+              type: array
+              items:
+                type: object
+      500:
+        description: Lỗi server
+    """
     try:
         collection = current_app.db["ly_courses"]
         all_docs = list(collection.find())

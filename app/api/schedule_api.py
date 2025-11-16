@@ -64,6 +64,56 @@ def parse_query_string(query_str):
 
 @schedule_bp.route("/schedule", methods=["POST"])
 def schedule():
+    """
+    Tạo lịch học dựa trên các môn học và yêu cầu
+    ---
+    tags:
+      - Schedule
+    parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          type: object
+          required:
+            - queries
+            - prompt
+          properties:
+            queries:
+              type: array
+              description: Danh sách các môn học (có thể kèm sub_topic với format "course_name @ sub_topic")
+              items:
+                type: string
+              example:
+                - "Phân tích dữ liệu @ Pandas, trực quan hóa với Matplotlib"
+                - "Cơ sở dữ liệu @ Cơ sở dữ liệu"
+                - "Xử lý dữ liệu"
+            prompt:
+              type: string
+              description: Yêu cầu về lịch học (ràng buộc, sở thích, ...)
+              example: "Tôi chỉ học nếu lớp bắt đầu sau 10 giờ sáng. Tôi thích lịch học trải đều trong tuần"
+    responses:
+      200:
+        description: Danh sách các lịch học được tạo
+        schema:
+          type: object
+          properties:
+            schedules:
+              type: array
+              items:
+                type: object
+                properties:
+                  schedule:
+                    type: array
+                  score:
+                    type: number
+            message:
+              type: string
+      400:
+        description: Thiếu tham số queries hoặc prompt
+      500:
+        description: Lỗi server
+    """
     data = request.json
     queries = data.get("queries", [])
     prompt = data.get("prompt", {})

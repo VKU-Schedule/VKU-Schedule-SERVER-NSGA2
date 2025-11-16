@@ -5,6 +5,46 @@ search_bp = Blueprint("search", __name__)
 
 @search_bp.route("/search-recommend", methods=["POST"])
 def search_recommend():
+    """
+    Tìm kiếm và đề xuất môn học
+    ---
+    tags:
+      - Search
+    parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          type: object
+          required:
+            - query
+          properties:
+            query:
+              type: string
+              description: Tên môn học hoặc chủ đề phụ cần tìm kiếm
+              example: "du lieu"
+    responses:
+      200:
+        description: Danh sách các môn học được tìm thấy
+        schema:
+          type: object
+          properties:
+            query:
+              type: string
+            results:
+              type: array
+              items:
+                type: object
+                properties:
+                  course_name:
+                    type: string
+                  sub_topic:
+                    type: string
+      400:
+        description: Thiếu tham số query
+      500:
+        description: Lỗi server
+    """
     try:
         data = request.get_json()
 
