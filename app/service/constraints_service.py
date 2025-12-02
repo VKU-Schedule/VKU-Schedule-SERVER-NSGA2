@@ -498,10 +498,44 @@ toolbox = base.Toolbox()
 def run_nsga_ii(courses_data, prompt):
     USER_INPUT = list(courses_data.keys())
     COURSE_OPTIONS = [len(courses_data[course]) for course in USER_INPUT]
+    
+    print(f"\n=== NSGA-II INITIALIZATION ===")
+    print(f"Number of courses: {len(USER_INPUT)}")
+    print(f"Courses: {USER_INPUT}")
+    print(f"Course options: {COURSE_OPTIONS}")
+    
+    # Kiểm tra nếu không có dữ liệu
+    if not USER_INPUT or not COURSE_OPTIONS:
+        print("ERROR: No courses data provided")
+        return []
+    
+    # Kiểm tra nếu có môn nào không có lớp
+    if any(opt == 0 for opt in COURSE_OPTIONS):
+        print("ERROR: Some courses have no available classes")
+        return []
+    
     POPULATION_SIZE = 30
     CROSSOVER = 0.5
     MUTATION = 0.5
     NUMBER_OF_GEN = 50
+
+    # Kiểm tra trường hợp đặc biệt: chỉ có 1 môn học
+    if len(USER_INPUT) == 1:
+        print("Special case: Only 1 course, returning all possible classes")
+        subject = USER_INPUT[0]
+        results = []
+        for idx, class_info in enumerate(courses_data[subject]):
+            schedule = [(subject, sanitize_classinfo(class_info))]
+            # Đánh giá fitness cho từng lớp
+            individual = creator.Individual([idx])
+            fitness = evaluate(individual, prompt, USER_INPUT, courses_data)
+            results.append({
+                "schedule": schedule,
+                "score": abs(fitness[0]) if fitness[0] != float('inf') else 999999
+            })
+        # Sắp xếp theo score tăng dần (tốt nhất ở đầu)
+        results.sort(key=lambda x: x["score"])
+        return results[:5]  # Trả về tối đa 5 kết quả
 
     # Đăng ký các hàm với toolbox
     def init_individual():
@@ -510,7 +544,9 @@ def run_nsga_ii(courses_data, prompt):
     toolbox.register("individual", init_individual)
     toolbox.register("population", tools.initRepeat, list, toolbox.individual)
     toolbox.register("evaluate", lambda ind: evaluate(ind, prompt, USER_INPUT, courses_data))
-    toolbox.register("mate", tools.cxTwoPoint)
+    
+    # Sử dụng cxUniform thay vì cxTwoPoint để tránh lỗi với cá thể nhỏ
+    toolbox.register("mate", tools.cxUniform, indpb=0.5)
     toolbox.register("mutate", tools.mutUniformInt, low=0, up=[o - 1 for o in COURSE_OPTIONS], indpb=MUTATION)
     toolbox.register("select", tools.selNSGA2)
 
