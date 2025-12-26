@@ -58,10 +58,10 @@ def periods(selected_classes, preference):
     for _, ClassInfo in selected_classes:
         if all(p in set_preference for p in ClassInfo.periods):
             score += 1
-        else:
-            score += 0  # Không cộng điểm nếu có tiết nằm ngoài khoảng
 
-    return -score * PRIORITY_WEIGHTS["periods"] if preference.get('like', False) else score
+    # like=True: thích các tiết này -> score âm (tốt)
+    # like=False: không thích các tiết này -> score dương (tệ)
+    return -score * PRIORITY_WEIGHTS["periods"] if preference.get('like', False) else score * PRIORITY_WEIGHTS["periods"]
 
 
 def area(selected_classes, preference):
@@ -74,7 +74,9 @@ def area(selected_classes, preference):
         if ClassInfo.area == preferred_area:
             score += 1
 
-    return -score * PRIORITY_WEIGHTS["area"] if preference.get('like', False) else score
+    # like=True: thích khu vực này -> score âm (tốt)
+    # like=False: không thích khu vực này -> score dương (tệ)
+    return -score * PRIORITY_WEIGHTS["area"] if preference.get('like', False) else score * PRIORITY_WEIGHTS["area"]
 
 
 def room(selected_classes, preference_list):
@@ -106,7 +108,9 @@ def day(selected_classes, preference):
         if class_day == preferred_day:
             score += 1
 
-    return -score * PRIORITY_WEIGHTS["day"] if preference.get('like', False) else score
+    # like=True: thích ngày này -> score âm (tốt)
+    # like=False: không thích ngày này -> score dương (tệ)
+    return -score * PRIORITY_WEIGHTS["day"] if preference.get('like', False) else score * PRIORITY_WEIGHTS["day"]
 
 
 def normalize_day(day_str):
@@ -142,7 +146,9 @@ def duration_of_session(selected_classes, preference):
             if duration <= required_duration:
                 score += 1
 
-    return -score * PRIORITY_WEIGHTS["duration_of_session"] if preference.get('like', False) else score
+    # like=True: thích thời lượng này -> score âm (tốt)
+    # like=False: không thích thời lượng này -> score dương (tệ)
+    return -score * PRIORITY_WEIGHTS["duration_of_session"] if preference.get('like', False) else score * PRIORITY_WEIGHTS["duration_of_session"]
 
 
 def subject_per_session(selected_classes, preference):
@@ -161,7 +167,6 @@ def subject_per_session(selected_classes, preference):
             session = "afternoon"
         sessions[class_info.day][session].append(class_info)
 
-
     total_mismatch = 0
     for day in sessions:
         for session in sessions[day]:
@@ -169,8 +174,8 @@ def subject_per_session(selected_classes, preference):
             mismatch = abs(preference - num_subjects)
             total_mismatch += mismatch
 
-
-        return total_mismatch * PRIORITY_WEIGHTS["subject_per_session"]
+    # Trả về sau khi duyệt hết tất cả các ngày (BUG cũ: return trong vòng lặp)
+    return total_mismatch * PRIORITY_WEIGHTS["subject_per_session"]
 
 
 def subject_per_day(selected_classes, preference):
@@ -223,14 +228,12 @@ def period_onward(selected_classes, preference):
     min_period = preference["value"]
     score = 0
     for _, ClassInfo in selected_classes:
-        if preference.get('like', True):
-            if min(ClassInfo.periods) >= min_period:
-                score += 1
-        else:
-            if min(ClassInfo.periods) < min_period:
-                score += 1
+        if min(ClassInfo.periods) >= min_period:
+            score += 1
 
-    return score * PRIORITY_WEIGHTS["period_onward"]
+    # like=True: thích học từ tiết này trở đi -> score âm (tốt)
+    # like=False: không thích học từ tiết này trở đi -> score dương (tệ)
+    return -score * PRIORITY_WEIGHTS["period_onward"] if preference.get('like', False) else score * PRIORITY_WEIGHTS["period_onward"]
 
 
 def hour_onward(selected_classes, preference):
@@ -246,16 +249,13 @@ def hour_onward(selected_classes, preference):
     min_hour = preference["value"]
     score = 0
 
-    # Assuming schedule_of_classes is defined elsewhere
     for _, ClassInfo in selected_classes:
-        if preference.get('like', True):
-            if period_to_hour(min(ClassInfo.periods), SCHEDULE_OF_CLASSES) >= min_hour:
-               score += 1
-        else:
-            if period_to_hour(min(ClassInfo.periods), SCHEDULE_OF_CLASSES) < min_hour:
-               score += 1
+        if period_to_hour(min(ClassInfo.periods), SCHEDULE_OF_CLASSES) >= min_hour:
+            score += 1
 
-    return score * PRIORITY_WEIGHTS["hour_onward"]
+    # like=True: thích học từ giờ này trở đi -> score âm (tốt)
+    # like=False: không thích học từ giờ này trở đi -> score dương (tệ)
+    return -score * PRIORITY_WEIGHTS["hour_onward"] if preference.get('like', False) else score * PRIORITY_WEIGHTS["hour_onward"]
 
 def rest_interval(selected_classes, preference):
     if not preference or "value" not in preference:
@@ -282,7 +282,9 @@ def rest_interval(selected_classes, preference):
             if (prefer_more and gap >= target_value) or (not prefer_more and gap <= target_value):
                 score += 1
 
-    return -score * PRIORITY_WEIGHTS["rest_interval"] if like else score
+    # like=True: thích khoảng nghỉ này -> score âm (tốt)
+    # like=False: không thích khoảng nghỉ này -> score dương (tệ)
+    return -score * PRIORITY_WEIGHTS["rest_interval"] if like else score * PRIORITY_WEIGHTS["rest_interval"]
 
 
 def class_name(selected_classes, class_preferences):
@@ -498,10 +500,44 @@ toolbox = base.Toolbox()
 def run_nsga_ii(courses_data, prompt):
     USER_INPUT = list(courses_data.keys())
     COURSE_OPTIONS = [len(courses_data[course]) for course in USER_INPUT]
+    
+    print(f"\n=== NSGA-II INITIALIZATION ===")
+    print(f"Number of courses: {len(USER_INPUT)}")
+    print(f"Courses: {USER_INPUT}")
+    print(f"Course options: {COURSE_OPTIONS}")
+    
+    # Kiểm tra nếu không có dữ liệu
+    if not USER_INPUT or not COURSE_OPTIONS:
+        print("ERROR: No courses data provided")
+        return []
+    
+    # Kiểm tra nếu có môn nào không có lớp
+    if any(opt == 0 for opt in COURSE_OPTIONS):
+        print("ERROR: Some courses have no available classes")
+        return []
+    
     POPULATION_SIZE = 30
     CROSSOVER = 0.5
     MUTATION = 0.5
     NUMBER_OF_GEN = 50
+
+    # Kiểm tra trường hợp đặc biệt: chỉ có 1 môn học
+    if len(USER_INPUT) == 1:
+        print("Special case: Only 1 course, returning all possible classes")
+        subject = USER_INPUT[0]
+        results = []
+        for idx, class_info in enumerate(courses_data[subject]):
+            schedule = [(subject, sanitize_classinfo(class_info))]
+            # Đánh giá fitness cho từng lớp
+            individual = creator.Individual([idx])
+            fitness = evaluate(individual, prompt, USER_INPUT, courses_data)
+            results.append({
+                "schedule": schedule,
+                "score": abs(fitness[0]) if fitness[0] != float('inf') else 999999
+            })
+        # Sắp xếp theo score tăng dần (tốt nhất ở đầu)
+        results.sort(key=lambda x: x["score"])
+        return results[:5]  # Trả về tối đa 5 kết quả
 
     # Đăng ký các hàm với toolbox
     def init_individual():
@@ -510,7 +546,9 @@ def run_nsga_ii(courses_data, prompt):
     toolbox.register("individual", init_individual)
     toolbox.register("population", tools.initRepeat, list, toolbox.individual)
     toolbox.register("evaluate", lambda ind: evaluate(ind, prompt, USER_INPUT, courses_data))
-    toolbox.register("mate", tools.cxTwoPoint)
+    
+    # Sử dụng cxUniform thay vì cxTwoPoint để tránh lỗi với cá thể nhỏ
+    toolbox.register("mate", tools.cxUniform, indpb=0.5)
     toolbox.register("mutate", tools.mutUniformInt, low=0, up=[o - 1 for o in COURSE_OPTIONS], indpb=MUTATION)
     toolbox.register("select", tools.selNSGA2)
 

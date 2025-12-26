@@ -5,8 +5,8 @@ from validation.utils.constant import VALID_MAJORS, INVALID_ROOM
 
 
 # Đọc dữ liệu từ Excel
-file_path = "../../data/input/tkb_ai.xlsx"
-df = pd.read_excel(file_path, sheet_name="Table 3")
+file_path = "../data/input/daotao.xlsx"
+df = pd.read_excel(file_path, sheet_name="shee1")
 
 # Kiểm tra xem dữ liệu có được đọc đúng không
 if df.empty:

@@ -13,16 +13,16 @@ SCHEDULE_OF_CLASSES = {
 
 PRIORITY_WEIGHTS = {
     "teacher": 4.0,
+    "class_group": 4.0,
     "day": 3.0,
+    "period_onward": 3.0,
+    "hour_onward": 3.0,
     "periods": 2.0,
-    "room": 1.0,
-    "area": 1.0,
     "subject_per_session": 2.0,
     "subject_per_day": 2.0,
     "subject_count": 2.0,
-    "period_onward": 3.0,
-    "hour_onward": 3.0,
+    "room": 1.0,
+    "area": 1.0,
     "rest_interval": 1.0,
     "duration_of_session": 1.0,
-    "class_group": 4.0
 }

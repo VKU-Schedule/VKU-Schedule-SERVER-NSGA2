@@ -1,7 +1,7 @@
 import pandas as pd
 
 # Đọc file Excel
-df = pd.read_excel("./output/Dataset_Cleaned_Nguyen.xlsx")
+df = pd.read_excel("./output/Dataset_Cleaned_Nguyen_ki_cu.xlsx")
 
 # Kiểm tra cột
 if 'Tên học phần' in df.columns and 'Chủ đề phụ' in df.columns and 'Giảng viên' in df.columns:

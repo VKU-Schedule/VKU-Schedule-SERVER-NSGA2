@@ -1,7 +1,7 @@
 import pandas as pd
 
 # Đọc file Excel gốc
-df = pd.read_excel("./output/Dataset_Cleaned_Nguyen.xlsx")  # thay bằng tên file của bạn
+df = pd.read_excel("./output/Dataset_Cleaned_Nguyen_ki_cu.xlsx")  # thay bằng tên file của bạn
 
 
 if 'Số phòng' in df.columns:
