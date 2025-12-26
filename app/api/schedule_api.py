@@ -135,7 +135,7 @@ def reschedule():
     - parsed_prompt: ràng buộc đã được parse từ prompt (sử dụng prompt đã lưu trong database)
     - failed_classes: danh sách các lớp bị fail đăng ký (format: [course_name])
     - course_names: danh sách tên các môn học cần query (để lấy tất cả các lớp của môn đó)
-    
+
     Note: parsed_prompt được lấy từ database của bộ lịch đã lưu, không cần gửi từ client
     """
     data = request.json
@@ -158,7 +158,7 @@ def reschedule():
     for course_name in course_names:
         search_criteria = {"course_name": course_name}
         matching_classes = list(collection.find(search_criteria))
-        
+
         print(f"Found {len(matching_classes)} classes for course: {course_name}")
         for doc in matching_classes:
             class_info = ClassInfo(
