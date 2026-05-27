@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify
 from flask_cors import CORS
 from app.config.database_configuration import get_database
 from app.api.schedule_api import schedule_bp
@@ -15,6 +15,10 @@ app.db = get_database()
 app.register_blueprint(schedule_bp, url_prefix='/api')
 app.register_blueprint(search_bp, url_prefix='/api')
 app.register_blueprint(list_all_bp, url_prefix="/api")
+
+@app.route('/health')
+def health():
+    return jsonify({"status": "ok"}), 200
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8001, debug=True)
