@@ -4,10 +4,17 @@ services:
   schedule_be_nsgaii:
     build: .
     image: schedule_be_nsgaii:v4
+    container_name: nsgaii-service
     env_file:
       - .env
     ports:
       - "8001:8001"
+    networks:
+      - VKU_SmartScheduler-network
     environment:
       - PYTHONPATH=/code
     restart: unless-stopped
+
+networks:
+  VKU_SmartScheduler-network:
+    external: true
