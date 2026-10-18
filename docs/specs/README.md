@@ -65,7 +65,7 @@ Nghiên cứu cần cho ra hai kết quả:
 
 | Phần | Nội dung | Branch | Spec | Trạng thái |
 |---|---|---|---|---|
-| A | JSON Structure v2 | `feature/new_json_structure` | [`json_v2/`](json_v2/) | Đã viết spec, chờ duyệt |
+| A | JSON Structure v2 | `feature/new_json_structure` | [`json_v2/`](json_v2/) | Spec đã duyệt (2026-10-18); đang code theo `tasks.md` |
 | B | Thuật toán và so sánh | chưa tạo | `algorithms/` (chưa tạo) | Chưa bắt đầu; kế hoạch ở mục 7 |
 
 ## 6. Phần A — JSON Structure v2 (tóm tắt)

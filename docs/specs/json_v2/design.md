@@ -204,7 +204,7 @@ Ràng buộc 1 cụ thể hơn ràng buộc 0 và cùng nhóm `{session}`. Vì v
   - với `prefer` / `avoid`: trọng số cơ sở lớn nhất trong các thuộc tính xuất hiện ở điều kiện và `scope` (trừ `course`);
   - với `limit`: trọng số của chỉ số;
   - nhân 2 nếu `level` là `high`.
-- Trọng số cơ sở (giả định, kế thừa `PRIORITY_WEIGHTS` của v1; câu hỏi Q3):
+- Trọng số cơ sở (kế thừa `PRIORITY_WEIGHTS` của v1; câu hỏi Q3 chốt giữ giả định, chỉnh được sau trong `vocab.py`):
 
 | Nhóm | Thuộc tính / chỉ số | Trọng số |
 |---|---|---|

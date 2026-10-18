@@ -236,7 +236,7 @@ Trả lời ngày 2026-10-18.
 |---|---|---|
 | Q1 | Mỗi tiết kết thúc lúc nào? Ranh giới các buổi ra sao? Có buổi tối không? | Giờ bắt đầu: sáng 07:30, 08:30, 09:30, 10:30, 11:30 (tiết 1–5); chiều 13:00, 14:00, 15:00, 16:00, 17:00 (tiết 6–10). Không có buổi tối. Vẫn là giả định: mỗi tiết dài 50 phút; "sáng sớm" = 1–2, "chiều muộn" = 8–10 |
 | Q2 | Đã có lịch lưu với `parsed_prompt` v1 (dùng cho `/reschedule`) chưa? | Đã có, nên làm adapter v1 → v2 (task T9 thành bắt buộc) |
-| Q3 | Trọng số mặc định cho từng nhóm thuộc tính? | Chưa trả lời, dùng giả định: kế thừa `PRIORITY_WEIGHTS` (bảng ở design.md mục 6.5); `high` nhân 2. Các trọng số là hằng số trong `vocab.py`, có thể chỉnh sau |
+| Q3 | Trọng số mặc định cho từng nhóm thuộc tính? | Giữ giả định: kế thừa `PRIORITY_WEIGHTS` (bảng ở design.md mục 6.5); `high` nhân 2. Các trọng số là hằng số trong `vocab.py`, có thể chỉnh sau |
 | Q4 | Đổi khu K↔V giữa hai lớp liền nhau có phải là vấn đề thật với sinh viên không? | Không, nên bỏ chỉ số `area_switch`. Câu về đổi khu vào `unsupported` (design.md E28) |
 | Q5 | Khi ràng buộc `must` không thoả được: trả lịch tốt nhất kèm cảnh báo, hay không trả lịch nào? | Trả lịch tốt nhất kèm `infeasible` |
 

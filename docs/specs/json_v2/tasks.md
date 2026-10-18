@@ -4,7 +4,7 @@
 > - Yêu cầu: [requirements.md](requirements.md)
 > - Thiết kế: [design.md](design.md)
 >
-> **Trạng thái:** chưa bắt đầu task nào. Chỉ làm từ T1 trở đi sau khi T0 xong (spec được duyệt).
+> **Trạng thái:** spec đã được duyệt ngày 2026-10-18 (T0 xong). Đang làm từ T1.
 >
 > Quy ước: `[ ]` chưa làm, `[x]` đã xong. Mỗi task ghi rõ file, yêu cầu liên quan (R…) và điều kiện "Xong khi".
 
@@ -21,7 +21,7 @@ T0 ──► T1 ──► T2 ──► T3 ──► T4
 
 ## Giai đoạn 0 — Duyệt spec
 
-- [ ] **T0 — Review spec và trả lời câu hỏi mở**
+- [x] **T0 — Review spec và trả lời câu hỏi mở**
   - Làm:
     - Bạn đọc 3 file spec.
     - Trả lời Q1–Q5 (requirements.md mục 9).
