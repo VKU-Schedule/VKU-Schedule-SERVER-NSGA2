@@ -70,7 +70,7 @@ T0 ──► T1 ──► T2 ──► T3 ──► T4
 
 ## Giai đoạn 3 — Chuẩn hoá
 
-- [ ] **T5 — Chuẩn hoá giá trị** (`app/scheduling/normalize.py`, `tests/scheduling/test_normalize.py`)
+- [x] **T5 — Chuẩn hoá giá trị** (`app/scheduling/normalize.py`, `tests/scheduling/test_normalize.py`)
   - Làm: các hàm chuẩn hoá cho `day`, `session`, `periods`, `start_period` / `end_period` / `duration`, `start_time` / `end_time`, `area`, `room` (tách khu và phòng), `language`, `class_group`; chuẩn hoá giá trị thứ trong dữ liệu lớp.
   - Dùng lại: logic `normalize_day` (`app/service/constraints_service.py:116`).
   - Yêu cầu: R6, R12.
