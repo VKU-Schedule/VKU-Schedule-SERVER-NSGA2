@@ -60,7 +60,7 @@ T0 ──► T1 ──► T2 ──► T3 ──► T4
   - Yêu cầu: R2, R3, R7, R11.
   - Xong khi: mỗi quy tắc V1–V11 có ít nhất một test hợp lệ và một test vi phạm, tất cả chạy xanh. Một ràng buộc lỗi không làm hỏng các ràng buộc khác trong cùng tài liệu.
 
-- [ ] **T4 — Xuất JSON Schema** (`app/scheduling/schema.py`, `docs/specs/json_v2/schema.json`, `docs/specs/json_v2/schema.inline.json`)
+- [x] **T4 — Xuất JSON Schema** (`app/scheduling/schema.py`, `docs/specs/json_v2/schema.json`, `docs/specs/json_v2/schema.inline.json`)
   - Làm:
     - Lệnh `python -m app.scheduling.schema --export docs/specs/json_v2/`, xuất hai bản: có `$ref` và không có `$ref`.
     - Schema không dùng `oneOf` / `anyOf` ở cấp ràng buộc.

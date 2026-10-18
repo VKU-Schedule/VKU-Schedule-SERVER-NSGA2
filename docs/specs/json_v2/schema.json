@@ -1,0 +1,431 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "Constraint": {
+      "additionalProperties": false,
+      "description": "Một ràng buộc nguyên tử. Có đúng một trong prefer, avoid, limit.",
+      "properties": {
+        "prefer": {
+          "$ref": "#/$defs/Filter",
+          "description": "Các lớp trong phạm vi nên thoả bộ lọc này."
+        },
+        "avoid": {
+          "$ref": "#/$defs/Filter",
+          "description": "Các lớp trong phạm vi nên tránh bộ lọc này."
+        },
+        "limit": {
+          "enum": [
+            "subjects_per_day",
+            "subjects_per_session",
+            "periods_per_day",
+            "gap_periods",
+            "consecutive_periods",
+            "study_days"
+          ],
+          "type": "string",
+          "description": "Chỉ số hình dạng lịch cần giới hạn. subjects_per_day: Số môn trong mỗi ngày có học. subjects_per_session: Số môn trong mỗi buổi (sáng/chiều) có học. periods_per_day: Tổng số tiết trong mỗi ngày có học. gap_periods: Số tiết trống giữa hai lớp liền nhau trong ngày. consecutive_periods: Số tiết học liên tục không nghỉ. Chỉ dùng max. study_days: Số ngày đi học trong tuần.",
+          "title": "Limit"
+        },
+        "min": {
+          "minimum": 0,
+          "type": "integer",
+          "description": "Cận dưới của limit, tính cả biên.",
+          "title": "Min"
+        },
+        "max": {
+          "minimum": 0,
+          "type": "integer",
+          "description": "Cận trên của limit, tính cả biên.",
+          "title": "Max"
+        },
+        "scope": {
+          "$ref": "#/$defs/Filter",
+          "description": "Ràng buộc áp dụng cho những lớp nào. Thiếu = mọi lớp."
+        },
+        "level": {
+          "default": "normal",
+          "description": "must: bắt buộc; high: rất quan trọng; normal: mặc định.",
+          "enum": [
+            "must",
+            "high",
+            "normal"
+          ],
+          "title": "Level",
+          "type": "string"
+        }
+      },
+      "title": "Constraint",
+      "type": "object"
+    },
+    "Filter": {
+      "additionalProperties": false,
+      "description": "Bộ lọc: các key kết hợp AND, list là OR, {min, max} là khoảng đóng. Không được rỗng.",
+      "minProperties": 1,
+      "properties": {
+        "course": {
+          "description": "Tên môn như sinh viên nói. Chỉ đặt trong scope.",
+          "title": "Course",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "items": {
+                "type": "string"
+              },
+              "minItems": 1,
+              "type": "array"
+            }
+          ]
+        },
+        "class_group": {
+          "description": "Số nhóm lớp: 2 hoặc \"nhóm 2\".",
+          "title": "Class Group",
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "items": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              },
+              "minItems": 1,
+              "type": "array"
+            }
+          ]
+        },
+        "teacher": {
+          "description": "Tên giảng viên như sinh viên nói: \"thầy Sơn\", \"Mai Nga\".",
+          "title": "Teacher",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "items": {
+                "type": "string"
+              },
+              "minItems": 1,
+              "type": "array"
+            }
+          ]
+        },
+        "language": {
+          "description": "Ngôn ngữ giảng dạy: \"tiếng Anh\", \"tiếng Việt\".",
+          "title": "Language",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "items": {
+                "type": "string"
+              },
+              "minItems": 1,
+              "type": "array"
+            }
+          ]
+        },
+        "day": {
+          "description": "Thứ: \"thứ 2\" … \"thứ 7\", \"chủ nhật\", \"cuối tuần\".",
+          "title": "Day",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "items": {
+                "type": "string"
+              },
+              "minItems": 1,
+              "type": "array"
+            }
+          ]
+        },
+        "session": {
+          "description": "Buổi: \"sáng\", \"chiều\", \"sáng sớm\", \"chiều muộn\".",
+          "title": "Session",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "items": {
+                "type": "string"
+              },
+              "minItems": 1,
+              "type": "array"
+            }
+          ]
+        },
+        "periods": {
+          "description": "Tập tiết: [1, 2], \"1-3\" hoặc khoảng {\"min\": 1, \"max\": 2}.",
+          "title": "Periods",
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "items": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              },
+              "minItems": 1,
+              "type": "array"
+            },
+            {
+              "$ref": "#/$defs/IntRange"
+            }
+          ]
+        },
+        "start_period": {
+          "description": "Tiết bắt đầu của lớp, số hoặc khoảng: \"từ tiết 3\" -> {\"min\": 3}.",
+          "title": "Start Period",
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "items": {
+                "type": "integer"
+              },
+              "minItems": 1,
+              "type": "array"
+            },
+            {
+              "$ref": "#/$defs/IntRange"
+            }
+          ]
+        },
+        "end_period": {
+          "description": "Tiết kết thúc của lớp, số hoặc khoảng.",
+          "title": "End Period",
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "items": {
+                "type": "integer"
+              },
+              "minItems": 1,
+              "type": "array"
+            },
+            {
+              "$ref": "#/$defs/IntRange"
+            }
+          ]
+        },
+        "start_time": {
+          "description": "Giờ bắt đầu của lớp: \"10:00\" hoặc khoảng {\"min\": \"10:00\"}.",
+          "title": "Start Time",
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "items": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              },
+              "minItems": 1,
+              "type": "array"
+            },
+            {
+              "$ref": "#/$defs/TimeRange"
+            }
+          ]
+        },
+        "end_time": {
+          "description": "Giờ kết thúc của lớp: \"16:00\" hoặc khoảng {\"max\": \"16:00\"}.",
+          "title": "End Time",
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "items": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              },
+              "minItems": 1,
+              "type": "array"
+            },
+            {
+              "$ref": "#/$defs/TimeRange"
+            }
+          ]
+        },
+        "duration": {
+          "description": "Số tiết của một buổi học, số hoặc khoảng.",
+          "title": "Duration",
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "items": {
+                "type": "integer"
+              },
+              "minItems": 1,
+              "type": "array"
+            },
+            {
+              "$ref": "#/$defs/IntRange"
+            }
+          ]
+        },
+        "area": {
+          "description": "Khu học: \"K\" hoặc \"V\".",
+          "title": "Area",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "items": {
+                "type": "string"
+              },
+              "minItems": 1,
+              "type": "array"
+            }
+          ]
+        },
+        "room": {
+          "description": "Mã phòng: \"A212\", \"V.A201\".",
+          "title": "Room",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "items": {
+                "type": "string"
+              },
+              "minItems": 1,
+              "type": "array"
+            }
+          ]
+        }
+      },
+      "title": "Filter",
+      "type": "object"
+    },
+    "IntRange": {
+      "additionalProperties": false,
+      "description": "Khoảng đóng; cần ít nhất một trong min, max.",
+      "minProperties": 1,
+      "properties": {
+        "min": {
+          "type": "integer",
+          "title": "Min"
+        },
+        "max": {
+          "type": "integer",
+          "title": "Max"
+        }
+      },
+      "title": "IntRange",
+      "type": "object"
+    },
+    "TimeRange": {
+      "additionalProperties": false,
+      "description": "Khoảng đóng; cần ít nhất một trong min, max.",
+      "minProperties": 1,
+      "properties": {
+        "min": {
+          "title": "Min",
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "max": {
+          "title": "Max",
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "title": "TimeRange",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Tài liệu ưu tiên v2 do module LLM sinh.",
+  "properties": {
+    "version": {
+      "default": "2.0",
+      "description": "Phiên bản cấu trúc.",
+      "title": "Version",
+      "type": "string"
+    },
+    "constraints": {
+      "description": "Các ràng buộc; mỗi ý một ràng buộc.",
+      "items": {
+        "$ref": "#/$defs/Constraint"
+      },
+      "title": "Constraints",
+      "type": "array"
+    },
+    "unsupported": {
+      "description": "Nguyên văn các ý không biểu diễn được.",
+      "items": {
+        "type": "string"
+      },
+      "title": "Unsupported",
+      "type": "array"
+    }
+  },
+  "required": [
+    "constraints"
+  ],
+  "title": "PreferenceDocument",
+  "type": "object"
+}

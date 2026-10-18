@@ -36,7 +36,7 @@ def _range_model(bound_type: ValueType) -> Type[BaseModel]:
     name = "IntRange" if bound_type is ValueType.INT else "TimeRange"
     return create_model(
         name,
-        __config__=ConfigDict(extra="forbid"),
+        __config__=ConfigDict(extra="forbid", json_schema_extra={"minProperties": 1}),
         __doc__="Khoảng đóng; cần ít nhất một trong min, max.",
         min=(Optional[scalar], None),
         max=(Optional[scalar], None),
@@ -51,14 +51,15 @@ _RANGE_MODELS: Dict[ValueType, Type[BaseModel]] = {
 
 def _attribute_type(spec: AttributeSpec) -> Any:
     scalar = _SCALAR_TYPES[spec.value_type]
+    values = Annotated[List[scalar], Field(min_length=1)]
     if spec.bound_type is None:
-        return Union[scalar, List[scalar]]
-    return Union[scalar, List[scalar], _RANGE_MODELS[spec.bound_type]]
+        return Union[scalar, values]
+    return Union[scalar, values, _RANGE_MODELS[spec.bound_type]]
 
 
 Filter: Type[BaseModel] = create_model(
     "Filter",
-    __config__=ConfigDict(extra="forbid"),
+    __config__=ConfigDict(extra="forbid", json_schema_extra={"minProperties": 1}),
     __doc__="Bộ lọc: các key kết hợp AND, list là OR, {min, max} là khoảng đóng. Không được rỗng.",
     **{
         name: (Optional[_attribute_type(spec)], Field(None, description=spec.description))
@@ -337,3 +338,83 @@ def filter_items(model: Optional[BaseModel]) -> List[Tuple[str, Any]]:
         for name, value in model
         if value is not None
     ]
+
+
+# ---------------------------------------------------------------------------
+# Xuất JSON Schema (task T4, D15)
+# ---------------------------------------------------------------------------
+
+JSON_SCHEMA_DIALECT = "https://json-schema.org/draft/2020-12/schema"
+SCHEMA_FILE = "schema.json"
+INLINE_SCHEMA_FILE = "schema.inline.json"
+
+
+def _drop_null_branches(node: Any) -> Any:
+    """Bỏ nhánh `null` mà Pydantic sinh cho field Optional: field không bắt buộc thì cứ bỏ trống.
+
+    Nhờ vậy schema không có `anyOf` ở cấp ràng buộc; `anyOf` chỉ còn ở giá trị của thuộc tính.
+    """
+    if isinstance(node, list):
+        return [_drop_null_branches(item) for item in node]
+    if not isinstance(node, dict):
+        return node
+    node = {key: _drop_null_branches(value) for key, value in node.items()}
+    branches = node.get("anyOf")
+    if isinstance(branches, list) and {"type": "null"} in branches:
+        branches = [branch for branch in branches if branch != {"type": "null"}]
+        del node["anyOf"]
+        if node.get("default", ...) is None:
+            del node["default"]
+        if len(branches) == 1:
+            node = {**branches[0], **node}
+        else:
+            node["anyOf"] = branches
+    return node
+
+
+def _inline_refs(node: Any, defs: Dict[str, Any]) -> Any:
+    if isinstance(node, list):
+        return [_inline_refs(item, defs) for item in node]
+    if not isinstance(node, dict):
+        return node
+    if "$ref" in node:
+        name = node["$ref"].rsplit("/", 1)[-1]
+        rest = {key: value for key, value in node.items() if key != "$ref"}
+        return {**_inline_refs(defs[name], defs), **_inline_refs(rest, defs)}
+    return {key: _inline_refs(value, defs) for key, value in node.items() if key != "$defs"}
+
+
+def build_json_schema(inline: bool = False) -> Dict[str, Any]:
+    """JSON Schema của `PreferenceDocument`; `inline=True` cho bản không dùng `$ref`."""
+    schema = _drop_null_branches(PreferenceDocument.model_json_schema())
+    if inline:
+        schema = _inline_refs(schema, schema.get("$defs", {}))
+    return {"$schema": JSON_SCHEMA_DIALECT, **schema}
+
+
+def dump_json_schema(inline: bool = False) -> str:
+    import json
+
+    return json.dumps(build_json_schema(inline), ensure_ascii=False, indent=2) + "\n"
+
+
+def export_json_schema(out_dir: str) -> List[str]:
+    """Ghi `schema.json` và `schema.inline.json` vào `out_dir`; trả về đường dẫn các file."""
+    import os
+
+    paths = []
+    for name, inline in ((SCHEMA_FILE, False), (INLINE_SCHEMA_FILE, True)):
+        path = os.path.join(out_dir, name)
+        with open(path, "w", encoding="utf-8") as fh:
+            fh.write(dump_json_schema(inline))
+        paths.append(path)
+    return paths
+
+
+if __name__ == "__main__":
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Xuất JSON Schema của tài liệu ưu tiên v2.")
+    parser.add_argument("--export", metavar="DIR", required=True, help="thư mục ghi schema.json và schema.inline.json")
+    for written in export_json_schema(parser.parse_args().export):
+        print(f"Đã ghi {written}")
