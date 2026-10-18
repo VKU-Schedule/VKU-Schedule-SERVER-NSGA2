@@ -1,0 +1,4 @@
+# Chỉ đủ để chạy tests của app/scheduling (không kéo theo torch / sentence-transformers).
+# Cài: pip install -r requirements-dev.txt
+pydantic>=2,<3
+pytest>=8

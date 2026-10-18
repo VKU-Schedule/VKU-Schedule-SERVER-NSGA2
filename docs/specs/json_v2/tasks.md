@@ -31,7 +31,7 @@ T0 ──► T1 ──► T2 ──► T3 ──► T4
 
 ## Giai đoạn 1 — Nền tảng
 
-- [ ] **T1 — Thêm dependency**
+- [x] **T1 — Thêm dependency**
   - Làm:
     - Thêm `pydantic>=2` vào `app/requirements.txt`.
     - Tạo `requirements-dev.txt` chứa `pytest`.
