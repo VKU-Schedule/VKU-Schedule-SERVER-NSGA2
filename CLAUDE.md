@@ -8,6 +8,17 @@ Flask backend for the VKU timetable optimizer. A student picks courses and gives
 
 Code comments, docstrings, log output and data (course names, days like "Thứ Sáu") are in Vietnamese.
 
+## Research roadmap (read first)
+
+This repo is being redesigned for a graduation thesis. **Read `docs/specs/README.md` before starting any work.** It holds the decisions already made, the status of each part, and the full plan:
+- **Part A:** JSON Structure v2 for constraints. Spec in `docs/specs/json_v2/`; branch `feature/new_json_structure`.
+- **Part B:** algorithm comparison. Planned in README section 7; gets its own branch after Part A is approved.
+
+The rules:
+- Each part follows `requirements.md` → `design.md` → `tasks.md`. Don't write code for a part until its spec is approved.
+- Commit each finished piece with Conventional Commits, e.g. `docs(specs): …`, `feat(scheduling): …`.
+- Everything described below documents the old (v1) preference JSON and will be replaced.
+
 ## Commands
 
 Run everything from the repo root. Imports are absolute (`from app...`), so the root must be on `PYTHONPATH`.
