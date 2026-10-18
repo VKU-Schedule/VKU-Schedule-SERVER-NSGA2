@@ -4,7 +4,7 @@
 > - Yêu cầu: [requirements.md](requirements.md)
 > - Thiết kế: [design.md](design.md)
 >
-> **Trạng thái:** spec đã được duyệt ngày 2026-10-18 (T0 xong). Đang làm từ T1.
+> **Trạng thái:** spec đã được duyệt ngày 2026-10-18. T0–T11 xong; chờ duyệt kết quả (T12).
 >
 > Quy ước: `[ ]` chưa làm, `[x]` đã xong. Mỗi task ghi rõ file, yêu cầu liên quan (R…) và điều kiện "Xong khi".
 
@@ -132,7 +132,7 @@ T0 ──► T1 ──► T2 ──► T3 ──► T4
 
 ## Giai đoạn 6 — Đóng Phần A
 
-- [ ] **T11 — Cập nhật tài liệu**
+- [x] **T11 — Cập nhật tài liệu**
   - Làm:
     - CLAUDE.md: thêm package `app/scheduling/` và lệnh chạy test.
     - `docs/specs/README.md`: cập nhật bảng trạng thái.

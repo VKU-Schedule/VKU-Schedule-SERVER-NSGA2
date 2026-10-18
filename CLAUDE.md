@@ -11,13 +11,13 @@ Code comments, docstrings, log output and data (course names, days like "Thứ S
 ## Research roadmap (read first)
 
 This repo is being redesigned for a graduation thesis. **Read `docs/specs/README.md` before starting any work.** It holds the decisions already made, the status of each part, and the full plan:
-- **Part A:** JSON Structure v2 for constraints. Spec in `docs/specs/json_v2/`; branch `feature/new_json_structure`.
+- **Part A:** JSON Structure v2 for constraints. Spec in `docs/specs/json_v2/`; branch `feature/new_json_structure`. Implemented in `app/scheduling/` (T1–T11 done); waiting for review (T12).
 - **Part B:** algorithm comparison. Planned in README section 7; gets its own branch after Part A is approved.
 
 The rules:
 - Each part follows `requirements.md` → `design.md` → `tasks.md`. Don't write code for a part until its spec is approved.
 - Commit each finished piece with Conventional Commits, e.g. `docs(specs): …`, `feat(scheduling): …`.
-- Everything described below documents the old (v1) preference JSON and will be replaced.
+- The "Architecture" section below documents the old (v1) preference JSON and will be replaced in Part B. `app/scheduling/` is the v2 code.
 
 ## Commands
 
@@ -30,11 +30,19 @@ python -m app.main                      # dev server, Flask debug mode, port 500
 python test_db_connection.py            # check the Mongo connection and the ly_courses contents
 python -m app.demo                      # standalone NSGA-II run on the hard-coded fixtures in app/constant/constant_input_test.py
 docker compose up --build               # uses .env, maps 8001:8001
+
+# JSON v2 (app/scheduling) — tests need Python 3.12 and only requirements-dev.txt, no Mongo
+uv venv --python 3.12 .venv && uv pip install --python .venv/bin/python -r requirements-dev.txt
+.venv/bin/python -m pytest                                    # pytest.ini: testpaths=tests, pythonpath=.
+.venv/bin/python -m pytest tests/scheduling/test_examples.py  # golden tests only
+.venv/bin/python -m app.scheduling.schema --export docs/specs/json_v2/   # re-export schema.json + schema.inline.json
+.venv/bin/python tests/scheduling/build_examples.py           # regenerate examples.json from design.md, then review git diff
 ```
 
 - The root `requirements.txt` is an older pip freeze (torch/CUDA). Use `app/requirements.txt`.
 - Port mismatch: `app/main.py` binds 5001, but the Dockerfile and compose file expose 8001. As written, the container won't answer on 8001 until the two agree.
-- There is no test suite, linter or formatter configured.
+- Tests exist only for `app/scheduling/` and the validate endpoint (`tests/scheduling/`). No linter or formatter is configured.
+- `app/constant/constant_input_test.py` imports `sympy`, so tests must not import it (sympy is not in `requirements-dev.txt`).
 - `database/embedding/embedding_data.py` re-imports `data/input/Final_Dataset.xlsx` into Mongo. It **wipes `ly_courses` first** (`delete_many({})`), uses a relative path to the xlsx (run it from `database/embedding/`), and needs the repo root on `PYTHONPATH`.
 
 ## Environment
@@ -64,6 +72,14 @@ docker compose up --build               # uses .env, maps 8001:8001
   - **Missing scorer:** `subject_count` has a scorer and a weight but no entry in `CONSTRAINT_FUNCTIONS`, so the key is currently ignored.
   - **GA settings:** fixed seed (`random.seed(42)`), population 30, 50 generations, `eaMuPlusLambda`. A single-course request skips the GA and scores every class directly.
   - **Module-level DEAP state:** `creator.create(...)` and the shared `toolbox` live at module scope. `run_nsga_ii` re-registers the toolbox on every request. That is not safe under concurrent requests.
+- `app/scheduling/` (JSON v2, Part A). Spec: `docs/specs/json_v2/design.md`; section numbers below refer to it.
+  - `vocab.py`: the single source of the vocabulary: attributes, metrics, levels and weights (6.5), period times (7.1), sessions (7.2), day/language/area aliases, unknown data values (6.7). Alias keys are stored "folded" (no diacritics, lowercase, no spaces).
+  - `schema.py`: Pydantic models (the `Filter` model is generated from `vocab.ATTRIBUTES`), `parse_document()` with per-constraint validation V1–V11 (a bad constraint goes to `unsupported`, a document-level error raises `DocumentError` → 400), and JSON Schema export.
+  - `normalize.py`: surface value → canonical value, course/teacher matching against the selected courses' classes, and `normalize_document()` (course → scope, weights, more-specific-wins `exclude`, contradiction warnings). Also helpers that read class data (`class_day_code`, `class_area`, ...), which Part B's scorer will use.
+  - `v1_adapter.py`: v1 `defaults`/`periods` → v2 (design 12.1); `parse_document` calls it automatically.
+  - Not done yet (Part B): scoring, solvers, and switching `/api/schedule` to v2.
+- `app/api/preferences_api.py`: `POST /api/preferences/validate` normalizes a v2 (or v1) document against the classes of `courses` and returns `{constraints, unsupported, warnings}` without scheduling.
+- `tests/scheduling/conftest.py`: the sample candidate classes, plus `design_examples()`, which reads the E1–E32 / 12.2 JSON blocks straight from design.md. `examples.json` is generated from those blocks; `test_examples.py` fails if design.md and examples.json drift apart.
 - `app/demo.py`: an older standalone copy of the constraint logic, run against the fixtures. It is not used by the API, so edits to `constraints_service.py` don't carry over to it.
 - `validation/` and `data/`: offline scripts and datasets (Excel cleaning, VIT5 training-data generation, a Gemini translation script). They are not part of the server or the Docker image.
 - `app/mock/docs/`: API and UI/UX notes for the frontend. `app/mock/mock_*` hold sample responses.

@@ -65,7 +65,7 @@ Nghiên cứu cần cho ra hai kết quả:
 
 | Phần | Nội dung | Branch | Spec | Trạng thái |
 |---|---|---|---|---|
-| A | JSON Structure v2 | `feature/new_json_structure` | [`json_v2/`](json_v2/) | Spec đã duyệt (2026-10-18); đang code theo `tasks.md` |
+| A | JSON Structure v2 | `feature/new_json_structure` | [`json_v2/`](json_v2/) | Code xong T1–T11 (`app/scheduling/`, 432 tests); chờ duyệt kết quả (T12) |
 | B | Thuật toán và so sánh | chưa tạo | `algorithms/` (chưa tạo) | Chưa bắt đầu; kế hoạch ở mục 7 |
 
 ## 6. Phần A — JSON Structure v2 (tóm tắt)
@@ -77,7 +77,10 @@ Nghiên cứu cần cho ra hai kết quả:
   - không làm mất thông tin âm thầm.
 - **Sản phẩm:**
   - spec trong `json_v2/`;
-  - sau khi spec được duyệt mới đến code: package `app/scheduling/` (`vocab.py`, `schema.py` dùng Pydantic, `normalize.py`), JSON Schema xuất ra `json_v2/schema.json`, và tests.
+  - package `app/scheduling/`: `vocab.py`, `schema.py` (Pydantic, validation V1–V11), `normalize.py`, `v1_adapter.py`;
+  - JSON Schema cho module LLM: `json_v2/schema.json` và `json_v2/schema.inline.json` (không `$ref`);
+  - endpoint `POST /api/preferences/validate`;
+  - tests trong `tests/scheduling/`, gồm golden tests cho mọi ví dụ của design.md (`examples.json`).
 - **Ranh giới với Phần B:** Phần A định nghĩa ngữ nghĩa phạt của từng ràng buộc. Phần B hiện thực hàm chấm và các thuật toán dựa trên ngữ nghĩa đó.
 - **Chi tiết:** [`json_v2/requirements.md`](json_v2/requirements.md), [`json_v2/design.md`](json_v2/design.md), [`json_v2/tasks.md`](json_v2/tasks.md).
 
