@@ -51,7 +51,7 @@ T0 ──► T1 ──► T2 ──► T3 ──► T4
 
 ## Giai đoạn 2 — Schema và validation
 
-- [ ] **T3 — Pydantic models và validation** (`app/scheduling/schema.py`, `tests/scheduling/test_schema.py`)
+- [x] **T3 — Pydantic models và validation** (`app/scheduling/schema.py`, `tests/scheduling/test_schema.py`)
   - Làm:
     - Models `PreferenceDocument`, `Constraint`, `Range` và kiểu `Filter`.
     - Validators V1–V7.

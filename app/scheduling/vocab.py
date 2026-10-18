@@ -53,29 +53,50 @@ class ValueType(str, Enum):
 class AttributeSpec:
     name: str
     kind: AttrKind
-    value_type: ValueType
-    ordered: bool                 # cho phép dạng khoảng {min, max} (V5)
+    value_type: ValueType         # kiểu của giá trị đơn và phần tử list
+    bound_type: Optional[ValueType]  # kiểu cận của khoảng {min, max}; None = không cho dùng khoảng (V5)
     weight: Optional[int]         # trọng số cơ sở; None = không tính vào trọng số (course)
+    description: str              # mô tả cho JSON Schema (module LLM đọc)
     scope_only: bool = False      # chỉ có nghĩa trong scope; ở prefer/avoid sẽ được chuyển sang scope
 
+    @property
+    def ordered(self) -> bool:
+        return self.bound_type is not None
+
+
+_T, _I, _IT = ValueType.TEXT, ValueType.INT, ValueType.INT_OR_TEXT
 
 ATTRIBUTES: Dict[str, AttributeSpec] = {
     spec.name: spec
     for spec in (
-        AttributeSpec("course", AttrKind.VALUES, ValueType.TEXT, False, None, scope_only=True),
-        AttributeSpec("class_group", AttrKind.VALUES, ValueType.INT_OR_TEXT, False, 4),
-        AttributeSpec("teacher", AttrKind.VALUES, ValueType.TEXT, False, 4),
-        AttributeSpec("language", AttrKind.VALUES, ValueType.TEXT, False, 2),
-        AttributeSpec("day", AttrKind.VALUES, ValueType.TEXT, False, 3),
-        AttributeSpec("session", AttrKind.PERIODS, ValueType.TEXT, False, 2),
-        AttributeSpec("periods", AttrKind.PERIODS, ValueType.INT_OR_TEXT, True, 2),
-        AttributeSpec("start_period", AttrKind.RANGE, ValueType.INT, True, 3),
-        AttributeSpec("end_period", AttrKind.RANGE, ValueType.INT, True, 3),
-        AttributeSpec("start_time", AttrKind.RANGE, ValueType.INT_OR_TEXT, True, 3),
-        AttributeSpec("end_time", AttrKind.RANGE, ValueType.INT_OR_TEXT, True, 3),
-        AttributeSpec("duration", AttrKind.RANGE, ValueType.INT, True, 1),
-        AttributeSpec("area", AttrKind.VALUES, ValueType.TEXT, False, 1),
-        AttributeSpec("room", AttrKind.VALUES, ValueType.TEXT, False, 1),
+        AttributeSpec("course", AttrKind.VALUES, _T, None, None,
+                      "Tên môn như sinh viên nói. Chỉ đặt trong scope.", scope_only=True),
+        AttributeSpec("class_group", AttrKind.VALUES, _IT, None, 4,
+                      "Số nhóm lớp: 2 hoặc \"nhóm 2\"."),
+        AttributeSpec("teacher", AttrKind.VALUES, _T, None, 4,
+                      "Tên giảng viên như sinh viên nói: \"thầy Sơn\", \"Mai Nga\"."),
+        AttributeSpec("language", AttrKind.VALUES, _T, None, 2,
+                      "Ngôn ngữ giảng dạy: \"tiếng Anh\", \"tiếng Việt\"."),
+        AttributeSpec("day", AttrKind.VALUES, _T, None, 3,
+                      "Thứ: \"thứ 2\" … \"thứ 7\", \"chủ nhật\", \"cuối tuần\"."),
+        AttributeSpec("session", AttrKind.PERIODS, _T, None, 2,
+                      "Buổi: \"sáng\", \"chiều\", \"sáng sớm\", \"chiều muộn\"."),
+        AttributeSpec("periods", AttrKind.PERIODS, _IT, _I, 2,
+                      "Tập tiết: [1, 2], \"1-3\" hoặc khoảng {\"min\": 1, \"max\": 2}."),
+        AttributeSpec("start_period", AttrKind.RANGE, _I, _I, 3,
+                      "Tiết bắt đầu của lớp, số hoặc khoảng: \"từ tiết 3\" -> {\"min\": 3}."),
+        AttributeSpec("end_period", AttrKind.RANGE, _I, _I, 3,
+                      "Tiết kết thúc của lớp, số hoặc khoảng."),
+        AttributeSpec("start_time", AttrKind.RANGE, _IT, _IT, 3,
+                      "Giờ bắt đầu của lớp: \"10:00\" hoặc khoảng {\"min\": \"10:00\"}."),
+        AttributeSpec("end_time", AttrKind.RANGE, _IT, _IT, 3,
+                      "Giờ kết thúc của lớp: \"16:00\" hoặc khoảng {\"max\": \"16:00\"}."),
+        AttributeSpec("duration", AttrKind.RANGE, _I, _I, 1,
+                      "Số tiết của một buổi học, số hoặc khoảng."),
+        AttributeSpec("area", AttrKind.VALUES, _T, None, 1,
+                      "Khu học: \"K\" hoặc \"V\"."),
+        AttributeSpec("room", AttrKind.VALUES, _T, None, 1,
+                      "Mã phòng: \"A212\", \"V.A201\"."),
     )
 }
 
@@ -89,17 +110,24 @@ class MetricSpec:
     name: str
     allowed_bounds: FrozenSet[str]  # tập con của {"min", "max"} (V2)
     weight: int
+    description: str
 
 
 METRICS: Dict[str, MetricSpec] = {
     spec.name: spec
     for spec in (
-        MetricSpec("subjects_per_day", frozenset({"min", "max"}), 2),
-        MetricSpec("subjects_per_session", frozenset({"min", "max"}), 2),
-        MetricSpec("periods_per_day", frozenset({"min", "max"}), 2),
-        MetricSpec("gap_periods", frozenset({"min", "max"}), 1),
-        MetricSpec("consecutive_periods", frozenset({"max"}), 1),
-        MetricSpec("study_days", frozenset({"min", "max"}), 2),
+        MetricSpec("subjects_per_day", frozenset({"min", "max"}), 2,
+                   "Số môn trong mỗi ngày có học."),
+        MetricSpec("subjects_per_session", frozenset({"min", "max"}), 2,
+                   "Số môn trong mỗi buổi (sáng/chiều) có học."),
+        MetricSpec("periods_per_day", frozenset({"min", "max"}), 2,
+                   "Tổng số tiết trong mỗi ngày có học."),
+        MetricSpec("gap_periods", frozenset({"min", "max"}), 1,
+                   "Số tiết trống giữa hai lớp liền nhau trong ngày."),
+        MetricSpec("consecutive_periods", frozenset({"max"}), 1,
+                   "Số tiết học liên tục không nghỉ. Chỉ dùng max."),
+        MetricSpec("study_days", frozenset({"min", "max"}), 2,
+                   "Số ngày đi học trong tuần."),
     )
 }
 

@@ -12,3 +12,6 @@ __pycache__/
 
 # Virtual env
 .venv/
+
+# pytest
+.pytest_cache/
