@@ -121,13 +121,14 @@ T0 ──► T1 ──► T2 ──► T3 ──► T4
   - Yêu cầu: R11.
   - Xong khi: `data/prompt.json` chuyển ra đúng 29 ràng buộc ở design.md mục 12.2.
 
-- [ ] **T10 — Endpoint kiểm tra** (tuỳ chọn) `POST /api/preferences/validate`
+- [x] **T10 — Endpoint kiểm tra** (tuỳ chọn) `POST /api/preferences/validate`
   - Làm:
     - Endpoint nhận `{courses, preferences}`, trả về ràng buộc đã chuẩn hoá, `unsupported` và `warnings`, không xếp lịch.
     - Thêm docstring Swagger.
     - Mục đích: module LLM tự kiểm tra output của mình.
   - Yêu cầu: R7, R9.
   - Xong khi: gọi được qua Swagger (`/api-docs`) với các ví dụ E1–E32.
+  - Ghi chú: đã test mọi ví dụ E1–E32 và 12.2 qua Flask test client với collection giả (`tests/scheduling/test_preferences_api.py`), và docstring Swagger parse được. Chưa chạy thử trên Swagger UI với Mongo thật.
 
 ## Giai đoạn 6 — Đóng Phần A
 

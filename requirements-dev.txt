@@ -1,4 +1,5 @@
 # Chỉ đủ để chạy tests của app/scheduling (không kéo theo torch / sentence-transformers).
 # Cài: pip install -r requirements-dev.txt
 pydantic>=2,<3
+Flask==3.1.0  # test endpoint qua Flask test client
 pytest>=8
