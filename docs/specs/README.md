@@ -78,7 +78,7 @@ Nghiên cứu cần cho ra hai kết quả:
 - **Sản phẩm:**
   - spec trong `json_v2/`;
   - package `app/scheduling/`: `vocab.py`, `schema.py` (Pydantic, validation V1–V11), `normalize.py`, `v1_adapter.py`;
-  - JSON Schema cho module LLM: `json_v2/schema.json` và `json_v2/schema.inline.json` (không `$ref`);
+  - cho module LLM: hướng dẫn [`json_v2/llm-guide.md`](json_v2/llm-guide.md) (thay `data/docs-feature.md` của v1), JSON Schema `json_v2/schema.json` và `json_v2/schema.inline.json` (không `$ref`);
   - endpoint `POST /api/preferences/validate`;
   - tests trong `tests/scheduling/`, gồm golden tests cho mọi ví dụ của design.md (`examples.json`).
 - **Ranh giới với Phần B:** Phần A định nghĩa ngữ nghĩa phạt của từng ràng buộc. Phần B hiện thực hàm chấm và các thuật toán dựa trên ngữ nghĩa đó.
