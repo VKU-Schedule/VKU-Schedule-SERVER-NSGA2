@@ -1,0 +1,2731 @@
+[
+  {
+    "id": "12.2",
+    "title": "Ví dụ: `data/prompt.json` viết lại bằng v2",
+    "input": {
+      "version": "2.0",
+      "constraints": [
+        {
+          "limit": "subjects_per_session",
+          "max": 1
+        },
+        {
+          "limit": "subjects_per_day",
+          "max": 3
+        },
+        {
+          "prefer": {
+            "duration": {
+              "max": 2
+            }
+          }
+        },
+        {
+          "prefer": {
+            "periods": {
+              "min": 2,
+              "max": 7
+            }
+          }
+        },
+        {
+          "prefer": {
+            "start_period": {
+              "min": 3
+            }
+          }
+        },
+        {
+          "prefer": {
+            "start_time": {
+              "min": "09:00"
+            }
+          }
+        },
+        {
+          "prefer": {
+            "area": "K"
+          }
+        },
+        {
+          "prefer": {
+            "room": [
+              "A101",
+              "A102"
+            ]
+          }
+        },
+        {
+          "prefer": {
+            "teacher": "Mai Lam"
+          },
+          "scope": {
+            "course": "Automat và ngôn ngữ hình thức"
+          }
+        },
+        {
+          "avoid": {
+            "teacher": "Tuấn"
+          },
+          "scope": {
+            "course": "Automat và ngôn ngữ hình thức"
+          }
+        },
+        {
+          "prefer": {
+            "teacher": [
+              "Phượng",
+              "Trọng"
+            ]
+          }
+        },
+        {
+          "limit": "gap_periods",
+          "max": 1
+        },
+        {
+          "prefer": {
+            "periods": {
+              "min": 6,
+              "max": 9
+            }
+          },
+          "scope": {
+            "day": "thứ 2"
+          }
+        },
+        {
+          "limit": "subjects_per_day",
+          "min": 1,
+          "max": 1,
+          "scope": {
+            "day": "thứ 2"
+          }
+        },
+        {
+          "prefer": {
+            "duration": {
+              "min": 3
+            }
+          },
+          "scope": {
+            "day": "thứ 2"
+          }
+        },
+        {
+          "limit": "gap_periods",
+          "max": 1,
+          "scope": {
+            "day": "thứ 2"
+          }
+        },
+        {
+          "prefer": {
+            "room": "A101"
+          },
+          "scope": {
+            "day": "thứ 2"
+          }
+        },
+        {
+          "prefer": {
+            "area": "K"
+          },
+          "scope": {
+            "day": "thứ 2"
+          }
+        },
+        {
+          "prefer": {
+            "class_group": [
+              2,
+              4
+            ]
+          },
+          "scope": {
+            "course": "Tiếng anh nâng cao 4",
+            "day": "thứ 2"
+          }
+        },
+        {
+          "prefer": {
+            "teacher": "Kim Tuyến"
+          },
+          "scope": {
+            "course": "Tiếng anh nâng cao 4",
+            "day": "thứ 2"
+          }
+        },
+        {
+          "prefer": {
+            "start_period": {
+              "min": 8
+            }
+          },
+          "scope": {
+            "day": "thứ 2"
+          }
+        },
+        {
+          "prefer": {
+            "start_time": {
+              "min": "15:00"
+            }
+          },
+          "scope": {
+            "day": "thứ 2"
+          }
+        },
+        {
+          "prefer": {
+            "periods": {
+              "min": 1,
+              "max": 4
+            }
+          },
+          "scope": {
+            "day": "thứ 4"
+          }
+        },
+        {
+          "limit": "subjects_per_day",
+          "min": 2,
+          "max": 2,
+          "scope": {
+            "day": "thứ 4"
+          }
+        },
+        {
+          "limit": "gap_periods",
+          "max": 1,
+          "scope": {
+            "day": "thứ 4"
+          }
+        },
+        {
+          "avoid": {
+            "room": "A101"
+          },
+          "scope": {
+            "day": "thứ 4"
+          }
+        },
+        {
+          "prefer": {
+            "class_group": [
+              2,
+              4
+            ]
+          },
+          "scope": {
+            "course": "Triết học Mac-Lenin",
+            "day": "thứ 4"
+          }
+        },
+        {
+          "prefer": {
+            "teacher": "Phượng"
+          },
+          "scope": {
+            "course": "Triết học Mac-Lenin",
+            "day": "thứ 4"
+          }
+        },
+        {
+          "prefer": {
+            "area": "K"
+          },
+          "scope": {
+            "day": "thứ 4"
+          }
+        }
+      ]
+    },
+    "expected": {
+      "version": "2.0",
+      "constraints": [
+        {
+          "id": 0,
+          "kind": "limit",
+          "metric": "subjects_per_session",
+          "max": 1,
+          "scope": {},
+          "exclude": [],
+          "level": "normal",
+          "weight": 2,
+          "source": {
+            "limit": "subjects_per_session",
+            "max": 1
+          }
+        },
+        {
+          "id": 1,
+          "kind": "limit",
+          "metric": "subjects_per_day",
+          "max": 3,
+          "scope": {},
+          "exclude": [
+            {
+              "day": [
+                "T2"
+              ]
+            },
+            {
+              "day": [
+                "T4"
+              ]
+            }
+          ],
+          "level": "normal",
+          "weight": 2,
+          "source": {
+            "limit": "subjects_per_day",
+            "max": 3
+          }
+        },
+        {
+          "id": 2,
+          "kind": "prefer",
+          "condition": {
+            "duration": [
+              [
+                1,
+                2
+              ]
+            ]
+          },
+          "scope": {},
+          "exclude": [
+            {
+              "day": [
+                "T2"
+              ]
+            }
+          ],
+          "level": "normal",
+          "weight": 1,
+          "source": {
+            "prefer": {
+              "duration": {
+                "max": 2
+              }
+            }
+          }
+        },
+        {
+          "id": 3,
+          "kind": "prefer",
+          "condition": {
+            "periods": [
+              2,
+              3,
+              4,
+              5,
+              6,
+              7
+            ]
+          },
+          "scope": {},
+          "exclude": [
+            {
+              "day": [
+                "T2"
+              ]
+            },
+            {
+              "day": [
+                "T4"
+              ]
+            }
+          ],
+          "level": "normal",
+          "weight": 2,
+          "source": {
+            "prefer": {
+              "periods": {
+                "min": 2,
+                "max": 7
+              }
+            }
+          }
+        },
+        {
+          "id": 4,
+          "kind": "prefer",
+          "condition": {
+            "start_period": [
+              [
+                3,
+                10
+              ]
+            ]
+          },
+          "scope": {},
+          "exclude": [
+            {
+              "day": [
+                "T2"
+              ]
+            }
+          ],
+          "level": "normal",
+          "weight": 3,
+          "source": {
+            "prefer": {
+              "start_period": {
+                "min": 3
+              }
+            }
+          }
+        },
+        {
+          "id": 5,
+          "kind": "prefer",
+          "condition": {
+            "start_time": [
+              [
+                540,
+                1439
+              ]
+            ]
+          },
+          "scope": {},
+          "exclude": [
+            {
+              "day": [
+                "T2"
+              ]
+            }
+          ],
+          "level": "normal",
+          "weight": 3,
+          "source": {
+            "prefer": {
+              "start_time": {
+                "min": "09:00"
+              }
+            }
+          }
+        },
+        {
+          "id": 6,
+          "kind": "prefer",
+          "condition": {
+            "area": [
+              "K"
+            ]
+          },
+          "scope": {},
+          "exclude": [
+            {
+              "day": [
+                "T2"
+              ]
+            },
+            {
+              "day": [
+                "T4"
+              ]
+            }
+          ],
+          "level": "normal",
+          "weight": 1,
+          "source": {
+            "prefer": {
+              "area": "K"
+            }
+          }
+        },
+        {
+          "id": 7,
+          "kind": "prefer",
+          "condition": {
+            "room": [
+              "A101",
+              "A102"
+            ]
+          },
+          "scope": {},
+          "exclude": [
+            {
+              "day": [
+                "T2"
+              ]
+            },
+            {
+              "day": [
+                "T4"
+              ]
+            }
+          ],
+          "level": "normal",
+          "weight": 1,
+          "source": {
+            "prefer": {
+              "room": [
+                "A101",
+                "A102"
+              ]
+            }
+          }
+        },
+        {
+          "id": 8,
+          "kind": "prefer",
+          "condition": {
+            "teacher": [
+              "ThS.Phan Thị Mai Lam"
+            ]
+          },
+          "scope": {
+            "course": [
+              "Automat và ngôn ngữ hình thức"
+            ]
+          },
+          "exclude": [],
+          "level": "normal",
+          "weight": 4,
+          "source": {
+            "prefer": {
+              "teacher": "Mai Lam"
+            },
+            "scope": {
+              "course": "Automat và ngôn ngữ hình thức"
+            }
+          }
+        },
+        {
+          "id": 9,
+          "kind": "avoid",
+          "condition": {
+            "teacher": [
+              "TS.Lê Anh Tuấn"
+            ]
+          },
+          "scope": {
+            "course": [
+              "Automat và ngôn ngữ hình thức"
+            ]
+          },
+          "exclude": [],
+          "level": "normal",
+          "weight": 4,
+          "source": {
+            "avoid": {
+              "teacher": "Tuấn"
+            },
+            "scope": {
+              "course": "Automat và ngôn ngữ hình thức"
+            }
+          }
+        },
+        {
+          "id": 10,
+          "kind": "prefer",
+          "condition": {
+            "teacher": [
+              "ThS.Hoàng Văn Phượng",
+              "ThS.Lê Văn Trọng",
+              "ThS.Trần Thị Phượng"
+            ]
+          },
+          "scope": {},
+          "exclude": [
+            {
+              "course": [
+                "Automat và ngôn ngữ hình thức"
+              ]
+            },
+            {
+              "course": [
+                "Tiếng anh nâng cao 4"
+              ],
+              "day": [
+                "T2"
+              ]
+            },
+            {
+              "course": [
+                "Triết học Mac-Lenin"
+              ],
+              "day": [
+                "T4"
+              ]
+            }
+          ],
+          "level": "normal",
+          "weight": 4,
+          "source": {
+            "prefer": {
+              "teacher": [
+                "Phượng",
+                "Trọng"
+              ]
+            }
+          }
+        },
+        {
+          "id": 11,
+          "kind": "limit",
+          "metric": "gap_periods",
+          "max": 1,
+          "scope": {},
+          "exclude": [
+            {
+              "day": [
+                "T2"
+              ]
+            },
+            {
+              "day": [
+                "T4"
+              ]
+            }
+          ],
+          "level": "normal",
+          "weight": 1,
+          "source": {
+            "limit": "gap_periods",
+            "max": 1
+          }
+        },
+        {
+          "id": 12,
+          "kind": "prefer",
+          "condition": {
+            "periods": [
+              6,
+              7,
+              8,
+              9
+            ]
+          },
+          "scope": {
+            "day": [
+              "T2"
+            ]
+          },
+          "exclude": [],
+          "level": "normal",
+          "weight": 3,
+          "source": {
+            "prefer": {
+              "periods": {
+                "min": 6,
+                "max": 9
+              }
+            },
+            "scope": {
+              "day": "thứ 2"
+            }
+          }
+        },
+        {
+          "id": 13,
+          "kind": "limit",
+          "metric": "subjects_per_day",
+          "min": 1,
+          "max": 1,
+          "scope": {
+            "day": [
+              "T2"
+            ]
+          },
+          "exclude": [],
+          "level": "normal",
+          "weight": 2,
+          "source": {
+            "limit": "subjects_per_day",
+            "min": 1,
+            "max": 1,
+            "scope": {
+              "day": "thứ 2"
+            }
+          }
+        },
+        {
+          "id": 14,
+          "kind": "prefer",
+          "condition": {
+            "duration": [
+              [
+                3,
+                10
+              ]
+            ]
+          },
+          "scope": {
+            "day": [
+              "T2"
+            ]
+          },
+          "exclude": [],
+          "level": "normal",
+          "weight": 3,
+          "source": {
+            "prefer": {
+              "duration": {
+                "min": 3
+              }
+            },
+            "scope": {
+              "day": "thứ 2"
+            }
+          }
+        },
+        {
+          "id": 15,
+          "kind": "limit",
+          "metric": "gap_periods",
+          "max": 1,
+          "scope": {
+            "day": [
+              "T2"
+            ]
+          },
+          "exclude": [],
+          "level": "normal",
+          "weight": 1,
+          "source": {
+            "limit": "gap_periods",
+            "max": 1,
+            "scope": {
+              "day": "thứ 2"
+            }
+          }
+        },
+        {
+          "id": 16,
+          "kind": "prefer",
+          "condition": {
+            "room": [
+              "A101"
+            ]
+          },
+          "scope": {
+            "day": [
+              "T2"
+            ]
+          },
+          "exclude": [],
+          "level": "normal",
+          "weight": 3,
+          "source": {
+            "prefer": {
+              "room": "A101"
+            },
+            "scope": {
+              "day": "thứ 2"
+            }
+          }
+        },
+        {
+          "id": 17,
+          "kind": "prefer",
+          "condition": {
+            "area": [
+              "K"
+            ]
+          },
+          "scope": {
+            "day": [
+              "T2"
+            ]
+          },
+          "exclude": [],
+          "level": "normal",
+          "weight": 3,
+          "source": {
+            "prefer": {
+              "area": "K"
+            },
+            "scope": {
+              "day": "thứ 2"
+            }
+          }
+        },
+        {
+          "id": 18,
+          "kind": "prefer",
+          "condition": {
+            "class_group": [
+              2,
+              4
+            ]
+          },
+          "scope": {
+            "course": [
+              "Tiếng anh nâng cao 4"
+            ],
+            "day": [
+              "T2"
+            ]
+          },
+          "exclude": [],
+          "level": "normal",
+          "weight": 4,
+          "source": {
+            "prefer": {
+              "class_group": [
+                2,
+                4
+              ]
+            },
+            "scope": {
+              "course": "Tiếng anh nâng cao 4",
+              "day": "thứ 2"
+            }
+          }
+        },
+        {
+          "id": 19,
+          "kind": "prefer",
+          "condition": {
+            "teacher": [
+              "ThS.Nguyễn Thị Kim Tuyến"
+            ]
+          },
+          "scope": {
+            "course": [
+              "Tiếng anh nâng cao 4"
+            ],
+            "day": [
+              "T2"
+            ]
+          },
+          "exclude": [],
+          "level": "normal",
+          "weight": 4,
+          "source": {
+            "prefer": {
+              "teacher": "Kim Tuyến"
+            },
+            "scope": {
+              "course": "Tiếng anh nâng cao 4",
+              "day": "thứ 2"
+            }
+          }
+        },
+        {
+          "id": 20,
+          "kind": "prefer",
+          "condition": {
+            "start_period": [
+              [
+                8,
+                10
+              ]
+            ]
+          },
+          "scope": {
+            "day": [
+              "T2"
+            ]
+          },
+          "exclude": [],
+          "level": "normal",
+          "weight": 3,
+          "source": {
+            "prefer": {
+              "start_period": {
+                "min": 8
+              }
+            },
+            "scope": {
+              "day": "thứ 2"
+            }
+          }
+        },
+        {
+          "id": 21,
+          "kind": "prefer",
+          "condition": {
+            "start_time": [
+              [
+                900,
+                1439
+              ]
+            ]
+          },
+          "scope": {
+            "day": [
+              "T2"
+            ]
+          },
+          "exclude": [],
+          "level": "normal",
+          "weight": 3,
+          "source": {
+            "prefer": {
+              "start_time": {
+                "min": "15:00"
+              }
+            },
+            "scope": {
+              "day": "thứ 2"
+            }
+          }
+        },
+        {
+          "id": 22,
+          "kind": "prefer",
+          "condition": {
+            "periods": [
+              1,
+              2,
+              3,
+              4
+            ]
+          },
+          "scope": {
+            "day": [
+              "T4"
+            ]
+          },
+          "exclude": [],
+          "level": "normal",
+          "weight": 3,
+          "source": {
+            "prefer": {
+              "periods": {
+                "min": 1,
+                "max": 4
+              }
+            },
+            "scope": {
+              "day": "thứ 4"
+            }
+          }
+        },
+        {
+          "id": 23,
+          "kind": "limit",
+          "metric": "subjects_per_day",
+          "min": 2,
+          "max": 2,
+          "scope": {
+            "day": [
+              "T4"
+            ]
+          },
+          "exclude": [],
+          "level": "normal",
+          "weight": 2,
+          "source": {
+            "limit": "subjects_per_day",
+            "min": 2,
+            "max": 2,
+            "scope": {
+              "day": "thứ 4"
+            }
+          }
+        },
+        {
+          "id": 24,
+          "kind": "limit",
+          "metric": "gap_periods",
+          "max": 1,
+          "scope": {
+            "day": [
+              "T4"
+            ]
+          },
+          "exclude": [],
+          "level": "normal",
+          "weight": 1,
+          "source": {
+            "limit": "gap_periods",
+            "max": 1,
+            "scope": {
+              "day": "thứ 4"
+            }
+          }
+        },
+        {
+          "id": 25,
+          "kind": "avoid",
+          "condition": {
+            "room": [
+              "A101"
+            ]
+          },
+          "scope": {
+            "day": [
+              "T4"
+            ]
+          },
+          "exclude": [],
+          "level": "normal",
+          "weight": 3,
+          "source": {
+            "avoid": {
+              "room": "A101"
+            },
+            "scope": {
+              "day": "thứ 4"
+            }
+          }
+        },
+        {
+          "id": 26,
+          "kind": "prefer",
+          "condition": {
+            "class_group": [
+              2,
+              4
+            ]
+          },
+          "scope": {
+            "course": [
+              "Triết học Mac-Lenin"
+            ],
+            "day": [
+              "T4"
+            ]
+          },
+          "exclude": [],
+          "level": "normal",
+          "weight": 4,
+          "source": {
+            "prefer": {
+              "class_group": [
+                2,
+                4
+              ]
+            },
+            "scope": {
+              "course": "Triết học Mac-Lenin",
+              "day": "thứ 4"
+            }
+          }
+        },
+        {
+          "id": 27,
+          "kind": "prefer",
+          "condition": {
+            "teacher": [
+              "ThS.Trần Thị Phượng"
+            ]
+          },
+          "scope": {
+            "course": [
+              "Triết học Mac-Lenin"
+            ],
+            "day": [
+              "T4"
+            ]
+          },
+          "exclude": [],
+          "level": "normal",
+          "weight": 4,
+          "source": {
+            "prefer": {
+              "teacher": "Phượng"
+            },
+            "scope": {
+              "course": "Triết học Mac-Lenin",
+              "day": "thứ 4"
+            }
+          }
+        },
+        {
+          "id": 28,
+          "kind": "prefer",
+          "condition": {
+            "area": [
+              "K"
+            ]
+          },
+          "scope": {
+            "day": [
+              "T4"
+            ]
+          },
+          "exclude": [],
+          "level": "normal",
+          "weight": 3,
+          "source": {
+            "prefer": {
+              "area": "K"
+            },
+            "scope": {
+              "day": "thứ 4"
+            }
+          }
+        }
+      ],
+      "unsupported": [],
+      "warnings": [
+        "Ràng buộc 10: 'teacher' trong 'prefer': Có 2 giảng viên khớp 'Phượng': ThS.Hoàng Văn Phượng, ThS.Trần Thị Phượng"
+      ]
+    }
+  },
+  {
+    "id": "E1",
+    "title": "Tránh cuối tuần (mẫu câu; v1 không biểu diễn được)",
+    "input": {
+      "version": "2.0",
+      "constraints": [
+        {
+          "avoid": {
+            "day": "cuối tuần"
+          }
+        }
+      ]
+    },
+    "expected": {
+      "version": "2.0",
+      "constraints": [
+        {
+          "id": 0,
+          "kind": "avoid",
+          "condition": {
+            "day": [
+              "CN",
+              "T7"
+            ]
+          },
+          "scope": {},
+          "exclude": [],
+          "level": "normal",
+          "weight": 3,
+          "source": {
+            "avoid": {
+              "day": "cuối tuần"
+            }
+          }
+        }
+      ],
+      "unsupported": [],
+      "warnings": []
+    }
+  },
+  {
+    "id": "E2",
+    "title": "Môn vào sáng một ngày (2 mẫu câu; v1 không biểu diễn được)",
+    "input": {
+      "constraints": [
+        {
+          "prefer": {
+            "day": "thứ 3",
+            "session": "sáng"
+          },
+          "scope": {
+            "course": "Lập trình Java"
+          }
+        }
+      ]
+    },
+    "expected": {
+      "version": "2.0",
+      "constraints": [
+        {
+          "id": 0,
+          "kind": "prefer",
+          "condition": {
+            "day": [
+              "T3"
+            ],
+            "session": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ]
+          },
+          "scope": {
+            "course": [
+              "Lập trình Java"
+            ]
+          },
+          "exclude": [],
+          "level": "normal",
+          "weight": 3,
+          "source": {
+            "prefer": {
+              "day": "thứ 3",
+              "session": "sáng"
+            },
+            "scope": {
+              "course": "Lập trình Java"
+            }
+          }
+        }
+      ],
+      "unsupported": [],
+      "warnings": []
+    }
+  },
+  {
+    "id": "E3",
+    "title": "Môn nhưng không phải sáng một ngày (mẫu câu; v1 không biểu diễn được)",
+    "input": {
+      "constraints": [
+        {
+          "avoid": {
+            "day": "thứ 4",
+            "session": "sáng"
+          },
+          "scope": {
+            "course": "Mạng máy tính"
+          }
+        }
+      ]
+    },
+    "expected": {
+      "version": "2.0",
+      "constraints": [
+        {
+          "id": 0,
+          "kind": "avoid",
+          "condition": {
+            "day": [
+              "T4"
+            ],
+            "session": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ]
+          },
+          "scope": {
+            "course": [
+              "Mạng máy tính"
+            ]
+          },
+          "exclude": [],
+          "level": "normal",
+          "weight": 3,
+          "source": {
+            "avoid": {
+              "day": "thứ 4",
+              "session": "sáng"
+            },
+            "scope": {
+              "course": "Mạng máy tính"
+            }
+          }
+        }
+      ],
+      "unsupported": [],
+      "warnings": []
+    }
+  },
+  {
+    "id": "E4",
+    "title": "Không học môn vào một ngày (mẫu câu; v1 không biểu diễn được)",
+    "input": {
+      "constraints": [
+        {
+          "avoid": {
+            "day": "thứ 6"
+          },
+          "scope": {
+            "course": "Chủ nghĩa xã hội khoa học"
+          }
+        }
+      ]
+    },
+    "expected": {
+      "version": "2.0",
+      "constraints": [
+        {
+          "id": 0,
+          "kind": "avoid",
+          "condition": {
+            "day": [
+              "T6"
+            ]
+          },
+          "scope": {
+            "course": [
+              "Chủ nghĩa xã hội khoa học"
+            ]
+          },
+          "exclude": [],
+          "level": "normal",
+          "weight": 3,
+          "source": {
+            "avoid": {
+              "day": "thứ 6"
+            },
+            "scope": {
+              "course": "Chủ nghĩa xã hội khoa học"
+            }
+          }
+        }
+      ],
+      "unsupported": [],
+      "warnings": []
+    }
+  },
+  {
+    "id": "E5",
+    "title": "Môn ở một khu (mẫu câu; v1 không biểu diễn được)",
+    "input": {
+      "constraints": [
+        {
+          "prefer": {
+            "area": "V"
+          },
+          "scope": {
+            "course": "Cấu trúc dữ liệu và giải thuật"
+          }
+        }
+      ]
+    },
+    "expected": {
+      "version": "2.0",
+      "constraints": [
+        {
+          "id": 0,
+          "kind": "prefer",
+          "condition": {
+            "area": [
+              "V"
+            ]
+          },
+          "scope": {
+            "course": [
+              "Cấu trúc dữ liệu và giải thuật"
+            ]
+          },
+          "exclude": [],
+          "level": "normal",
+          "weight": 1,
+          "source": {
+            "prefer": {
+              "area": "V"
+            },
+            "scope": {
+              "course": "Cấu trúc dữ liệu và giải thuật"
+            }
+          }
+        }
+      ],
+      "unsupported": [],
+      "warnings": []
+    }
+  },
+  {
+    "id": "E6",
+    "title": "Khu theo buổi (mẫu câu; v1 không biểu diễn được)",
+    "input": {
+      "constraints": [
+        {
+          "prefer": {
+            "area": "K"
+          },
+          "scope": {
+            "session": "chiều"
+          }
+        }
+      ]
+    },
+    "expected": {
+      "version": "2.0",
+      "constraints": [
+        {
+          "id": 0,
+          "kind": "prefer",
+          "condition": {
+            "area": [
+              "K"
+            ]
+          },
+          "scope": {
+            "session": [
+              6,
+              7,
+              8,
+              9,
+              10
+            ]
+          },
+          "exclude": [],
+          "level": "normal",
+          "weight": 2,
+          "source": {
+            "prefer": {
+              "area": "K"
+            },
+            "scope": {
+              "session": "chiều"
+            }
+          }
+        }
+      ],
+      "unsupported": [],
+      "warnings": []
+    }
+  },
+  {
+    "id": "E7",
+    "title": "Môn vào một ngày, có nghỉ giữa giờ (mẫu câu; v1 không biểu diễn được)",
+    "input": {
+      "constraints": [
+        {
+          "prefer": {
+            "day": "thứ 5"
+          },
+          "scope": {
+            "course": "Lập trình Java"
+          }
+        },
+        {
+          "limit": "gap_periods",
+          "min": 1,
+          "scope": {
+            "day": "thứ 5"
+          }
+        }
+      ]
+    },
+    "expected": {
+      "version": "2.0",
+      "constraints": [
+        {
+          "id": 0,
+          "kind": "prefer",
+          "condition": {
+            "day": [
+              "T5"
+            ]
+          },
+          "scope": {
+            "course": [
+              "Lập trình Java"
+            ]
+          },
+          "exclude": [],
+          "level": "normal",
+          "weight": 3,
+          "source": {
+            "prefer": {
+              "day": "thứ 5"
+            },
+            "scope": {
+              "course": "Lập trình Java"
+            }
+          }
+        },
+        {
+          "id": 1,
+          "kind": "limit",
+          "metric": "gap_periods",
+          "min": 1,
+          "scope": {
+            "day": [
+              "T5"
+            ]
+          },
+          "exclude": [],
+          "level": "normal",
+          "weight": 1,
+          "source": {
+            "limit": "gap_periods",
+            "min": 1,
+            "scope": {
+              "day": "thứ 5"
+            }
+          }
+        }
+      ],
+      "unsupported": [],
+      "warnings": []
+    }
+  },
+  {
+    "id": "E8",
+    "title": "Môn sáng một ngày, tránh chiều (mẫu câu; v1 không biểu diễn được)",
+    "input": {
+      "constraints": [
+        {
+          "prefer": {
+            "day": "thứ 2",
+            "session": "sáng"
+          },
+          "scope": {
+            "course": "Cấu trúc dữ liệu và giải thuật"
+          }
+        },
+        {
+          "avoid": {
+            "session": "chiều"
+          },
+          "scope": {
+            "course": "Cấu trúc dữ liệu và giải thuật"
+          }
+        }
+      ]
+    },
+    "expected": {
+      "version": "2.0",
+      "constraints": [
+        {
+          "id": 0,
+          "kind": "prefer",
+          "condition": {
+            "day": [
+              "T2"
+            ],
+            "session": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ]
+          },
+          "scope": {
+            "course": [
+              "Cấu trúc dữ liệu và giải thuật"
+            ]
+          },
+          "exclude": [],
+          "level": "normal",
+          "weight": 3,
+          "source": {
+            "prefer": {
+              "day": "thứ 2",
+              "session": "sáng"
+            },
+            "scope": {
+              "course": "Cấu trúc dữ liệu và giải thuật"
+            }
+          }
+        },
+        {
+          "id": 1,
+          "kind": "avoid",
+          "condition": {
+            "session": [
+              6,
+              7,
+              8,
+              9,
+              10
+            ]
+          },
+          "scope": {
+            "course": [
+              "Cấu trúc dữ liệu và giải thuật"
+            ]
+          },
+          "exclude": [],
+          "level": "normal",
+          "weight": 2,
+          "source": {
+            "avoid": {
+              "session": "chiều"
+            },
+            "scope": {
+              "course": "Cấu trúc dữ liệu và giải thuật"
+            }
+          }
+        }
+      ],
+      "unsupported": [],
+      "warnings": []
+    }
+  },
+  {
+    "id": "E9",
+    "title": "Ưu tiên có điều kiện (mẫu câu; v1 không biểu diễn được)",
+    "input": {
+      "constraints": [
+        {
+          "prefer": {
+            "session": "sáng"
+          },
+          "scope": {
+            "room": "A212"
+          }
+        }
+      ]
+    },
+    "expected": {
+      "version": "2.0",
+      "constraints": [
+        {
+          "id": 0,
+          "kind": "prefer",
+          "condition": {
+            "session": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ]
+          },
+          "scope": {
+            "room": [
+              "A212"
+            ]
+          },
+          "exclude": [],
+          "level": "normal",
+          "weight": 2,
+          "source": {
+            "prefer": {
+              "session": "sáng"
+            },
+            "scope": {
+              "room": "A212"
+            }
+          }
+        }
+      ],
+      "unsupported": [],
+      "warnings": []
+    }
+  },
+  {
+    "id": "E10",
+    "title": "Điều kiện gộp (mẫu câu)",
+    "input": {
+      "constraints": [
+        {
+          "prefer": {
+            "day": "thứ 6",
+            "session": "sáng",
+            "teacher": "Trần Đình Sơn"
+          },
+          "scope": {
+            "course": "Lập trình Java"
+          }
+        }
+      ]
+    },
+    "expected": {
+      "version": "2.0",
+      "constraints": [
+        {
+          "id": 0,
+          "kind": "prefer",
+          "condition": {
+            "teacher": [
+              "ThS.Trần Đình Sơn"
+            ],
+            "day": [
+              "T6"
+            ],
+            "session": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ]
+          },
+          "scope": {
+            "course": [
+              "Lập trình Java"
+            ]
+          },
+          "exclude": [],
+          "level": "normal",
+          "weight": 4,
+          "source": {
+            "prefer": {
+              "day": "thứ 6",
+              "session": "sáng",
+              "teacher": "Trần Đình Sơn"
+            },
+            "scope": {
+              "course": "Lập trình Java"
+            }
+          }
+        }
+      ],
+      "unsupported": [],
+      "warnings": []
+    }
+  },
+  {
+    "id": "E11",
+    "title": "Bắt buộc theo giờ (mẫu câu)",
+    "input": {
+      "constraints": [
+        {
+          "prefer": {
+            "start_time": {
+              "min": "10:00"
+            }
+          },
+          "level": "must"
+        }
+      ]
+    },
+    "expected": {
+      "version": "2.0",
+      "constraints": [
+        {
+          "id": 0,
+          "kind": "prefer",
+          "condition": {
+            "start_time": [
+              [
+                600,
+                1439
+              ]
+            ]
+          },
+          "scope": {},
+          "exclude": [],
+          "level": "must",
+          "weight": 3,
+          "source": {
+            "prefer": {
+              "start_time": {
+                "min": "10:00"
+              }
+            },
+            "level": "must"
+          }
+        }
+      ],
+      "unsupported": [],
+      "warnings": []
+    }
+  },
+  {
+    "id": "E12",
+    "title": "Tiết bắt đầu theo ngày (mẫu câu)",
+    "input": {
+      "constraints": [
+        {
+          "prefer": {
+            "start_period": {
+              "min": 3
+            }
+          },
+          "scope": {
+            "day": "thứ 4"
+          }
+        }
+      ]
+    },
+    "expected": {
+      "version": "2.0",
+      "constraints": [
+        {
+          "id": 0,
+          "kind": "prefer",
+          "condition": {
+            "start_period": [
+              [
+                3,
+                10
+              ]
+            ]
+          },
+          "scope": {
+            "day": [
+              "T4"
+            ]
+          },
+          "exclude": [],
+          "level": "normal",
+          "weight": 3,
+          "source": {
+            "prefer": {
+              "start_period": {
+                "min": 3
+              }
+            },
+            "scope": {
+              "day": "thứ 4"
+            }
+          }
+        }
+      ],
+      "unsupported": [],
+      "warnings": []
+    }
+  },
+  {
+    "id": "E13",
+    "title": "Tránh khoảng tiết (mẫu câu)",
+    "input": {
+      "constraints": [
+        {
+          "avoid": {
+            "periods": {
+              "min": 1,
+              "max": 2
+            }
+          }
+        }
+      ]
+    },
+    "expected": {
+      "version": "2.0",
+      "constraints": [
+        {
+          "id": 0,
+          "kind": "avoid",
+          "condition": {
+            "periods": [
+              1,
+              2
+            ]
+          },
+          "scope": {},
+          "exclude": [],
+          "level": "normal",
+          "weight": 2,
+          "source": {
+            "avoid": {
+              "periods": {
+                "min": 1,
+                "max": 2
+              }
+            }
+          }
+        }
+      ],
+      "unsupported": [],
+      "warnings": []
+    }
+  },
+  {
+    "id": "E14",
+    "title": "Tiết kết thúc (bổ sung)",
+    "input": {
+      "constraints": [
+        {
+          "prefer": {
+            "end_period": {
+              "max": 4
+            }
+          },
+          "scope": {
+            "session": "sáng"
+          }
+        }
+      ]
+    },
+    "expected": {
+      "version": "2.0",
+      "constraints": [
+        {
+          "id": 0,
+          "kind": "prefer",
+          "condition": {
+            "end_period": [
+              [
+                1,
+                4
+              ]
+            ]
+          },
+          "scope": {
+            "session": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ]
+          },
+          "exclude": [],
+          "level": "normal",
+          "weight": 3,
+          "source": {
+            "prefer": {
+              "end_period": {
+                "max": 4
+              }
+            },
+            "scope": {
+              "session": "sáng"
+            }
+          }
+        }
+      ],
+      "unsupported": [],
+      "warnings": []
+    }
+  },
+  {
+    "id": "E15",
+    "title": "Giờ kết thúc (bổ sung)",
+    "input": {
+      "constraints": [
+        {
+          "prefer": {
+            "end_time": {
+              "max": "16:00"
+            }
+          }
+        }
+      ]
+    },
+    "expected": {
+      "version": "2.0",
+      "constraints": [
+        {
+          "id": 0,
+          "kind": "prefer",
+          "condition": {
+            "end_time": [
+              [
+                0,
+                960
+              ]
+            ]
+          },
+          "scope": {},
+          "exclude": [],
+          "level": "normal",
+          "weight": 3,
+          "source": {
+            "prefer": {
+              "end_time": {
+                "max": "16:00"
+              }
+            }
+          }
+        }
+      ],
+      "unsupported": [],
+      "warnings": []
+    }
+  },
+  {
+    "id": "E16",
+    "title": "Buổi con, kèm lý do (mẫu câu)",
+    "input": {
+      "constraints": [
+        {
+          "avoid": {
+            "session": "chiều muộn"
+          },
+          "scope": {
+            "day": "thứ 5"
+          }
+        }
+      ]
+    },
+    "expected": {
+      "version": "2.0",
+      "constraints": [
+        {
+          "id": 0,
+          "kind": "avoid",
+          "condition": {
+            "session": [
+              8,
+              9,
+              10
+            ]
+          },
+          "scope": {
+            "day": [
+              "T5"
+            ]
+          },
+          "exclude": [],
+          "level": "normal",
+          "weight": 3,
+          "source": {
+            "avoid": {
+              "session": "chiều muộn"
+            },
+            "scope": {
+              "day": "thứ 5"
+            }
+          }
+        }
+      ],
+      "unsupported": [],
+      "warnings": []
+    }
+  },
+  {
+    "id": "E17",
+    "title": "Thời lượng lớp (bổ sung)",
+    "input": {
+      "constraints": [
+        {
+          "avoid": {
+            "duration": {
+              "min": 4
+            }
+          }
+        }
+      ]
+    },
+    "expected": {
+      "version": "2.0",
+      "constraints": [
+        {
+          "id": 0,
+          "kind": "avoid",
+          "condition": {
+            "duration": [
+              [
+                4,
+                10
+              ]
+            ]
+          },
+          "scope": {},
+          "exclude": [],
+          "level": "normal",
+          "weight": 1,
+          "source": {
+            "avoid": {
+              "duration": {
+                "min": 4
+              }
+            }
+          }
+        }
+      ],
+      "unsupported": [],
+      "warnings": []
+    }
+  },
+  {
+    "id": "E18",
+    "title": "Giảng viên theo môn (mẫu câu)",
+    "input": {
+      "constraints": [
+        {
+          "prefer": {
+            "teacher": "Mai Nga"
+          },
+          "scope": {
+            "course": "Automat và ngôn ngữ hình thức"
+          }
+        },
+        {
+          "avoid": {
+            "teacher": "Sơn"
+          },
+          "scope": {
+            "course": "Automat và ngôn ngữ hình thức"
+          }
+        }
+      ]
+    },
+    "expected": {
+      "version": "2.0",
+      "constraints": [
+        {
+          "id": 0,
+          "kind": "prefer",
+          "condition": {
+            "teacher": [
+              "ThS.Dương Thị Mai Nga"
+            ]
+          },
+          "scope": {
+            "course": [
+              "Automat và ngôn ngữ hình thức"
+            ]
+          },
+          "exclude": [],
+          "level": "normal",
+          "weight": 4,
+          "source": {
+            "prefer": {
+              "teacher": "Mai Nga"
+            },
+            "scope": {
+              "course": "Automat và ngôn ngữ hình thức"
+            }
+          }
+        },
+        {
+          "id": 1,
+          "kind": "avoid",
+          "condition": {
+            "teacher": [
+              "ThS.Trần Đình Sơn"
+            ]
+          },
+          "scope": {
+            "course": [
+              "Automat và ngôn ngữ hình thức"
+            ]
+          },
+          "exclude": [],
+          "level": "normal",
+          "weight": 4,
+          "source": {
+            "avoid": {
+              "teacher": "Sơn"
+            },
+            "scope": {
+              "course": "Automat và ngôn ngữ hình thức"
+            }
+          }
+        }
+      ],
+      "unsupported": [],
+      "warnings": []
+    }
+  },
+  {
+    "id": "E19",
+    "title": "Nhóm lớp (dạng câu trong `generated_sentences.txt`)",
+    "input": {
+      "constraints": [
+        {
+          "prefer": {
+            "class_group": [
+              13,
+              14
+            ]
+          },
+          "scope": {
+            "course": "Tiếng Anh chuyên ngành 2"
+          }
+        }
+      ]
+    },
+    "expected": {
+      "version": "2.0",
+      "constraints": [
+        {
+          "id": 0,
+          "kind": "prefer",
+          "condition": {
+            "class_group": [
+              13,
+              14
+            ]
+          },
+          "scope": {
+            "course": [
+              "Tiếng Anh chuyên ngành 2"
+            ]
+          },
+          "exclude": [],
+          "level": "normal",
+          "weight": 4,
+          "source": {
+            "prefer": {
+              "class_group": [
+                13,
+                14
+              ]
+            },
+            "scope": {
+              "course": "Tiếng Anh chuyên ngành 2"
+            }
+          }
+        }
+      ],
+      "unsupported": [],
+      "warnings": []
+    }
+  },
+  {
+    "id": "E20",
+    "title": "Ngôn ngữ (bổ sung)",
+    "input": {
+      "constraints": [
+        {
+          "prefer": {
+            "language": "tiếng Anh"
+          }
+        }
+      ]
+    },
+    "expected": {
+      "version": "2.0",
+      "constraints": [
+        {
+          "id": 0,
+          "kind": "prefer",
+          "condition": {
+            "language": [
+              "Tiếng Anh"
+            ]
+          },
+          "scope": {},
+          "exclude": [],
+          "level": "normal",
+          "weight": 2,
+          "source": {
+            "prefer": {
+              "language": "tiếng Anh"
+            }
+          }
+        }
+      ],
+      "unsupported": [],
+      "warnings": []
+    }
+  },
+  {
+    "id": "E21",
+    "title": "Phòng có tiền tố khu (mẫu câu)",
+    "input": {
+      "constraints": [
+        {
+          "avoid": {
+            "room": "V.A201"
+          },
+          "scope": {
+            "day": "thứ 3"
+          }
+        }
+      ]
+    },
+    "expected": {
+      "version": "2.0",
+      "constraints": [
+        {
+          "id": 0,
+          "kind": "avoid",
+          "condition": {
+            "area": [
+              "V"
+            ],
+            "room": [
+              "A201"
+            ]
+          },
+          "scope": {
+            "day": [
+              "T3"
+            ]
+          },
+          "exclude": [],
+          "level": "normal",
+          "weight": 3,
+          "source": {
+            "avoid": {
+              "room": "V.A201"
+            },
+            "scope": {
+              "day": "thứ 3"
+            }
+          }
+        }
+      ],
+      "unsupported": [],
+      "warnings": []
+    }
+  },
+  {
+    "id": "E22",
+    "title": "Số môn mỗi ngày, nhiều ngày (mẫu câu)",
+    "input": {
+      "constraints": [
+        {
+          "limit": "subjects_per_day",
+          "max": 2,
+          "scope": {
+            "day": [
+              "thứ 2",
+              "thứ 4"
+            ]
+          },
+          "level": "must"
+        }
+      ]
+    },
+    "expected": {
+      "version": "2.0",
+      "constraints": [
+        {
+          "id": 0,
+          "kind": "limit",
+          "metric": "subjects_per_day",
+          "max": 2,
+          "scope": {
+            "day": [
+              "T2",
+              "T4"
+            ]
+          },
+          "exclude": [],
+          "level": "must",
+          "weight": 2,
+          "source": {
+            "limit": "subjects_per_day",
+            "max": 2,
+            "scope": {
+              "day": [
+                "thứ 2",
+                "thứ 4"
+              ]
+            },
+            "level": "must"
+          }
+        }
+      ],
+      "unsupported": [],
+      "warnings": []
+    }
+  },
+  {
+    "id": "E23",
+    "title": "Số môn trong một buổi (mẫu câu)",
+    "input": {
+      "constraints": [
+        {
+          "limit": "subjects_per_session",
+          "max": 1,
+          "scope": {
+            "day": "thứ 6",
+            "session": "chiều"
+          },
+          "level": "must"
+        }
+      ]
+    },
+    "expected": {
+      "version": "2.0",
+      "constraints": [
+        {
+          "id": 0,
+          "kind": "limit",
+          "metric": "subjects_per_session",
+          "max": 1,
+          "scope": {
+            "day": [
+              "T6"
+            ],
+            "session": [
+              6,
+              7,
+              8,
+              9,
+              10
+            ]
+          },
+          "exclude": [],
+          "level": "must",
+          "weight": 2,
+          "source": {
+            "limit": "subjects_per_session",
+            "max": 1,
+            "scope": {
+              "day": "thứ 6",
+              "session": "chiều"
+            },
+            "level": "must"
+          }
+        }
+      ],
+      "unsupported": [],
+      "warnings": []
+    }
+  },
+  {
+    "id": "E24",
+    "title": "Khoảng nghỉ (mẫu câu)",
+    "input": {
+      "constraints": [
+        {
+          "limit": "gap_periods",
+          "min": 1
+        }
+      ]
+    },
+    "expected": {
+      "version": "2.0",
+      "constraints": [
+        {
+          "id": 0,
+          "kind": "limit",
+          "metric": "gap_periods",
+          "min": 1,
+          "scope": {},
+          "exclude": [],
+          "level": "normal",
+          "weight": 1,
+          "source": {
+            "limit": "gap_periods",
+            "min": 1
+          }
+        }
+      ],
+      "unsupported": [],
+      "warnings": []
+    }
+  },
+  {
+    "id": "E25",
+    "title": "Học liên tục (bổ sung)",
+    "input": {
+      "constraints": [
+        {
+          "limit": "consecutive_periods",
+          "max": 4
+        }
+      ]
+    },
+    "expected": {
+      "version": "2.0",
+      "constraints": [
+        {
+          "id": 0,
+          "kind": "limit",
+          "metric": "consecutive_periods",
+          "max": 4,
+          "scope": {},
+          "exclude": [],
+          "level": "normal",
+          "weight": 1,
+          "source": {
+            "limit": "consecutive_periods",
+            "max": 4
+          }
+        }
+      ],
+      "unsupported": [],
+      "warnings": []
+    }
+  },
+  {
+    "id": "E26",
+    "title": "Số ngày đi học, mức cao (bổ sung)",
+    "input": {
+      "constraints": [
+        {
+          "limit": "study_days",
+          "max": 3,
+          "level": "high"
+        }
+      ]
+    },
+    "expected": {
+      "version": "2.0",
+      "constraints": [
+        {
+          "id": 0,
+          "kind": "limit",
+          "metric": "study_days",
+          "max": 3,
+          "scope": {},
+          "exclude": [],
+          "level": "high",
+          "weight": 4,
+          "source": {
+            "limit": "study_days",
+            "max": 3,
+            "level": "high"
+          }
+        }
+      ],
+      "unsupported": [],
+      "warnings": []
+    }
+  },
+  {
+    "id": "E27",
+    "title": "Số tiết mỗi ngày (bổ sung)",
+    "input": {
+      "constraints": [
+        {
+          "limit": "periods_per_day",
+          "max": 6
+        }
+      ]
+    },
+    "expected": {
+      "version": "2.0",
+      "constraints": [
+        {
+          "id": 0,
+          "kind": "limit",
+          "metric": "periods_per_day",
+          "max": 6,
+          "scope": {},
+          "exclude": [],
+          "level": "normal",
+          "weight": 2,
+          "source": {
+            "limit": "periods_per_day",
+            "max": 6
+          }
+        }
+      ],
+      "unsupported": [],
+      "warnings": []
+    }
+  },
+  {
+    "id": "E28",
+    "title": "Đổi khu không được hỗ trợ (bổ sung)",
+    "input": {
+      "constraints": [],
+      "unsupported": [
+        "không muốn phải chạy từ khu K sang khu V giữa hai lớp liền nhau"
+      ]
+    },
+    "expected": {
+      "version": "2.0",
+      "constraints": [],
+      "unsupported": [
+        {
+          "index": null,
+          "source": "không muốn phải chạy từ khu K sang khu V giữa hai lớp liền nhau",
+          "reason": "LLM không ánh xạ được"
+        }
+      ],
+      "warnings": []
+    }
+  },
+  {
+    "id": "E29",
+    "title": "\"Chỉ … nếu không còn lựa chọn\" là tránh mềm (mẫu câu)",
+    "input": {
+      "constraints": [
+        {
+          "avoid": {
+            "session": "chiều"
+          },
+          "scope": {
+            "day": "thứ 2"
+          }
+        }
+      ]
+    },
+    "expected": {
+      "version": "2.0",
+      "constraints": [
+        {
+          "id": 0,
+          "kind": "avoid",
+          "condition": {
+            "session": [
+              6,
+              7,
+              8,
+              9,
+              10
+            ]
+          },
+          "scope": {
+            "day": [
+              "T2"
+            ]
+          },
+          "exclude": [],
+          "level": "normal",
+          "weight": 3,
+          "source": {
+            "avoid": {
+              "session": "chiều"
+            },
+            "scope": {
+              "day": "thứ 2"
+            }
+          }
+        }
+      ],
+      "unsupported": [],
+      "warnings": []
+    }
+  },
+  {
+    "id": "E30",
+    "title": "Ví dụ Swagger của API hiện tại",
+    "input": {
+      "constraints": [
+        {
+          "prefer": {
+            "start_time": {
+              "min": "10:00"
+            }
+          },
+          "level": "must"
+        },
+        {
+          "limit": "subjects_per_day",
+          "max": 1
+        }
+      ]
+    },
+    "expected": {
+      "version": "2.0",
+      "constraints": [
+        {
+          "id": 0,
+          "kind": "prefer",
+          "condition": {
+            "start_time": [
+              [
+                600,
+                1439
+              ]
+            ]
+          },
+          "scope": {},
+          "exclude": [],
+          "level": "must",
+          "weight": 3,
+          "source": {
+            "prefer": {
+              "start_time": {
+                "min": "10:00"
+              }
+            },
+            "level": "must"
+          }
+        },
+        {
+          "id": 1,
+          "kind": "limit",
+          "metric": "subjects_per_day",
+          "max": 1,
+          "scope": {},
+          "exclude": [],
+          "level": "normal",
+          "weight": 2,
+          "source": {
+            "limit": "subjects_per_day",
+            "max": 1
+          }
+        }
+      ],
+      "unsupported": [],
+      "warnings": []
+    }
+  },
+  {
+    "id": "E31",
+    "title": "Quy tắc chung và ngoại lệ (bổ sung)",
+    "input": {
+      "constraints": [
+        {
+          "prefer": {
+            "session": "sáng"
+          }
+        },
+        {
+          "prefer": {
+            "session": "chiều"
+          },
+          "scope": {
+            "day": "thứ 2"
+          }
+        }
+      ]
+    },
+    "expected": {
+      "version": "2.0",
+      "constraints": [
+        {
+          "id": 0,
+          "kind": "prefer",
+          "condition": {
+            "session": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ]
+          },
+          "scope": {},
+          "exclude": [
+            {
+              "day": [
+                "T2"
+              ]
+            }
+          ],
+          "level": "normal",
+          "weight": 2,
+          "source": {
+            "prefer": {
+              "session": "sáng"
+            }
+          }
+        },
+        {
+          "id": 1,
+          "kind": "prefer",
+          "condition": {
+            "session": [
+              6,
+              7,
+              8,
+              9,
+              10
+            ]
+          },
+          "scope": {
+            "day": [
+              "T2"
+            ]
+          },
+          "exclude": [],
+          "level": "normal",
+          "weight": 3,
+          "source": {
+            "prefer": {
+              "session": "chiều"
+            },
+            "scope": {
+              "day": "thứ 2"
+            }
+          }
+        }
+      ],
+      "unsupported": [],
+      "warnings": []
+    }
+  },
+  {
+    "id": "E32",
+    "title": "Có phần không hỗ trợ (bổ sung)",
+    "input": {
+      "constraints": [
+        {
+          "avoid": {
+            "day": "thứ 7"
+          }
+        }
+      ],
+      "unsupported": [
+        "muốn học cùng lớp với bạn Nam"
+      ]
+    },
+    "expected": {
+      "version": "2.0",
+      "constraints": [
+        {
+          "id": 0,
+          "kind": "avoid",
+          "condition": {
+            "day": [
+              "T7"
+            ]
+          },
+          "scope": {},
+          "exclude": [],
+          "level": "normal",
+          "weight": 3,
+          "source": {
+            "avoid": {
+              "day": "thứ 7"
+            }
+          }
+        }
+      ],
+      "unsupported": [
+        {
+          "index": null,
+          "source": "muốn học cùng lớp với bạn Nam",
+          "reason": "LLM không ánh xạ được"
+        }
+      ],
+      "warnings": []
+    }
+  }
+]

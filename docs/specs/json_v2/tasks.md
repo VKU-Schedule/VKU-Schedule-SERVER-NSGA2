@@ -105,7 +105,7 @@ T0 ──► T1 ──► T2 ──► T3 ──► T4
 
 ## Giai đoạn 4 — Kiểm thử tổng hợp
 
-- [ ] **T8 — Golden tests** (`tests/scheduling/examples.json`, `tests/scheduling/test_examples.py`)
+- [x] **T8 — Golden tests** (`tests/scheduling/examples.json`, `tests/scheduling/test_examples.py`)
   - Làm:
     - Trích mọi ví dụ E1–E32 và tài liệu 12.2 từ design.md, mỗi ví dụ gồm JSON đầu vào và kết quả chuẩn hoá mong đợi.
     - Dùng một bộ lớp ứng viên mẫu dựa trên `app/constant/constant_input_test.py`, bổ sung lớp không có lịch và lớp có khu không xác định.
