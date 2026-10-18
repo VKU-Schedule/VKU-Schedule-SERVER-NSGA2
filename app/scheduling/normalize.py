@@ -329,6 +329,102 @@ VALUE_NORMALIZERS = {
 
 
 # ---------------------------------------------------------------------------
+# Khớp thực thể: môn (design.md mục 7.4) và giảng viên (mục 7.5)
+# ---------------------------------------------------------------------------
+
+
+def _course_matches(said: str, courses: Sequence[str]) -> List[str]:
+    """Các môn khớp với tên sinh viên nói, theo bậc ưu tiên đầu tiên có kết quả."""
+    said_key = fold_words(said)
+    if not said_key:
+        return []
+    keys = [(course, fold_words(course)) for course in courses]
+
+    exact = [course for course, key in keys if key == said_key]
+    if exact:
+        return exact
+    contained = [course for course, key in keys if said_key in key or key in said_key]
+    if contained:
+        return contained
+    said_words = set(said_key.split())
+    return [
+        course for course, key in keys
+        if len(said_words & set(key.split())) / len(said_words) >= vocab.COURSE_WORD_OVERLAP_THRESHOLD
+    ]
+
+
+def match_courses(raw: Any, selected_courses: Sequence[str]) -> Tuple[FrozenSet[str], List[str]]:
+    """Tên môn bề mặt -> tập tên môn trong danh sách đã chọn."""
+    warnings: List[str] = []
+
+    def one(value: Any) -> FrozenSet[str]:
+        if not isinstance(value, str):
+            raise NormalizeError(f"Tên môn không hợp lệ: {_show(value)}")
+        matches = _course_matches(value, selected_courses)
+        if not matches:
+            raise NormalizeError(f"Môn không có trong danh sách đã chọn: {_show(value)}")
+        if len(matches) > 1:
+            warnings.append(f"Có {len(matches)} môn khớp {_show(value)}: {', '.join(matches)}")
+        return frozenset(matches)
+
+    courses, list_warnings = _union_of("course", raw, one)
+    return courses, warnings + list_warnings
+
+
+_TEACHER_TITLE = re.compile(vocab.TEACHER_TITLE_PATTERN, re.IGNORECASE)
+_TEACHER_HONORIFICS = re.compile(
+    r"(?<!\w)(" + "|".join(re.escape(word) for word in vocab.TEACHER_HONORIFICS) + r")(?!\w)"
+)
+
+
+def clean_teacher_name(name: str) -> str:
+    """"PGS.TS.Nguyễn Thanh Bình" -> "nguyễn thanh bình"; "thầy Sơn" -> "sơn". Giữ dấu."""
+    text = unicodedata.normalize("NFC", name).strip()
+    text = _TEACHER_TITLE.sub("", text).lower()
+    text = _TEACHER_HONORIFICS.sub(" ", text)
+    return " ".join(text.split())
+
+
+def teacher_name_matches(said: str, full_name: str) -> bool:
+    """Khớp theo từ: trùng toàn bộ, là phần cuối của tên đầy đủ, hoặc trùng cả họ lẫn tên.
+
+    Không khớp chỉ theo họ: "Nguyễn" không khớp "Nguyễn Văn A".
+    """
+    said_words = clean_teacher_name(said).split()
+    full_words = clean_teacher_name(full_name).split()
+    if not said_words or not full_words or len(said_words) > len(full_words):
+        return False
+    if full_words[-len(said_words):] == said_words:
+        return True
+    return len(said_words) >= 2 and said_words[0] == full_words[0] and said_words[-1] == full_words[-1]
+
+
+def match_teachers(raw: Any, teachers: Iterable[str]) -> Tuple[FrozenSet[str], List[str]]:
+    """Tên giảng viên bề mặt -> tập tên giảng viên thật (đúng chuỗi trong dữ liệu lớp).
+
+    `teachers` là giảng viên của các lớp ứng viên; giá trị không xác định bị bỏ qua.
+    """
+    known = sorted({teacher for teacher in teachers if class_teacher_known(teacher)})
+    result: set = set()
+    warnings: List[str] = []
+    missing: List[str] = []
+    for value in _as_list(raw):
+        if not isinstance(value, str) or not clean_teacher_name(value):
+            missing.append(_show(value))
+            continue
+        matches = [teacher for teacher in known if teacher_name_matches(value, teacher)]
+        if not matches:
+            missing.append(_show(value))
+        elif len(matches) > 1:
+            warnings.append(f"Có {len(matches)} giảng viên khớp {_show(value)}: {', '.join(matches)}")
+        result.update(matches)
+    if not result:
+        raise NormalizeError(f"Không giảng viên nào khớp {', '.join(missing)}")
+    warnings += [f"Bỏ một giá trị của 'teacher': không giảng viên nào khớp {value}" for value in missing]
+    return frozenset(result), warnings
+
+
+# ---------------------------------------------------------------------------
 # Giá trị trong dữ liệu lớp (design.md mục 6.7)
 # ---------------------------------------------------------------------------
 

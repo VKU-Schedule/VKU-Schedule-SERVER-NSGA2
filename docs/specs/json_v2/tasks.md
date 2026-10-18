@@ -76,7 +76,7 @@ T0 ──► T1 ──► T2 ──► T3 ──► T4
   - Yêu cầu: R6, R12.
   - Xong khi: test dạng bảng phủ mọi alias ở design.md mục 7.1–7.3; giá trị không chuẩn hoá được trả về lý do để đưa vào `unsupported`.
 
-- [ ] **T6 — Khớp thực thể** (`app/scheduling/normalize.py`, `tests/scheduling/test_normalize.py`)
+- [x] **T6 — Khớp thực thể** (`app/scheduling/normalize.py`, `tests/scheduling/test_normalize.py`)
   - Làm:
     - Khớp tên môn với danh sách môn đã chọn (design.md mục 7.4).
     - Khớp tên giảng viên với các lớp ứng viên (mục 7.5): làm sạch chức danh bằng regex; khớp theo toàn tên, phần cuối tên, hoặc họ + tên.

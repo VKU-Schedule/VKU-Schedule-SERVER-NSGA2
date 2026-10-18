@@ -268,3 +268,117 @@ def test_class_group_number(value, group):
 def test_class_time_range():
     assert n.class_time_range([8, 9]) == (15 * 60, 16 * 60 + 50)
     assert n.class_time_range([]) is None
+
+
+# --- Khớp tên môn (design.md mục 7.4) -------------------------------------------
+
+SELECTED = [
+    "Automat và ngôn ngữ hình thức",
+    "Bảo mật và an toàn hệ thống thông tin",
+    "Cấu trúc dữ liệu và giải thuật",
+    "Tiếng Anh chuyên ngành 1",
+    "Tiếng Anh chuyên ngành 2",
+]
+
+
+@pytest.mark.parametrize("said, courses", [
+    ("Automat và ngôn ngữ hình thức", {"Automat và ngôn ngữ hình thức"}),
+    ("automat va ngon ngu hinh thuc", {"Automat và ngôn ngữ hình thức"}),   # bỏ dấu, chữ thường
+    ("  Cấu trúc  dữ liệu và giải thuật ", {"Cấu trúc dữ liệu và giải thuật"}),
+    ("Automat", {"Automat và ngôn ngữ hình thức"}),                         # chuỗi con
+    ("môn Cấu trúc dữ liệu và giải thuật", {"Cấu trúc dữ liệu và giải thuật"}),  # chứa tên môn
+    ("bảo mật hệ thống thông tin", {"Bảo mật và an toàn hệ thống thông tin"}),  # tỉ lệ từ 5/5
+    ("Tiếng Anh chuyên ngành 2", {"Tiếng Anh chuyên ngành 2"}),             # trùng khớp thắng chuỗi con
+])
+def test_match_course(said, courses):
+    assert ok(n.match_courses(said, SELECTED)) == courses
+
+
+def test_match_course_many_uses_all_with_warning():
+    courses, warnings = n.match_courses("Tiếng Anh chuyên ngành", SELECTED)
+    assert courses == {"Tiếng Anh chuyên ngành 1", "Tiếng Anh chuyên ngành 2"}
+    assert warnings == ["Có 2 môn khớp 'Tiếng Anh chuyên ngành': Tiếng Anh chuyên ngành 1, Tiếng Anh chuyên ngành 2"]
+
+
+def test_match_course_not_selected():
+    with pytest.raises(NormalizeError, match="Môn không có trong danh sách đã chọn: 'Lập trình Java'"):
+        n.match_courses("Lập trình Java", SELECTED)
+
+
+def test_match_course_abbreviation_is_not_handled():
+    with pytest.raises(NormalizeError):
+        n.match_courses("CTDL&GT", SELECTED)
+
+
+def test_match_course_list_keeps_matches():
+    courses, warnings = n.match_courses(["Automat", "Lập trình Java"], SELECTED)
+    assert courses == {"Automat và ngôn ngữ hình thức"}
+    assert len(warnings) == 1
+
+
+# --- Khớp tên giảng viên (design.md mục 7.5) ------------------------------------
+
+TEACHERS = [
+    "ThS.Trần Đình Sơn",
+    "ThS.Dương Thị Mai Nga",
+    "TS.Nguyễn Đức Hiển",
+    "ThS.Trần Thanh Liêm",
+    "ThS.Lê Song Toàn",
+    "PGS.TS.Nguyễn Thanh Bình",
+    "Khoa.KH MT",
+    ".",
+]
+
+
+@pytest.mark.parametrize("name, cleaned", [
+    ("PGS.TS.Nguyễn Thanh Bình", "nguyễn thanh bình"),
+    ("ThS.Trần Đình Sơn", "trần đình sơn"),
+    ("ths.Trần Đình Sơn", "trần đình sơn"),
+    ("KS.Lê Văn A", "lê văn a"),
+    ("thầy Sơn", "sơn"),
+    ("cô Mai Nga", "mai nga"),
+    ("giảng viên Trần Đình Sơn", "trần đình sơn"),
+    ("GV Sơn", "sơn"),
+    ("Côn Sơn", "côn sơn"),  # "cô" chỉ bị bỏ khi đứng thành từ riêng
+])
+def test_clean_teacher_name(name, cleaned):
+    assert n.clean_teacher_name(name) == cleaned
+
+
+@pytest.mark.parametrize("said, teachers", [
+    ("Mai Nga", {"ThS.Dương Thị Mai Nga"}),
+    ("cô Mai Nga", {"ThS.Dương Thị Mai Nga"}),
+    ("Trần Đình Sơn", {"ThS.Trần Đình Sơn"}),
+    ("thầy Sơn", {"ThS.Trần Đình Sơn"}),
+    ("Trần Sơn", {"ThS.Trần Đình Sơn"}),            # họ + tên
+    ("Nguyễn Thanh Bình", {"PGS.TS.Nguyễn Thanh Bình"}),
+    ("PGS.TS.Nguyễn Thanh Bình", {"PGS.TS.Nguyễn Thanh Bình"}),
+    (["Liêm", "Toàn"], {"ThS.Trần Thanh Liêm", "ThS.Lê Song Toàn"}),
+])
+def test_match_teacher(said, teachers):
+    assert ok(n.match_teachers(said, TEACHERS)) == teachers
+
+
+def test_match_teacher_many_uses_all_with_warning():
+    teachers = TEACHERS + ["TS.Nguyễn Văn Sơn"]
+    matched, warnings = n.match_teachers("Sơn", teachers)
+    assert matched == {"ThS.Trần Đình Sơn", "TS.Nguyễn Văn Sơn"}
+    assert warnings == ["Có 2 giảng viên khớp 'Sơn': TS.Nguyễn Văn Sơn, ThS.Trần Đình Sơn"]
+
+
+def test_match_teacher_family_name_alone_does_not_match():
+    with pytest.raises(NormalizeError, match="Không giảng viên nào khớp 'Nguyễn'"):
+        n.match_teachers("Nguyễn", TEACHERS)
+
+
+def test_match_teacher_unknown_data_values_do_not_match():
+    with pytest.raises(NormalizeError):
+        n.match_teachers("KH MT", TEACHERS)
+    with pytest.raises(NormalizeError):
+        n.match_teachers(".", TEACHERS)
+
+
+def test_match_teacher_drops_unmatched_value_with_warning():
+    matched, warnings = n.match_teachers(["Mai Nga", "Tuấn"], TEACHERS)
+    assert matched == {"ThS.Dương Thị Mai Nga"}
+    assert warnings == ["Bỏ một giá trị của 'teacher': không giảng viên nào khớp 'Tuấn'"]
