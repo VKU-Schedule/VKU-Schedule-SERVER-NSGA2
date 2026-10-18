@@ -38,7 +38,7 @@ T0 ──► T1 ──► T2 ──► T3 ──► T4
   - Yêu cầu: R8.
   - Xong khi: cài được trên Python 3.12; `python -c "import pydantic; print(pydantic.VERSION)"` in ra 2.x.
 
-- [ ] **T2 — Từ vựng** (`app/scheduling/__init__.py`, `app/scheduling/vocab.py`)
+- [x] **T2 — Từ vựng** (`app/scheduling/__init__.py`, `app/scheduling/vocab.py`)
   - Làm: các hằng số và bảng:
     - danh sách thuộc tính, kèm kiểu giá trị, có thứ tự hay không, trọng số cơ sở;
     - danh sách chỉ số, kèm cận cho phép và trọng số;
