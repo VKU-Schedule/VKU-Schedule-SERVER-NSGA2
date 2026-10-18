@@ -141,7 +141,6 @@ Ghi chú:
 | `gap_periods` | Mỗi cặp lớp liền nhau trong cùng ngày (xếp theo tiết bắt đầu) | Số tiết trống giữa hai lớp | `min`, `max` | "nghỉ ít nhất 1 tiết giữa các môn" → `min: 1` |
 | `consecutive_periods` | Mỗi khối học liên tục trong ngày (các lớp nối nhau, không có tiết trống) | Số tiết của khối | `max` | "không học quá 4 tiết liền" → `max: 4` |
 | `study_days` | Cả lịch | Số ngày có lớp | `min`, `max` | "chỉ lên trường 3 ngày" → `max: 3` |
-| `area_switch` | Cả lịch | Số cặp lớp liền nhau cùng ngày, khác khu, không có tiết trống | `max` | "không muốn chạy giữa hai khu" → `max: 0` |
 
 - `scope` của `limit` giới hạn những lớp được tính. Ví dụ `"scope": {"day": ["thứ 2", "thứ 4"]}` chỉ đo trên thứ 2 và thứ 4.
 - Hai cách viết khi sinh viên không nói con số cụ thể:
@@ -216,7 +215,7 @@ Ràng buộc 1 cụ thể hơn ràng buộc 0 và cùng nhóm `{session}`. Vì v
 | Khối lượng | `subjects_per_day`, `subjects_per_session`, `periods_per_day`, `study_days` | 2 |
 | Thời lượng lớp | `duration` | 1 |
 | Nơi học | `area`, `room` | 1 |
-| Nhịp học | `gap_periods`, `consecutive_periods`, `area_switch` | 1 |
+| Nhịp học | `gap_periods`, `consecutive_periods` | 1 |
 
 ### 6.6 `must` và trùng lịch
 
@@ -224,7 +223,7 @@ Ràng buộc 1 cụ thể hơn ràng buộc 0 và cùng nhóm `{session}`. Vì v
 - **`must` là ràng buộc cứng.** Các lịch được so sánh theo thứ bậc:
   1. trước hết là tổng vi phạm cứng: H = Σ v(c) trên các ràng buộc `must`;
   2. sau đó là tổng phạt mềm: P = Σ p(c) trên các ràng buộc còn lại.
-- **Khi không thoả được `must`:** nếu không lịch nào đạt H = 0, vẫn trả các lịch có H nhỏ nhất, kèm `infeasible` cho biết ràng buộc nào không thể thoả và lý do (ví dụ "Không lớp nào của môn X thoả"). Hành vi này tuỳ câu hỏi Q5.
+- **Khi không thoả được `must`:** nếu không lịch nào đạt H = 0, vẫn trả các lịch có H nhỏ nhất, kèm `infeasible` cho biết ràng buộc nào không thể thoả và lý do (ví dụ "Không lớp nào của môn X thoả"). Đã xác nhận ở câu hỏi Q5.
 
 ### 6.7 Lớp không có lịch và giá trị không xác định
 
@@ -238,7 +237,6 @@ Ràng buộc 1 cụ thể hơn ràng buộc 0 và cùng nhóm `{session}`. Vì v
 
 - Lớp có giá trị không xác định với một thuộc tính bị loại khỏi S_c của mọi ràng buộc dùng thuộc tính đó, dù ở điều kiện hay phạm vi.
 - Lớp không có lịch không trùng lịch với lớp nào, và không được tính trong các chỉ số thời gian (`subjects_per_day`, `gap_periods`…).
-- `area_switch` chỉ đếm những cặp lớp mà cả hai lớp đều có khu xác định.
 
 ### 6.8 Tuyến tính hoá (ghi chú cho Phần B)
 
@@ -251,21 +249,21 @@ Ràng buộc 1 cụ thể hơn ràng buộc 0 và cùng nhóm `{session}`. Vì v
 | `gap_periods` | Với mỗi cặp lớp (A, B) cùng ngày, A bắt đầu trước B: q_AB ≥ x_A + x_B − 1 − Σ_{C bắt đầu giữa A và B} x_C. Phạt = q_AB nhân với độ lệch của khoảng trống so với cận |
 | `consecutive_periods` | o_{d,t} = Σ x_l của các lớp phủ (ngày d, tiết t). Với mỗi cửa sổ (max + 1) tiết liên tiếp: w ≥ Σ o − max. Tổng w bằng Σ trên các khối của max(0, độ dài − max) |
 | `study_days` | y_d ≥ x_l với mọi lớp l vào ngày d; y_d ≤ Σ x_l; giá trị = Σ y_d |
-| `area_switch` | Với mỗi cặp lớp liền nhau không có tiết trống và khác khu: q ≥ x_A + x_B − 1 |
 
 ## 7. Chuẩn hoá
 
-### 7.1 Bảng giờ của tiết (giả định Q1: mỗi tiết dài 50 phút)
+### 7.1 Bảng giờ của tiết (Q1)
 
 | Tiết | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 |
 |---|---|---|---|---|---|---|---|---|---|---|
 | Bắt đầu | 07:30 | 08:30 | 09:30 | 10:30 | 11:30 | 13:00 | 14:00 | 15:00 | 16:00 | 17:00 |
 | Kết thúc | 08:20 | 09:20 | 10:20 | 11:20 | 12:20 | 13:50 | 14:50 | 15:50 | 16:50 | 17:50 |
 
-- Giờ bắt đầu lấy từ `SCHEDULE_OF_CLASSES` (`app/constant/constant_of_schedule.py`).
+- Giờ bắt đầu đã được xác nhận (Q1) và trùng với `SCHEDULE_OF_CLASSES` (`app/constant/constant_of_schedule.py`).
+- Giờ kết thúc vẫn là giả định: mỗi tiết dài 50 phút.
 - Giờ bắt đầu của lớp = giờ bắt đầu của tiết đầu. Giờ kết thúc của lớp = giờ kết thúc của tiết cuối.
 
-### 7.2 Buổi (giả định Q1)
+### 7.2 Buổi (Q1)
 
 | Giá trị | Tiết |
 |---|---|
@@ -274,7 +272,9 @@ Ràng buộc 1 cụ thể hơn ràng buộc 0 và cùng nhóm `{session}`. Vì v
 | `sáng sớm` | 1–2 |
 | `chiều muộn` | 8–10 |
 
-Giá trị khác, ví dụ "trưa", "tối" → `unsupported`, lý do "buổi không xác định".
+- Sáng = tiết 1–5 và chiều = tiết 6–10 đã được xác nhận (Q1). Không có buổi tối.
+- `sáng sớm` và `chiều muộn` vẫn là giả định.
+- Giá trị khác, ví dụ "trưa", "tối" → `unsupported`, lý do "buổi không xác định".
 
 ### 7.3 Quy tắc theo thuộc tính
 
@@ -354,7 +354,7 @@ Giá trị giảng viên không xác định trong dữ liệu (`Khoa.…`, `.`)
 | V7 | `level` là một trong `must` / `high` / `normal` | `unsupported` |
 | V8 | Key lạ ở cấp ràng buộc hoặc top-level | Bỏ qua key đó, thêm warning |
 | V9 | `constraints` thiếu hoặc không phải mảng | Lỗi 400 cho cả tài liệu |
-| V10 | Tài liệu có `defaults` hoặc `periods` (dạng v1) | Lỗi 400 "định dạng v1 không còn được hỗ trợ", hoặc chuyển qua adapter (câu hỏi Q2) |
+| V10 | Tài liệu có `defaults` hoặc `periods` (dạng v1) | Chuyển sang v2 qua adapter (mục 12.1; câu hỏi Q2), thêm warning "đã chuyển từ v1". Adapter lỗi → lỗi 400 |
 | V11 | `version` có phiên bản chính khác 2 | Lỗi 400 |
 
 Mỗi phần tử `unsupported` sinh ra từ validation gồm:
@@ -447,6 +447,7 @@ Response:
 | `app/scheduling/vocab.py` | Danh sách thuộc tính, chỉ số, mức độ, trọng số cơ sở; bảng giờ tiết; buổi; alias thứ và ngôn ngữ; giá trị không xác định | T2 |
 | `app/scheduling/schema.py` | Pydantic models, validation theo từng ràng buộc, xuất JSON Schema | T3, T4 |
 | `app/scheduling/normalize.py` | Chuẩn hoá giá trị, khớp môn và giảng viên, quy tắc ngoại lệ, `normalize_document()` | T5–T7 |
+| `app/scheduling/v1_adapter.py` | Chuyển tài liệu v1 sang v2 theo mục 12.1, cho các lịch đã lưu `parsed_prompt` v1 | T9 |
 | `docs/specs/json_v2/schema.json`, `schema.inline.json` | JSON Schema xuất tự động | T4 |
 | `tests/scheduling/` | Test validation, chuẩn hoá, golden examples | T3–T8 |
 
@@ -553,10 +554,10 @@ Từ ví dụ thứ hai trở đi, `version` được lược bỏ (mặc địn
 | `area` / `room` | E5, E6 / E9, E21 |
 | `subjects_per_day` / `subjects_per_session` / `periods_per_day` | E22, E30 / E23 / E27 |
 | `gap_periods` / `consecutive_periods` | E7, E24 / E25 |
-| `study_days` / `area_switch` | E26 / E28 |
+| `study_days` | E26 |
 | `level: must` / `level: high` | E11, E22, E23, E30 / E26 |
 | Quy tắc ngoại lệ | E31, mục 12.2 |
-| `unsupported` | E32 |
+| `unsupported` | E28, E32 |
 | 10 mẫu câu v1 không biểu diễn được (requirements.md mục 2.2) | E1–E9 |
 
 ### E1 — Tránh cuối tuần (mẫu câu; v1 không biểu diễn được)
@@ -830,14 +831,13 @@ Từ ví dụ thứ hai trở đi, `version` được lược bỏ (mặc địn
 ]}
 ```
 
-### E28 — Đổi khu (bổ sung)
+### E28 — Đổi khu không được hỗ trợ (bổ sung)
 > "Tôi không muốn phải chạy từ khu K sang khu V giữa hai lớp liền nhau"
 
 ```json
-{"constraints": [
-  {"limit": "area_switch", "max": 0}
-]}
+{"constraints": [], "unsupported": ["không muốn phải chạy từ khu K sang khu V giữa hai lớp liền nhau"]}
 ```
+- Không có chỉ số đổi khu (câu hỏi Q4: không phải vấn đề thật với sinh viên), nên cả câu vào `unsupported`.
 
 ### E29 — "Chỉ … nếu không còn lựa chọn" là tránh mềm (mẫu câu)
 > "Tôi chỉ học chiều thứ 2 nếu không còn lựa chọn nào khác"

@@ -15,7 +15,7 @@ T0 ──► T1 ──► T2 ──► T3 ──► T4
                │
                └──► T5 ──► T6 ──► T7 ──► T8 ──► T11 ──► T12
                                    │
-                                   ├──► T9  (tuỳ chọn, phụ thuộc Q2)
+                                   ├──► T9
                                    └──► T10 (tuỳ chọn)
 ```
 
@@ -112,10 +112,12 @@ T0 ──► T1 ──► T2 ──► T3 ──► T4
   - Yêu cầu: R1, R2, R7, R8, R12.
   - Xong khi: tất cả ví dụ hợp lệ và chuẩn hoá đúng; 10 mẫu câu v1 không biểu diễn được (E1–E9) đều chạy xanh.
 
-## Giai đoạn 5 — Tuỳ chọn
+## Giai đoạn 5 — Adapter và công cụ
 
-- [ ] **T9 — Adapter v1 → v2** (tuỳ chọn; chỉ làm nếu Q2 xác nhận đã có lịch lưu theo v1)
-  - Làm: hàm chuyển tài liệu v1 sang v2 theo bảng design.md mục 12.1.
+- [ ] **T9 — Adapter v1 → v2** (`app/scheduling/v1_adapter.py`, `tests/scheduling/test_v1_adapter.py`; bắt buộc vì Q2 xác nhận đã có lịch lưu theo v1)
+  - Làm:
+    - Hàm chuyển tài liệu v1 sang v2 theo bảng design.md mục 12.1.
+    - `parse_document` gọi adapter khi gặp tài liệu v1 (V10).
   - Yêu cầu: R11.
   - Xong khi: `data/prompt.json` chuyển ra đúng 29 ràng buộc ở design.md mục 12.2.
 

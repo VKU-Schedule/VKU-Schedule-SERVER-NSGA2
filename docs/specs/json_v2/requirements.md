@@ -122,7 +122,7 @@ Mỗi yêu cầu có ID, mô tả và tiêu chí chấp nhận (**TC**). Các ta
 JSON v2 phải biểu đạt được các nhóm yêu cầu sau, với phạm vi tuỳ ý (theo môn, thứ, buổi, giảng viên, phòng… và tổ hợp của chúng):
 - **Thời gian:** thứ, buổi, tiết, tiết bắt đầu/kết thúc, giờ bắt đầu/kết thúc, số tiết của lớp.
 - **Người và nơi:** giảng viên, nhóm lớp, khu, phòng, ngôn ngữ giảng dạy.
-- **Hình dạng lịch:** số môn mỗi ngày, số môn mỗi buổi, số tiết mỗi ngày, khoảng nghỉ giữa hai lớp liền nhau, số tiết học liên tục, số ngày đi học, đổi khu giữa hai lớp liền nhau.
+- **Hình dạng lịch:** số môn mỗi ngày, số môn mỗi buổi, số tiết mỗi ngày, khoảng nghỉ giữa hai lớp liền nhau, số tiết học liên tục, số ngày đi học.
 
 TC:
 - Cả 49 mẫu câu trong `create_override_data_VIT5.py` đều có cách biểu diễn trong v2. Lý do như "vì…" được bỏ qua theo NG5.
@@ -199,7 +199,7 @@ TC:
 
 TC:
 - Tài liệu có `version`; thiếu thì mặc định là `"2.0"`.
-- Tài liệu dạng v1 (có `defaults` / `periods`) bị từ chối với thông báo rõ ràng, trừ khi có adapter (tuỳ câu hỏi mở Q2).
+- Tài liệu dạng v1 (có `defaults` / `periods`) được chuyển sang v2 qua adapter, vì đã có lịch lưu `parsed_prompt` v1 (câu hỏi Q2). Không chuyển được thì bị từ chối với thông báo rõ ràng.
 
 ### R12 — Dữ liệu thiếu hoặc không xác định
 
@@ -230,12 +230,14 @@ TC:
 
 ## 9. Câu hỏi mở
 
-| # | Câu hỏi | Giả định tạm (dùng nếu không có câu trả lời khác) |
+Trả lời ngày 2026-10-18.
+
+| # | Câu hỏi | Trả lời |
 |---|---|---|
-| Q1 | Mỗi tiết kết thúc lúc nào? Ranh giới các buổi ra sao? Có buổi tối không? | Mỗi tiết dài 50 phút. Sáng = tiết 1–5, chiều = 6–10, "sáng sớm" = 1–2, "chiều muộn" = 8–10. Không có buổi tối (dữ liệu chỉ tới tiết 9) |
-| Q2 | Đã có lịch lưu với `parsed_prompt` v1 (dùng cho `/reschedule`) chưa? | Chưa có, nên không làm adapter v1 → v2 (task T9) |
-| Q3 | Trọng số mặc định cho từng nhóm thuộc tính? | Kế thừa `PRIORITY_WEIGHTS` (bảng ở design.md mục 6.5); `high` nhân 2 |
-| Q4 | Đổi khu K↔V giữa hai lớp liền nhau có phải là vấn đề thật với sinh viên không? | Có, nên giữ chỉ số `area_switch` |
+| Q1 | Mỗi tiết kết thúc lúc nào? Ranh giới các buổi ra sao? Có buổi tối không? | Giờ bắt đầu: sáng 07:30, 08:30, 09:30, 10:30, 11:30 (tiết 1–5); chiều 13:00, 14:00, 15:00, 16:00, 17:00 (tiết 6–10). Không có buổi tối. Vẫn là giả định: mỗi tiết dài 50 phút; "sáng sớm" = 1–2, "chiều muộn" = 8–10 |
+| Q2 | Đã có lịch lưu với `parsed_prompt` v1 (dùng cho `/reschedule`) chưa? | Đã có, nên làm adapter v1 → v2 (task T9 thành bắt buộc) |
+| Q3 | Trọng số mặc định cho từng nhóm thuộc tính? | Chưa trả lời, dùng giả định: kế thừa `PRIORITY_WEIGHTS` (bảng ở design.md mục 6.5); `high` nhân 2. Các trọng số là hằng số trong `vocab.py`, có thể chỉnh sau |
+| Q4 | Đổi khu K↔V giữa hai lớp liền nhau có phải là vấn đề thật với sinh viên không? | Không, nên bỏ chỉ số `area_switch`. Câu về đổi khu vào `unsupported` (design.md E28) |
 | Q5 | Khi ràng buộc `must` không thoả được: trả lịch tốt nhất kèm cảnh báo, hay không trả lịch nào? | Trả lịch tốt nhất kèm `infeasible` |
 
 Đã xác minh từ dữ liệu, không cần hỏi: nhóm lớp (cột `Lớp`) là chuỗi số từ `"1"` đến `"22"`, nên được so sánh theo số nguyên.
