@@ -89,7 +89,7 @@ T0 ──► T1 ──► T2 ──► T3 ──► T4
     - "Mai Nga" khớp `ThS.Dương Thị Mai Nga`;
     - tên môn không có trong danh sách → `unsupported`.
 
-- [ ] **T7 — Chuẩn hoá cả tài liệu** (`app/scheduling/normalize.py`)
+- [x] **T7 — Chuẩn hoá cả tài liệu** (`app/scheduling/normalize.py`)
   - Làm: `normalize_document(doc, selected_courses, candidates) -> NormalizedDocument`, gồm:
     - gán ID;
     - chuyển `course` từ điều kiện sang `scope`;

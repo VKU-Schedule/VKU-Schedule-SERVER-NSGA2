@@ -10,9 +10,11 @@ Giá trị không chuẩn hoá được ném `NormalizeError` kèm lý do, để
 import math
 import re
 import unicodedata
-from typing import Any, Callable, FrozenSet, Iterable, List, Optional, Sequence, Tuple
+from dataclasses import dataclass, field
+from typing import Any, Callable, Dict, FrozenSet, Iterable, List, Optional, Sequence, Tuple
 
 from app.scheduling import vocab
+from app.scheduling.schema import ParsedConstraint, ParsedDocument, UnsupportedItem, filter_items, parse_document
 
 
 class NormalizeError(ValueError):
@@ -489,3 +491,252 @@ def class_time_range(periods: Sequence[int]) -> Optional[Tuple[int, int]]:
     if not periods:
         return None
     return vocab.PERIOD_START_MINUTES[min(periods)], vocab.PERIOD_END_MINUTES[max(periods)]
+
+
+# ---------------------------------------------------------------------------
+# Chuẩn hoá cả tài liệu (design.md mục 6.4, 6.5, 7.6, 9)
+# ---------------------------------------------------------------------------
+
+# Bộ lọc đã chuẩn hoá: thuộc tính -> frozenset (giá trị chuẩn hoặc tiết) hoặc IntervalSet
+NormalizedFilter = Dict[str, Any]
+
+LLM_UNSUPPORTED_REASON = "LLM không ánh xạ được"
+
+
+@dataclass
+class NormalizedConstraint:
+    id: int
+    kind: str                                   # prefer / avoid / limit
+    level: str
+    weight: int
+    source: Dict[str, Any]
+    condition: NormalizedFilter = field(default_factory=dict)  # với prefer / avoid
+    metric: Optional[str] = None                # với limit
+    min: Optional[int] = None
+    max: Optional[int] = None
+    scope: NormalizedFilter = field(default_factory=dict)      # rỗng = mọi lớp
+    exclude: List[NormalizedFilter] = field(default_factory=list)
+
+    @property
+    def group(self) -> Tuple[str, Any]:
+        """Nhóm của quy tắc ngoại lệ (6.4): cùng tập key điều kiện, hoặc cùng chỉ số."""
+        if self.kind == "limit":
+            return "limit", self.metric
+        return "filter", frozenset(self.condition)
+
+    def to_dict(self) -> Dict[str, Any]:
+        data: Dict[str, Any] = {"id": self.id, "kind": self.kind}
+        if self.kind == "limit":
+            data["metric"] = self.metric
+            data.update({key: getattr(self, key) for key in ("min", "max") if getattr(self, key) is not None})
+        else:
+            data["condition"] = filter_to_dict(self.condition)
+        data.update({
+            "scope": filter_to_dict(self.scope),
+            "exclude": [filter_to_dict(item) for item in self.exclude],
+            "level": self.level,
+            "weight": self.weight,
+            "source": self.source,
+        })
+        return data
+
+
+@dataclass
+class NormalizedDocument:
+    version: str
+    constraints: List[NormalizedConstraint] = field(default_factory=list)
+    unsupported: List[UnsupportedItem] = field(default_factory=list)
+    warnings: List[str] = field(default_factory=list)
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "version": self.version,
+            "constraints": [constraint.to_dict() for constraint in self.constraints],
+            "unsupported": [item.to_dict() for item in self.unsupported],
+            "warnings": list(self.warnings),
+        }
+
+
+def filter_to_dict(normalized: NormalizedFilter) -> Dict[str, Any]:
+    """Dạng JSON ổn định: tập -> list đã sắp xếp, khoảng -> list [a, b]."""
+    data = {}
+    for name in vocab.ATTRIBUTES:
+        if name not in normalized:
+            continue
+        value = normalized[name]
+        if vocab.ATTRIBUTES[name].kind is vocab.AttrKind.RANGE:
+            data[name] = [list(interval) for interval in value]
+        else:
+            data[name] = sorted(value)
+    return data
+
+
+def _get(obj: Any, name: str) -> Any:
+    return obj.get(name) if isinstance(obj, dict) else getattr(obj, name, None)
+
+
+def _flatten_candidates(candidates: Any) -> List[Any]:
+    if candidates is None:
+        return []
+    if isinstance(candidates, dict):
+        return [cls for classes in candidates.values() for cls in classes]
+    return list(candidates)
+
+
+class _ConstraintContext:
+    def __init__(self, selected_courses: Sequence[str], classes: List[Any]):
+        self.selected_courses = list(selected_courses)
+        self.classes = classes
+
+    def teachers(self, courses: Optional[FrozenSet[str]]) -> List[str]:
+        return [
+            _get(cls, "teacher") for cls in self.classes
+            if _get(cls, "teacher") and (courses is None or _get(cls, "course_name") in courses)
+        ]
+
+
+def _normalize_filter(where: str, items: List[Tuple[str, Any]], context: _ConstraintContext,
+                      scope_courses: Optional[FrozenSet[str]], warnings: List[str]) -> NormalizedFilter:
+    result: NormalizedFilter = {}
+    room_areas: Optional[FrozenSet[str]] = None
+    for name, raw in items:
+        try:
+            if name == "course":
+                value, value_warnings = match_courses(raw, context.selected_courses)
+            elif name == "teacher":
+                value, value_warnings = match_teachers(raw, context.teachers(scope_courses))
+            elif name == "room":
+                value, room_areas, value_warnings = normalize_room(raw)
+            else:
+                value, value_warnings = VALUE_NORMALIZERS[name](raw)
+        except NormalizeError as exc:
+            raise NormalizeError(f"'{name}' trong '{where}': {exc}") from None
+        result[name] = value
+        warnings.extend(f"'{name}' trong '{where}': {warning}" for warning in value_warnings)
+    if room_areas is not None:
+        # "V.A201": điều kiện khu được thêm vào cùng bộ lọc
+        areas = result["area"] & room_areas if "area" in result else room_areas
+        if not areas:
+            raise NormalizeError(f"Khu của 'room' mâu thuẫn với 'area' trong '{where}'")
+        result["area"] = areas
+    return result
+
+
+def _weight(kind: str, level: str, metric: Optional[str], keys: Iterable[str]) -> int:
+    """design.md mục 6.5 (D18)."""
+    if kind == "limit":
+        base = vocab.METRICS[metric].weight
+    else:
+        base = max(vocab.ATTRIBUTES[name].weight for name in keys if vocab.ATTRIBUTES[name].weight is not None)
+    return base * vocab.HIGH_MULTIPLIER if level == "high" else base
+
+
+def _normalize_constraint(parsed: ParsedConstraint, context: _ConstraintContext,
+                          warnings: List[str]) -> NormalizedConstraint:
+    constraint = parsed.constraint
+    kind = parsed.kind
+    condition_items = filter_items(constraint.prefer if kind == "prefer" else constraint.avoid)
+    scope_items = filter_items(constraint.scope)
+
+    # `course` chỉ có nghĩa trong scope (R2)
+    moved = [(name, value) for name, value in condition_items if name == "course"]
+    condition_items = [(name, value) for name, value in condition_items if name != "course"]
+    if kind != "limit" and not condition_items:
+        raise NormalizeError(f"Điều kiện của '{kind}' chỉ có 'course': không có gì để {kind}")
+
+    scope = _normalize_filter("scope", scope_items, context, None, warnings) if scope_items else {}
+    if moved:
+        courses = _normalize_filter(kind, moved, context, None, warnings)["course"]
+        if "course" in scope:
+            courses = scope["course"] & courses
+            if not courses:
+                raise NormalizeError("'course' trong điều kiện không giao với 'course' trong 'scope'")
+        scope["course"] = courses
+
+    condition: NormalizedFilter = {}
+    if kind != "limit":
+        condition = _normalize_filter(kind, condition_items, context, scope.get("course"), warnings)
+
+    keys = [name for name, _ in condition_items + scope_items if name != "course"]
+    if kind != "limit" and not keys:
+        raise NormalizeError("Ràng buộc không có thuộc tính nào ngoài 'course'")
+    return NormalizedConstraint(
+        id=parsed.index,
+        kind=kind,
+        level=constraint.level,
+        weight=_weight(kind, constraint.level, constraint.limit, keys),
+        source=parsed.source,
+        condition=condition,
+        metric=constraint.limit,
+        min=constraint.min,
+        max=constraint.max,
+        scope=scope,
+    )
+
+
+def _value_subset(name: str, inner: Any, outer: Any) -> bool:
+    if vocab.ATTRIBUTES[name].kind is vocab.AttrKind.RANGE:
+        return all(any(o_low <= low and high <= o_high for o_low, o_high in outer) for low, high in inner)
+    return inner <= outer
+
+
+def is_more_specific(inner: NormalizedFilter, outer: NormalizedFilter) -> bool:
+    """Phạm vi `inner` nằm trong `outer` và khác `outer` (design.md mục 6.4)."""
+    if inner == outer:
+        return False
+    return all(name in inner and _value_subset(name, inner[name], value) for name, value in outer.items())
+
+
+def _apply_exceptions(constraints: List[NormalizedConstraint], warnings: List[str]) -> None:
+    for general in constraints:
+        for specific in constraints:
+            if specific is general or specific.group != general.group:
+                continue
+            if is_more_specific(specific.scope, general.scope) and specific.scope not in general.exclude:
+                general.exclude.append(specific.scope)
+
+    for i, first in enumerate(constraints):
+        for second in constraints[i + 1:]:
+            if (
+                {first.kind, second.kind} == {"prefer", "avoid"}
+                and first.scope == second.scope
+                and first.condition == second.condition
+            ):
+                warnings.append(
+                    f"Ràng buộc {first.id} và {second.id} mâu thuẫn: cùng phạm vi, cùng điều kiện, "
+                    f"một '{first.kind}' một '{second.kind}'. Cả hai vẫn được áp dụng"
+                )
+
+
+def normalize_document(doc: Any, selected_courses: Optional[Sequence[str]] = None,
+                       candidates: Any = None) -> NormalizedDocument:
+    """Validate (nếu cần) và chuẩn hoá tài liệu ưu tiên v2.
+
+    - `doc`: `ParsedDocument`, hoặc JSON thô (sẽ được `parse_document`).
+    - `selected_courses`: tên các môn sinh viên đã chọn. Thiếu thì lấy từ `candidates`.
+    - `candidates`: các lớp ứng viên (`ClassInfo` hoặc dict), dạng list hoặc dict môn -> list lớp.
+    """
+    parsed = doc if isinstance(doc, ParsedDocument) else parse_document(doc)
+    classes = _flatten_candidates(candidates)
+    if selected_courses is None:
+        selected_courses = list(dict.fromkeys(_get(cls, "course_name") for cls in classes))
+    context = _ConstraintContext(selected_courses, classes)
+
+    result = NormalizedDocument(version=parsed.version, warnings=list(parsed.warnings))
+    unsupported = list(parsed.unsupported)
+    for item in parsed.constraints:
+        constraint_warnings: List[str] = []
+        try:
+            normalized = _normalize_constraint(item, context, constraint_warnings)
+        except NormalizeError as exc:
+            unsupported.append(UnsupportedItem(index=item.index, source=item.source, reason=str(exc)))
+            continue
+        result.constraints.append(normalized)
+        result.warnings.extend(f"Ràng buộc {item.index}: {warning}" for warning in constraint_warnings)
+
+    _apply_exceptions(result.constraints, result.warnings)
+
+    unsupported.sort(key=lambda entry: entry.index)
+    unsupported += [UnsupportedItem(index=None, source=text, reason=LLM_UNSUPPORTED_REASON) for text in parsed.llm_unsupported]
+    result.unsupported = unsupported
+    return result
