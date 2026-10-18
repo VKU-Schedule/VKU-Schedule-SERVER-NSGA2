@@ -12,6 +12,7 @@ from pydantic import BaseModel, ConfigDict, Field, StrictInt, ValidationError, c
 from typing_extensions import Annotated
 
 from app.scheduling import vocab
+from app.scheduling.v1_adapter import V1AdapterError, convert_v1, is_v1_document
 from app.scheduling.vocab import AttributeSpec, ValueType
 
 # ---------------------------------------------------------------------------
@@ -147,7 +148,6 @@ class ParsedDocument:
 
 _CONSTRAINT_KEYS = frozenset(Constraint.model_fields)
 _DOCUMENT_KEYS = frozenset(PreferenceDocument.model_fields)
-_V1_KEYS = ("defaults", "periods")
 _FILTER_FIELDS = ("prefer", "avoid", "scope")
 
 
@@ -271,11 +271,6 @@ def _parse_constraint(index: int, raw: Any, warnings: List[str]) -> Constraint:
         raise _ConstraintError(_type_error_reason(exc.errors()[0])) from None
 
 
-def _convert_v1(raw: Dict[str, Any]) -> Dict[str, Any]:
-    """V10: chuyển tài liệu v1 sang v2. Hiện thực ở task T9 (v1_adapter.py)."""
-    raise DocumentError("Tài liệu dạng v1 (defaults / periods) chưa được hỗ trợ")
-
-
 def parse_document(raw: Any) -> ParsedDocument:
     """Validate tài liệu ưu tiên v2.
 
@@ -286,11 +281,17 @@ def parse_document(raw: Any) -> ParsedDocument:
         raise DocumentError("Tài liệu ưu tiên phải là object")
 
     warnings: List[str] = []
+    adapter_unsupported: List[UnsupportedItem] = []
 
     # V10
-    if any(key in raw for key in _V1_KEYS):
-        raw = _convert_v1(raw)
+    if is_v1_document(raw):
+        try:
+            raw, adapter_warnings, skipped = convert_v1(raw)
+        except V1AdapterError as exc:
+            raise DocumentError(str(exc)) from None
         warnings.append("Tài liệu đã được chuyển từ v1 sang v2")
+        warnings.extend(adapter_warnings)
+        adapter_unsupported = [UnsupportedItem(index=None, source=source, reason=reason) for source, reason in skipped]
 
     # V11
     version = _check_version(raw.get("version", vocab.DEFAULT_VERSION))
@@ -306,6 +307,7 @@ def parse_document(raw: Any) -> ParsedDocument:
             warnings.append(f"Bỏ qua key lạ '{key}' ở cấp tài liệu")
 
     result = ParsedDocument(version=version, warnings=warnings)
+    result.unsupported.extend(adapter_unsupported)
 
     llm_unsupported = raw.get("unsupported", [])
     if not isinstance(llm_unsupported, list):

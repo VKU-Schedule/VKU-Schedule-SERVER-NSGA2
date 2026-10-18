@@ -736,7 +736,7 @@ def normalize_document(doc: Any, selected_courses: Optional[Sequence[str]] = Non
 
     _apply_exceptions(result.constraints, result.warnings)
 
-    unsupported.sort(key=lambda entry: entry.index)
+    unsupported.sort(key=lambda entry: (entry.index is None, entry.index or 0))
     unsupported += [UnsupportedItem(index=None, source=text, reason=LLM_UNSUPPORTED_REASON) for text in parsed.llm_unsupported]
     result.unsupported = unsupported
     return result

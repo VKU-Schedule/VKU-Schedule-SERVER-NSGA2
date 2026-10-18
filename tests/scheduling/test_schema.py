@@ -212,11 +212,17 @@ def test_v9_invalid(raw):
         parse_document(raw)
 
 
-# --- V10: tài liệu v1 ----------------------------------------------------------
+# --- V10: tài liệu v1 → chuyển qua adapter (chi tiết ở test_v1_adapter.py) ------
 
 @pytest.mark.parametrize("raw", [{"defaults": {}}, {"periods": []}])
-def test_v10_v1_document_is_detected(raw):
-    # Adapter v1 → v2 làm ở task T9; trước đó tài liệu v1 bị từ chối rõ ràng.
+def test_v10_v1_document_is_converted(raw):
+    doc = parse_document(raw)
+    assert doc.constraints == []
+    assert doc.warnings == ["Tài liệu đã được chuyển từ v1 sang v2"]
+
+
+@pytest.mark.parametrize("raw", [{"defaults": []}, {"periods": {}}])
+def test_v10_broken_v1_document_is_rejected(raw):
     with pytest.raises(DocumentError, match="v1"):
         parse_document(raw)
 

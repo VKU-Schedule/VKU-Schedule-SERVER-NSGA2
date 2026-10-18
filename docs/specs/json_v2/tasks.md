@@ -114,7 +114,7 @@ T0 ──► T1 ──► T2 ──► T3 ──► T4
 
 ## Giai đoạn 5 — Adapter và công cụ
 
-- [ ] **T9 — Adapter v1 → v2** (`app/scheduling/v1_adapter.py`, `tests/scheduling/test_v1_adapter.py`; bắt buộc vì Q2 xác nhận đã có lịch lưu theo v1)
+- [x] **T9 — Adapter v1 → v2** (`app/scheduling/v1_adapter.py`, `tests/scheduling/test_v1_adapter.py`; bắt buộc vì Q2 xác nhận đã có lịch lưu theo v1)
   - Làm:
     - Hàm chuyển tài liệu v1 sang v2 theo bảng design.md mục 12.1.
     - `parse_document` gọi adapter khi gặp tài liệu v1 (V10).
