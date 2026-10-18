@@ -136,11 +136,11 @@ Ghi chú:
 | Chỉ số | Đơn vị đo | Giá trị đo trên mỗi đơn vị | Cận cho phép | Ví dụ câu → ràng buộc |
 |---|---|---|---|---|
 | `subjects_per_day` | Mỗi ngày có ít nhất một lớp trong phạm vi | Số lớp trong ngày | `min`, `max` | "tối đa 2 môn mỗi ngày" → `max: 2` |
-| `subjects_per_session` | Mỗi cặp (ngày, buổi) có lớp. Buổi tính theo tiết bắt đầu: ≤ 5 là sáng, ≥ 6 là chiều | Số lớp trong buổi | `min`, `max` | "mỗi buổi chỉ 1 môn" → `max: 1` |
+| `subjects_per_session` | Mỗi cặp (ngày, buổi) có lớp. Buổi tính theo tiết bắt đầu: ≤ 5 là sáng, ≥ 6 là chiều | Số lớp trong buổi | `min`, `max` | "mỗi buổi tối đa 1 môn" → `max: 1` |
 | `periods_per_day` | Mỗi ngày có lớp | Tổng số tiết | `min`, `max` | "mỗi ngày không quá 6 tiết" → `max: 6` |
 | `gap_periods` | Mỗi cặp lớp liền nhau trong cùng ngày (xếp theo tiết bắt đầu) | Số tiết trống giữa hai lớp | `min`, `max` | "nghỉ ít nhất 1 tiết giữa các môn" → `min: 1` |
 | `consecutive_periods` | Mỗi khối học liên tục trong ngày (các lớp nối nhau, không có tiết trống) | Số tiết của khối | `max` | "không học quá 4 tiết liền" → `max: 4` |
-| `study_days` | Cả lịch | Số ngày có lớp | `min`, `max` | "chỉ lên trường 3 ngày" → `max: 3` |
+| `study_days` | Cả lịch | Số ngày có lớp | `min`, `max` | "lên trường tối đa 3 ngày" → `max: 3` |
 
 - `scope` của `limit` giới hạn những lớp được tính. Ví dụ `"scope": {"day": ["thứ 2", "thứ 4"]}` chỉ đo trên thứ 2 và thứ 4.
 - Hai cách viết khi sinh viên không nói con số cụ thể:
