@@ -100,7 +100,58 @@ Ngoại lệ: "chỉ … nếu không còn lựa chọn" là `normal`.
 7. **Ý không biểu diễn được** (học cùng bạn, đổi khu giữa hai lớp…): chép nguyên văn vào `unsupported`.
 8. **Tên riêng:** nếu prompt có danh sách môn đã chọn và giảng viên, dùng đúng tên trong danh sách.
 
-## 6. Ví dụ
+## 6. Bộ dataset gồm: 20 type
+
+Có thể đếm số loại ràng buộc ở hai mức.
+
+Ở mức cú pháp, JSON v2 có 3 loại ràng buộc: `prefer`, `avoid`, `limit`.
+
+Khi xây dựng dataset theo cách 1 prompt = 1 ràng buộc, nên đếm theo tổ hợp loại ràng buộc × thuộc tính hoặc chỉ số. Theo cách đếm này, có **32 loại ràng buộc nguyên tử**, cộng thêm 1 loại `unsupported` dành cho câu không thể biểu diễn.
+
+### A. `prefer` / `avoid` × 13 thuộc tính = 26 loại
+
+`course` không được tính trong nhóm này vì chỉ xuất hiện trong `scope`.
+
+| STT | Thuộc tính | `prefer` — câu mẫu | `avoid` — câu mẫu |
+|---|---|---|---|
+| 1–2 | `teacher` | "Muốn học cô Mai Nga" | "Tránh thầy Sơn" |
+| 3–4 | `class_group` | "Muốn nhóm 13" | "Không muốn nhóm 2" |
+| 5–6 | `language` | "Thích lớp tiếng Anh" | "Không học lớp tiếng Anh" |
+| 7–8 | `day` | "Muốn học thứ 3" | "Không học thứ 7" |
+| 9–10 | `session` | "Thích học sáng" | "Tránh chiều muộn" |
+| 11–12 | `periods` | "Muốn học tiết 2–7" | "Tránh tiết 1–2" |
+| 13–14 | `start_period` | "Bắt đầu từ tiết 3" | "Không bắt đầu ở tiết 1" |
+| 15–16 | `end_period` | "Xong trước tiết 5" | "Không học tới tiết 9" |
+| 17–18 | `start_time` | "Bắt đầu sau 10 giờ" | "Không học trước 8 giờ" |
+| 19–20 | `end_time` | "Về trước 16 giờ" | "Tránh lớp kết thúc sau 17 giờ" |
+| 21–22 | `duration` | "Thích lớp 2 tiết" | "Không thích lớp từ 4 tiết" |
+| 23–24 | `area` | "Thích khu K" | "Tránh khu V" |
+| 25–26 | `room` | "Muốn phòng A212" | "Không thích phòng V.A201" |
+
+### B. `limit` × 6 chỉ số = 6 loại
+
+| STT | Chỉ số (metric) | Cận hỗ trợ | Câu mẫu |
+|---|---|---|---|
+| 27 | `subjects_per_day` | `min`, `max`, cả hai | "Tối đa 2 môn mỗi ngày" |
+| 28 | `subjects_per_session` | `min`, `max`, cả hai | "Mỗi buổi chỉ 1 môn" |
+| 29 | `periods_per_day` | `min`, `max`, cả hai | "Mỗi ngày không quá 6 tiết" |
+| 30 | `gap_periods` | `min`, `max`, cả hai | "Nghỉ ít nhất 1 tiết giữa các môn" |
+| 31 | `consecutive_periods` | chỉ `max` | "Không học quá 4 tiết liền" |
+| 32 | `study_days` | `min`, `max`, cả hai | "Chỉ lên trường 3 ngày" |
+
+**Các câu không có con số.** Một số câu mô tả mục tiêu lịch học mà không nêu trực tiếp con số vẫn có thể ánh xạ vào nhóm `limit`:
+- "Dồn lịch" → `study_days`, `max: 1`.
+- "Trải đều" → `subjects_per_day`, `max: 1`.
+
+### C. Thêm 1 loại `unsupported`
+
+Loại này dùng cho câu không thể ánh xạ vào schema hiện tại. Ví dụ:
+- "Học cùng lớp với bạn Nam".
+- "Không muốn chạy từ khu K sang khu V".
+
+Các câu này được giữ nguyên trong `unsupported`, không ép chuyển thành một ràng buộc không phù hợp.
+
+## 7. Ví dụ
 
 **Prompt:** "Tôi không muốn học vào cuối tuần"
 
@@ -172,8 +223,6 @@ Ngoại lệ: "chỉ … nếu không còn lựa chọn" là `normal`.
   "unsupported": ["muốn học cùng lớp với bạn Nam"]
 }
 ```
-
-Thêm 32 ví dụ có ghi chú ở [design.md mục 13](design.md#13-ví-dụ).
 
 ### E1 — Tránh cuối tuần (mẫu câu; v1 không biểu diễn được)
 > "Tôi không muốn học vào cuối tuần như thứ 7"
@@ -495,8 +544,7 @@ Thêm 32 ví dụ có ghi chú ở [design.md mục 13](design.md#13-ví-dụ).
 ], "unsupported": ["muốn học cùng lớp với bạn Nam"]}
 ```
 
-
-## 7. Lỗi thường gặp
+## 8. Lỗi thường gặp
 
 | Sai | Đúng | Vì sao |
 |---|---|---|
