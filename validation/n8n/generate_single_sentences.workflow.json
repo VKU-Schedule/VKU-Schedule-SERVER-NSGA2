@@ -1,0 +1,595 @@
+{
+  "name": "VKU – Sinh câu đơn (20 type prefer/avoid)",
+  "nodes": [
+    {
+      "parameters": {
+        "width": 820,
+        "height": 440,
+        "content": "## Sinh câu đơn cho 20 type (prefer/avoid)\n1. **Settings**: dán `spreadsheetId` (đoạn giữa `/d/` và `/edit` trong URL Google Sheet). Có thể đổi `targetPerType`, `batchSize`, `onlyTypes`.\n2. Chọn credential **Google Sheets OAuth2** cho 3 node *Create Tab*, *Read Rows*, *Append Rows*.\n3. Chọn credential và model ở **Chat Model** (mặc định `gemini-flash-latest`). Muốn dùng model khác thì thay node con này, rồi sửa `modelLabel` trong Settings.\n4. Bấm **Execute workflow**. Mỗi type ghi vào tab `[NEW] <type>`; tab tự tạo, dòng 1 là header `id, type, sentence, style, model, created_at`.\n\nVòng lặp: *Read Rows* → *Compute Batch* → *Route*. `generate` gọi AI rồi ghi thêm câu; `next_type` sang type kế; `finished` in *Summary*.\nChạy lại bất kỳ lúc nào: workflow đếm số câu đã có trong tab và chỉ sinh phần còn thiếu.\nWorkflow chỉ sinh câu, chưa gán nhãn JSON. Slot (mức độ, phạm vi, giá trị) chỉ dùng để định hướng AI và kiểm tra câu; gán nhãn làm ở giai đoạn sau. Câu bị loại và lý do: xem output của *Parse & Validate*."
+      },
+      "id": "1ad14be9-5323-48c3-82d4-b5cee8aad2eb",
+      "name": "Ghi chú",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -120,
+        -520
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "76cc4637-f9ac-44c7-b64a-a97db17c7291",
+      "name": "Execute Workflow",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a0ac86c2-0a98-45e5-ae19-bad0739ca025",
+              "name": "spreadsheetId",
+              "value": "PASTE_SPREADSHEET_ID_HERE",
+              "type": "string"
+            },
+            {
+              "id": "6f41da09-3a18-4b54-8637-2bb56e84eacc",
+              "name": "targetPerType",
+              "value": 200,
+              "type": "number"
+            },
+            {
+              "id": "df6689c9-42ce-434d-856d-6faff93a9e95",
+              "name": "batchSize",
+              "value": 20,
+              "type": "number"
+            },
+            {
+              "id": "e90eaf86-d7a9-4146-816d-cd3ea7779c33",
+              "name": "maxAttemptsPerType",
+              "value": 30,
+              "type": "number"
+            },
+            {
+              "id": "ef3cf6fb-fa66-48a9-9a54-3c46ef748d84",
+              "name": "onlyTypes",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "82d5d6ea-8c8f-4e68-ae16-5e57fae1fe93",
+              "name": "modelLabel",
+              "value": "gemini-flash-latest",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "eadf8a05-6415-4076-a8b7-5cebf1e4ac04",
+      "name": "Settings",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        220,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Cấu hình bộ dữ liệu câu đơn: 20 type đầu của docs/specs/json_v2/llm-guide.md mục 6.A\n// (prefer/avoid × 10 thuộc tính), phong cách viết xoay vòng theo từng lượt, tỉ lệ mức độ\n// và phạm vi, cùng danh mục môn – giảng viên lấy từ data/input/Final_Dataset.xlsx.\nconst TYPES = [\n  { stt: 1, key: 'prefer_teacher', kind: 'prefer', attr: 'teacher', desc: 'sinh viên MUỐN học với một giảng viên cụ thể.' },\n  { stt: 2, key: 'avoid_teacher', kind: 'avoid', attr: 'teacher', desc: 'sinh viên MUỐN TRÁNH học với một giảng viên cụ thể.' },\n  { stt: 3, key: 'prefer_class_group', kind: 'prefer', attr: 'class_group', desc: 'sinh viên MUỐN vào một (hoặc vài) nhóm lớp cụ thể.' },\n  { stt: 4, key: 'avoid_class_group', kind: 'avoid', attr: 'class_group', desc: 'sinh viên MUỐN TRÁNH một (hoặc vài) nhóm lớp cụ thể.' },\n  { stt: 5, key: 'prefer_language', kind: 'prefer', attr: 'language', desc: 'sinh viên MUỐN học lớp dạy bằng một ngôn ngữ (tiếng Anh / tiếng Việt).' },\n  { stt: 6, key: 'avoid_language', kind: 'avoid', attr: 'language', desc: 'sinh viên MUỐN TRÁNH lớp dạy bằng một ngôn ngữ.' },\n  { stt: 7, key: 'prefer_day', kind: 'prefer', attr: 'day', desc: 'sinh viên MUỐN học vào (các) thứ nhất định.' },\n  { stt: 8, key: 'avoid_day', kind: 'avoid', attr: 'day', desc: 'sinh viên KHÔNG MUỐN học vào (các) thứ nhất định.' },\n  { stt: 9, key: 'prefer_session', kind: 'prefer', attr: 'session', desc: 'sinh viên MUỐN học trong một buổi (lớp nằm trọn trong buổi đó).' },\n  { stt: 10, key: 'avoid_session', kind: 'avoid', attr: 'session', desc: 'sinh viên MUỐN TRÁNH học vào một buổi.' },\n  { stt: 11, key: 'prefer_periods', kind: 'prefer', attr: 'periods', desc: 'sinh viên MUỐN học trong các tiết nhất định (lớp nằm trọn trong các tiết đó).' },\n  { stt: 12, key: 'avoid_periods', kind: 'avoid', attr: 'periods', desc: 'sinh viên MUỐN TRÁNH các tiết nhất định.' },\n  { stt: 13, key: 'prefer_start_period', kind: 'prefer', attr: 'start_period', desc: 'sinh viên MUỐN lớp bắt đầu ở tiết thoả điều kiện (nói bằng TIẾT, không nói giờ).' },\n  { stt: 14, key: 'avoid_start_period', kind: 'avoid', attr: 'start_period', desc: 'sinh viên MUỐN TRÁNH lớp bắt đầu ở tiết thoả điều kiện (nói bằng TIẾT, không nói giờ).' },\n  { stt: 15, key: 'prefer_end_period', kind: 'prefer', attr: 'end_period', desc: 'sinh viên MUỐN lớp kết thúc ở tiết thoả điều kiện (nói bằng TIẾT, không nói giờ).' },\n  { stt: 16, key: 'avoid_end_period', kind: 'avoid', attr: 'end_period', desc: 'sinh viên MUỐN TRÁNH lớp kết thúc ở tiết thoả điều kiện (nói bằng TIẾT, không nói giờ).' },\n  { stt: 17, key: 'prefer_start_time', kind: 'prefer', attr: 'start_time', desc: 'sinh viên MUỐN lớp bắt đầu trong khung GIỜ thoả điều kiện (nói bằng GIỜ, không nói tiết).' },\n  { stt: 18, key: 'avoid_start_time', kind: 'avoid', attr: 'start_time', desc: 'sinh viên MUỐN TRÁNH lớp bắt đầu trong khung GIỜ thoả điều kiện (nói bằng GIỜ, không nói tiết).' },\n  { stt: 19, key: 'prefer_end_time', kind: 'prefer', attr: 'end_time', desc: 'sinh viên MUỐN lớp kết thúc (được về) trong khung GIỜ thoả điều kiện (nói bằng GIỜ, không nói tiết).' },\n  { stt: 20, key: 'avoid_end_time', kind: 'avoid', attr: 'end_time', desc: 'sinh viên MUỐN TRÁNH lớp kết thúc trong khung GIỜ thoả điều kiện (nói bằng GIỜ, không nói tiết).' },\n];\n\n// Mỗi lượt gọi AI dùng một phong cách; phong cách đổi theo lượt và theo type\nconst STYLES = [\n  { name: 'ngan_gon', text: 'Văn nói ngắn gọn, tự nhiên (5–14 từ), xưng \"em\" hoặc \"mình\".' },\n  { name: 'lich_su', text: 'Câu đầy đủ, lịch sự, xưng \"tôi\", như đang nhờ phòng đào tạo xếp lịch.' },\n  { name: 'co_ly_do', text: 'Kèm một lý do ngắn ở cuối câu (ví dụ: vì đi làm thêm, vì nhà xa, vì dễ tập trung hơn). Lý do không được nhắc thứ, buổi, giờ, tiết, môn, giảng viên và không dùng từ khoá mức độ.' },\n  { name: 'nho_va', text: 'Câu nhờ vả hoặc câu hỏi: \"cho em xin…\", \"xếp giúp em… được không ạ\", \"nhờ hệ thống…\".' },\n  { name: 'nhan_tin', text: 'Giọng nhắn tin của sinh viên: viết thường, có thể thêm \"nha\", \"nhé\", \"ạ\", \"nè\"… nhưng vẫn viết đủ từ, giữ dấu tiếng Việt, tên riêng và số.' },\n  { name: 'dao_cau', text: 'Đặt đối tượng hoặc phạm vi lên đầu câu rồi mới nói mong muốn, ví dụ: \"Môn X thì…\", \"Thứ 4 thì…\", \"Về giờ giấc thì…\".' },\n  { name: 'dong_nghia', text: 'Diễn đạt gián tiếp, dùng từ đồng nghĩa (ưng, mong, hợp, ngại, né, hạn chế, không hợp…), không mở đầu bằng \"Tôi muốn\" / \"Tôi không muốn\".' },\n  { name: 'cau_dai', text: 'Câu dài hơn (15–30 từ), có bối cảnh học kỳ này hoặc thói quen của bản thân, nhưng vẫn chỉ đúng một yêu cầu.' },\n];\n\n// [giá trị, trọng số]\nconst LEVEL_WEIGHTS = [['normal', 6], ['high', 2], ['must', 2]];\n\n// Phạm vi của từng thuộc tính: none = toàn bộ lịch\nconst SCOPE_PLAN = {\n  teacher: [['course', 65], ['none', 35]],\n  class_group: [['course', 90], ['none', 10]],\n  language: [['none', 55], ['course', 35], ['session', 10]],\n  day: [['none', 60], ['course', 40]],\n  session: [['none', 45], ['course', 30], ['day', 25]],\n  periods: [['none', 45], ['course', 25], ['day', 30]],\n  start_period: [['none', 45], ['day', 30], ['course', 25]],\n  end_period: [['none', 40], ['day', 30], ['course', 20], ['session', 10]],\n  start_time: [['none', 45], ['day', 30], ['course', 20], ['session', 5]],\n  end_time: [['none', 45], ['day', 30], ['course', 20], ['session', 5]],\n};\n\n// [tên môn, [giảng viên, đã bỏ học hàm], nhóm lớp lớn nhất, có lớp tiếng Anh (1/0)]\nconst COURSES = [[\"An toàn ứng dụng Web và CSDL\",[\"Trần Thanh Liêm\"],1,0],[\"Automat và ngôn ngữ hình thức\",[\"Trần Đình Sơn\",\"Dương Thị Mai Nga\",\"Nguyễn Đức Hiển\"],9,0],[\"Bảo mật và an toàn hệ thống thông tin\",[\"Trần Thanh Liêm\",\"Đặng Quang Hiển\",\"Ninh Khánh Chi\",\"Hoàng Hữu Đức\"],8,1],[\"Biên tập phim kỹ thuật số\",[\"Phan Đăng Thiếu Hiệp\"],1,0],[\"Cấu trúc dữ liệu và giải thuật\",[\"Nguyễn Thanh Bình\",\"Lê Song Toàn\",\"Hồ Văn Phi\",\"Đinh Thị Mỹ Hạnh\",\"Lê Thị Thu Nga\",\"Trần Đình Sơn\",\"Nguyễn Đức Hiển\",\"Nguyễn Thanh Cẩm\",\"Ngô Lê Quân\"],16,1],[\"Chủ nghĩa xã hội khoa học\",[\"Lương Xuân Thành\",\"Nguyễn Thị Mỹ Hạnh\",\"Trần Văn Thái\"],19,0],[\"Chương trình dịch\",[\"Dương Thị Mai Nga\",\"Lê Tân\"],5,0],[\"Chuyên đề 1\",[\"Lương Thủy Tiên\",\"Ngô Thị Hiền Trang\",\"Đào Thị Thu Hường\",\"Lê Phước Cửu Long\",\"Võ Văn Đức\",\"Phan Thị Lan Anh\",\"Nguyễn Lương Vương\",\"Hồ Văn Phi\",\"Đặng Đại Việt\",\"Lê Thành Công\",\"Nguyễn Ngọc Huyền Trân\",\"Lý Quỳnh Trân\",\"Nguyễn Văn  Bình\"],11,1],[\"Chuyên đề 2\",[\"Trần Trung Tín\",\"Dương Ngọc Pháp\",\"Đinh Thị Đông Phương\",\"Bank Agribank\",\"Nguyễn Trọng Công Thành\",\"Nguyễn Văn Bình (KS)\",\"Nguyễn Vũ Anh Quang\",\"Vương Công Đạt\",\"Nguyễn Anh Tuấn\",\"Nguyễn Văn Chức\"],14,1],[\"Chuyên đề 4\",[\"Trần Viết An\",\"Trần Văn Đại\",\"Phan Đăng Thiếu Hiệp\",\"Lê Tự Việt Thắng\",\"Đặng Đại  Thọ\",\"Nguyễn Sĩ Thìn\",\"Trương Quốc Tuấn\"],12,0],[\"Cơ sở dữ liệu tài chính\",[\"Trần Văn Đại\"],1,0],[\"Cơ sở lập trình\",[\"Trần Thanh Liêm\"],1,0],[\"Cơ sở tạo hình\",[\"Trần Thị Thúy Ngọc\"],1,0],[\"Cơ sở tạo hình 2\",[\"Trần Thị Thúy Ngọc\"],2,0],[\"Cơ sở văn hóa Việt Nam\",[\"Nguyễn Kim Cường\"],1,0],[\"Công nghệ chế tạo IC\",[\"Nguyễn Nhật Ân\"],1,0],[\"Công nghệ phần mềm\",[\"Nguyễn Quang Vũ\",\"Huỳnh Ngọc Thọ\",\"Võ Văn Lường\",\"Lê Viết Trương\",\"Nguyễn Thanh Tuấn\"],10,1],[\"Công nghệ và lập trình web\",[\"Lương Khánh Tý\"],1,0],[\"Công nghệ Web\",[\"Lê Viết Trương\",\"Trần Văn Đại\"],4,1],[\"Digital Marketing\",[\"Nguyễn Thị Kiều Trang\",\"Lê Phước Cửu Long\",\"Trần Phạm Huyền Trang\"],4,1],[\"Đại số tuyến tính\",[\"Hồ Thị Hồng Liên\",\"Nguyễn Quốc Thịnh\"],16,0],[\"Đảm bảo chất lượng và Kiểm thử phần mềm\",[\"Nguyễn Quang Vũ\",\"Dương Thị Mai Nga\"],4,0],[\"Đề án 1\",[],1,0],[\"Đề án 3\",[],1,0],[\"Đề án 5\",[],1,0],[\"Điện toán đám mây\",[\"Nguyễn Hà Huy Cường\",\"Đặng Quang Hiển\"],8,1],[\"Điện tử ứng dụng\",[\"Phan Thị Quỳnh Hương\",\"Vương Công Đạt\"],2,1],[\"Đồ án chuyên ngành 1\",[],2,0],[\"Đồ án chuyên ngành 1CE\",[\"Nguyễn Thị Huyền Trang\",\"Nguyễn Vũ Anh Quang\",\"Phan Thị Quỳnh Hương\",\"Vương Công Đạt\"],4,0],[\"Đồ án chuyên ngành 1IT\",[\"Đặng Quang Hiển\",\"Dương Hữu Ái\",\"Dương Ngọc Pháp\",\"Hoàng Hữu Đức\",\"Ninh Khánh Chi\",\"Trần Thị Trà Vinh\"],6,0],[\"Đồ án chuyên ngành 2\",[\"Nguyễn Văn  Bình\",\"Nguyễn Vũ Anh Quang\"],1,0],[\"Đồ án chuyên ngành 3\",[\"Hồ Văn Phi\",\"Huỳnh Ngọc Thọ\",\"Nguyễn Sĩ Thìn\",\"Nguyễn Văn Lợi\",\"Trần Văn Đại\",\"Võ Ngọc Đạt\",\"Lê Thị Thu Nga\",\"Nguyễn Đức Hiển\",\"Trần Uyên Trang\"],9,0],[\"Đồ án chuyên ngành 3 TC\",[\"Nguyễn Sĩ Thìn\",\"Lê Tân\"],2,0],[\"Đồ án chuyên ngành 3CE\",[\"Dương Ngọc Pháp\",\"Nguyễn Nhật Ân\",\"Phan Thị Lan Anh\",\"Nguyễn Vũ Anh Quang\"],4,0],[\"Đồ án chuyên ngành 3IT\",[\"Đặng Quang Hiển\",\"Dương Hữu Ái\",\"Lê Kim Trọng\",\"Trần Thu Thủy\"],4,0],[\"Đồ án CN 2IT\",[\"Hoàng Hữu Đức\",\"Dương Ngọc Pháp\"],0,0],[\"Đồ án cơ cở 2\",[],0,0],[\"Đồ án cơ sở 1\",[],2,0],[\"Đồ án cơ sở 1CE\",[\"Dương Ngọc Pháp\",\"Hồ Anh  Trang\",\"Nguyễn Đức  Phước\",\"Nguyễn Nhật Ân\",\"Phan Thị Lan Anh\",\"Nguyễn Thị Huyền Trang\",\"Phan Thị Quỳnh Hương\",\"Nguyễn Vũ Anh Quang\",\"Vương Công Đạt\"],9,0],[\"Đồ án cơ sở 1IT\",[\"Đặng Quang Hiển\",\"Lê Tự Thanh\",\"Nguyễn Hà Huy Cường\",\"Ninh Khánh Chi\",\"Trần Thế Sơn\"],5,0],[\"Đồ án cơ sở 2  1 tín chỉ\",[],0,0],[\"Đồ án cơ sở 3\",[\"Đỗ Công Đức\",\"Lê Tân\",\"Lê Thành Công\"],4,0],[\"Đồ án cơ sở 3CE\",[\"Nguyễn Tuấn Anh\",\"Nguyễn Vũ Anh Quang\",\"Phan Thị Lan Anh\",\"Trần Thanh\",\"Trần Thị Trà Vinh\"],5,0],[\"Đồ án cơ sở 3IT\",[\"Huỳnh Ngọc Thọ\",\"Lê Kim Trọng\",\"Nguyễn Hữu Nhật Minh\",\"Nguyễn Nho Túy\",\"Nguyễn Như Sơn\",\"Nguyễn Xuân  Tiến\",\"Trần Thu Thủy\"],7,0],[\"Đồ án cơ sở 4\",[],0,0],[\"Đồ án môn học Luật kinh doanh\",[],0,0],[\"Đồ án tốt nghiệp\",[],0,0],[\"Đồ họa 2D\",[\"Trần Thị Hạ Quyên\"],1,0],[\"Đồ họa 3D\",[\"Phan Đăng Thiếu Hiệp\"],1,0],[\"Đồ họa xử lý ảnh\",[\"Trần Thị Thúy Ngọc\"],1,0],[\"GDTC 1\",[\"Nguyễn Văn Thắng\",\"Trần Thị Vi Vân\",\"Lê Quang Phước\"],10,0],[\"GDTC 2\",[\"Nguyễn Văn Thắng\",\"Lê Quang Phước\",\"Phạm Nhật Trường\",\"Hồ Anh Hưng\",\"Trần Thị Vi Vân\",\"Nguyễn Ngọc Quỳnh Dung\"],6,0],[\"GDTC 3\",[\"Nguyễn Văn Thắng\"],0,0],[\"GDTC 4\",[\"Nguyễn Ngọc Huy\",\"Nguyễn Gia Huy\",\"Nguyễn Văn Thắng\",\"Lê Quang Phước\",\"Cao Đức Anh\",\"Phạm Nhật Trường\",\"Trần Thị Vi Vân\",\"Nguyễn Gia Huy (TC)\"],6,0],[\"Giám sát hệ thống mạng\",[\"Lê Tự Thanh\"],2,0],[\"Giáo dục quốc phòng\",[],1,0],[\"Hành vi người tiêu dùng\",[\"Nguyễn Thanh Hoài\",\"Nguyễn Thị Kiều Trang\"],2,1],[\"Hệ chuyên gia\",[\"Lê Tân\"],1,0],[\"Hệ điều hành nhúng\",[\"Nguyễn Nhật Ân\"],1,1],[\"Hệ thống di động và cảm biến\",[\"Trần Thế Sơn\"],2,0],[\"Hệ thống số\",[\"Trần Thị Trà Vinh\"],1,0],[\"Hệ thống thời gian thực\",[\"Vương Công Đạt\"],1,1],[\"Hệ thống thực tế ảo\",[\"Vương Công Đạt\"],1,1],[\"Hình họa\",[\"Nguyễn Trọng Công Thành\"],1,0],[\"Hình họa 2\",[\"Nguyễn Trọng Công Thành\"],2,0],[\"Hoạch định nguồn lực doanh nghiệp\",[\"Văn Hùng Trọng\",\"Bùi Trần Huân\",\"Phan Văn Thành\"],3,1],[\"Học máy\",[\"Nguyễn Sĩ Thìn\",\"Nguyễn Đỗ Công Pháp\",\"Mai Lam\"],8,1],[\"Học sâu\",[\"Lê Thị Thu Nga\",\"Trần Uyên Trang\"],5,0],[\"Kế toán quản trị\",[\"Trần Thị Mỹ Châu\"],1,0],[\"Kế toán tài chính doanh nghiệp\",[\"Vũ Thị Tuyết Mai\"],1,0],[\"Kho dữ liệu\",[\"Trần Thanh Liêm\"],1,0],[\"Khóa luận tốt nghiệp\",[],1,0],[\"Khởi nghiệp và đổi mới sáng tạo\",[\"Bùi Trần Huân\",\"Vũ Thị Tuyết Mai\",\"Lê Thị Hải Vân\",\"Đinh Nguyễn Khánh Phương\",\"Nguyễn Thị Như Quỳnh\",\"Ngô Thị Hiền Trang\",\"Trần Ngọc Phương Thảo\"],14,1],[\"Kiến trúc máy tính\",[\"Đặng Quang Hiển\"],1,1],[\"Kiến trúc và giao thức IoT\",[\"Dương Hữu Ái\"],1,0],[\"Kinh doanh quốc tế\",[\"Võ Thị Thanh  Thảo\"],2,0],[\"Kinh tế chính trị Mác - Lênin\",[\"Nguyễn Thị Mỹ Hạnh\",\"Lương Xuân Thành\"],19,0],[\"Kinh tế vĩ mô\",[\"Trương Hoàng Tú Nhi\",\"Phan Văn Thành\",\"Lê Thị Minh Đức\",\"Vũ Thu Hà\",\"Trần Thị Mỹ Châu\",\"Vũ Thị Tuyết Mai\",\"Đào Thị Thu Hường\"],7,1],[\"Kỹ thuật đồ họa ứng dụng\",[\"Nguyễn Thị Thanh Thúy\",\"Trần Thị Hạ Quyên\"],8,0],[\"Kỹ thuật mạch điện tử\",[\"Nguyễn Vũ Anh Quang\",\"Tăng Tấn Chiến\"],3,1],[\"Lập trình di động\",[\"Lý Quỳnh Trân\",\"Võ Ngọc Đạt\",\"Trịnh Thị Ngọc Linh\",\"Nguyễn Thanh Tuấn\",\"Ngô Lê Quân\"],14,1],[\"Lập trình Game nâng cao\",[\"Đặng Đại Việt\"],1,0],[\"Lập trình hệ thống nhúng\",[\"Nguyễn Đức  Phước\"],1,0],[\"Lập trình Java\",[\"Huỳnh Công  Pháp\",\"Hà Thị Minh Phương\",\"Lê Tân\",\"Huỳnh Ngọc Thọ\",\"Lê Thành Công\",\"Nguyễn Thanh\"],15,1],[\"Lập trình mạng\",[\"Nguyễn Thanh Cẩm\"],2,0],[\"Lập trình Python\",[\"Phạm Nguyễn Minh Nhựt\",\"Nguyễn Sĩ Thìn\"],5,0],[\"Lập trình song song\",[\"Nguyễn Đình Lầu\"],1,0],[\"Lập trình web nâng cao\",[\"Nguyễn Văn Lợi\"],1,0],[\"Lịch sử Đảng Cộng sản Việt Nam\",[\"Nguyễn Thị Mai\"],17,0],[\"Lịch sử mỹ thuật Việt Nam và Thế giới\",[\"Nguyễn Trọng Công Thành\"],1,0],[\"Luật kinh doanh\",[\"Nguyễn Thị Phương Thảo\",\"Huỳnh Thị Kim Hà\"],7,0],[\"Luật sở hữu trí tuệ\",[\"Võ Công Khôi\"],1,0],[\"Mạng cảm biến không dây\",[\"Dương Hữu Ái\"],1,0],[\"Mạng máy tính\",[\"Nguyễn Hữu Nhật Minh\",\"Trần Thu Thủy\",\"Lê Kim Trọng\",\"Ninh Khánh Chi\",\"Hoàng Hữu Đức\"],16,1],[\"Marketing bằng công cụ tìm kiếm\",[\"Đặng Thị Thanh Minh\",\"Nguyễn Thị Khánh Hà\"],2,1],[\"Marketing căn bản\",[\"Đặng Thị Thanh Minh\",\"Nguyễn Thị Kiều Trang\",\"Lê Phước Cửu Long\",\"Nguyễn Thị Như Quỳnh\",\"Trần Phạm Huyền Trang\",\"Ngô Hải Quỳnh\",\"Nguyễn Thị Kim Ánh\"],7,1],[\"Marketing nội dung\",[\"Lê Thị Hải Vân\",\"Huỳnh Bá Thúy Diệu\"],2,0],[\"Minh họa\",[\"Trần Thị Hạ Quyên\"],1,0],[\"Mô hình phát triển dự án\",[\"Bùi Nữ Thanh Hà\"],2,0],[\"Nghệ thuật chữ\",[\"Phan Đăng Thiếu Hiệp\"],2,0],[\"Nghiên cứu marketing\",[\"Trương Thị Viên\",\"Trần Phạm Huyền Trang\"],2,1],[\"Nguyên lý hệ điều hành\",[\"Lê Kim Trọng\",\"Trần Thu Thủy\"],4,0],[\"Nguyên lý kế toán\",[\"Nguyễn Thị Thu Đến\",\"Trần Thị Mỹ Châu\"],2,0],[\"Nhập môn ngành và kỹ năng mềm\",[\"Nguyễn Vũ Anh Quang\",\"Dương Ngọc Pháp\",\"Vương Công Đạt\"],1,0],[\"Phân tích báo cáo tài chính\",[\"Nguyễn Thị Thanh Huyền\"],1,0],[\"Phân tích dữ liệu lớn trong tài chính\",[\"Hồ Văn Phi\"],1,0],[\"Phân tích mã độc\",[\"Trần Thế Sơn\"],1,0],[\"Phân tích và thiết kế giải thuật\",[\"Nguyễn Thanh Bình\",\"Nguyễn Thanh Cẩm\",\"Hồ Văn Phi\"],5,1],[\"Pháp luật đại cương\",[\"Nguyễn Thị Phương Thảo\"],10,0],[\"Phát triển ứng dụng di động đa nền tảng\",[\"Ngô Lê Quân\",\"Nguyễn Thanh Tuấn\"],4,0],[\"Quản lý hợp đồng\",[\"Đoàn Xuân Bích\"],1,0],[\"Quản trị dự án phần mềm\",[\"Nguyễn Quang Vũ\",\"Võ Văn Lường\"],7,1],[\"Quản trị đấu thầu dự án\",[\"Đoàn Xuân Bích\"],1,0],[\"Quản trị học\",[\"Lê Hà Như Thảo\",\"Huỳnh Bá Thúy Diệu\",\"Nguyễn Linh Giang\",\"Trần Ngọc Phương Thảo\",\"Vũ Thành Nhân\",\"Đặng Vinh\"],7,1],[\"Quản trị mạng\",[\"Lê Tự Thanh\"],1,0],[\"Quản trị ngân hàng thương mại\",[\"Nguyễn Thị Khánh My\"],1,0],[\"Quản trị nguồn nhân lực\",[\"Trương Thị Viên\",\"Nguyễn Thị Thu Đến\",\"Đinh Nguyễn Khánh Phương\",\"Đặng Vinh\",\"Nguyễn Thanh Hoài\"],8,1],[\"Quản trị nguyên vật liệu\",[\"Nguyễn Ngọc Thảo Vy\"],2,0],[\"Quản trị quan hệ khách hàng\",[\"Nguyễn Thị Khánh Hà\"],2,0],[\"Quản trị rủi ro tài chính\",[\"Nguyễn Thị Thanh Huyền\"],1,0],[\"Quản trị tác nghiệp thương mại điện tử\",[\"Văn Hùng Trọng\",\"Nguyễn Thị Thanh Huyền\"],2,1],[\"Quản trị tài chính\",[\"Lê Hà Như Thảo\",\"Nguyễn Thị Thu Đến\",\"Nguyễn Thị Khánh My\",\"Huỳnh Bá Thúy Diệu\",\"Nguyễn Thị Như Quỳnh\"],7,1],[\"Quản trị thương hiệu\",[\"Nguyễn Thanh Hoài\",\"Nguyễn Thị Kim Ánh\"],2,1],[\"Quản trị vận hành và nhà máy thông minh\",[\"Trần Thiện Vũ\"],2,0],[\"Robot di động\",[\"Dương Hữu Ái\"],1,0],[\"test-lopcon-751\",[\"Lê Song Toàn\"],0,0],[\"test-lopcon-752\",[\"Lê Song Toàn\"],0,0],[\"Thị giác máy tính\",[\"Lê Thị Thu Nga\",\"Phạm Nguyễn Minh Nhựt\"],2,0],[\"Thiết kế ấn phẩm báo chí\",[\"Nguyễn Thị Thanh Thúy\"],1,0],[\"Thiết kế bao bì sản phẩm\",[\"Trần Thị Thúy Ngọc\"],1,0],[\"Thiết kế FPGA/ASIC với Verilog\",[\"Dương Ngọc Pháp\",\"Nguyễn Nhật Ân\"],2,1],[\"Thiết kế hình hiệu\",[\"Phan Đăng Thiếu Hiệp\"],2,0],[\"Thiết kế IC số\",[\"Dương Ngọc Pháp\"],1,1],[\"Thiết kế IC tương tự\",[\"Nguyễn Thị Huyền Trang\",\"Hồ Anh  Trang\"],2,0],[\"Thiết kế nhân vật 2 chiều\",[\"Trần Thị Hạ Quyên\"],2,0],[\"Thiết kế phông nền phim Hoạt hình\",[\"Trần Thị Hạ Quyên\"],1,0],[\"Thiết kế Poster\",[\"Trần Thị Thúy Ngọc\"],1,0],[\"Thiết kế web\",[\"Trần Văn Đại\",\"Lương Khánh Tý\",\"Nguyễn Văn  Bình\",\"Đỗ Công Đức\",\"Nguyễn Ngọc Huyền Trân\"],12,1],[\"Thiết kế Website Thương mại điện tử 1\",[\"Lương Khánh Tý\",\"Lê Viết Trương\"],2,0],[\"Thiết kế, phát triển và điều hành tour du lịch\",[\"Nguyễn Thị Thảo Nhi\"],1,0],[\"Thu thập và phân tích thông tin an ninh mạng\",[\"Trần Thế Sơn\"],1,0],[\"Thực tập doanh nghiệp\",[],0,0],[\"Thực tập tốt nghiệp\",[],1,0],[\"Thực tập tốt nghiệp IT\",[\"Đặng Quang Hiển\"],0,0],[\"Thương mại điện tử\",[\"Văn Hùng Trọng\",\"Võ Thị Thanh  Thảo\"],2,0],[\"Tiếng Anh 1\",[\"Lê Mai Anh\",\"Phan Thị Hải Yến\"],4,0],[\"Tiếng Anh 2\",[\"Lê Xuân Việt Hương\",\"Hồ Phạm Xuân Phương\",\"Nguyễn Thị Diệu Thanh\",\"Nguyễn Thị Thu Hướng\"],22,0],[\"Tiếng Anh 3\",[\"Phan Thị Hải Yến\",\"Nguyễn Nữ Thùy Uyên\",\"Trần Thị Thanh Nhã\",\"Chế Viết Xuân\",\"Bank Agribank\"],9,0],[\"Tiếng Anh chuyên ngành 2\",[\"Vũ Thành Nhân\",\"Võ Thị Thanh  Thảo\",\"Đinh Nguyễn Khánh Phương\",\"Nguyễn Thị Thảo Nhi\",\"Trần Thiện Vũ\",\"Bùi Trần Huân\",\"Nguyễn Thị Huyền Trang\",\"Phan Thị Lan Anh\",\"Hà Thị Minh Phương\",\"Nguyễn Văn Lợi\",\"Đặng Đại  Thọ\",\"Nguyễn Đỗ Công Pháp\",\"Nguyễn Sĩ Thìn\",\"Mai Lam\",\"Lý Quỳnh Trân\"],18,0],[\"Tiếng Anh nâng cao 1\",[\"Nguyễn Thị Tuyết\",\"Võ Thị Thanh Ngà\",\"Phan Thị Hồng Việt\"],7,0],[\"Tiếng Anh nâng cao 2\",[\"Phạm Trần Mộc Miêng\",\"Trần Thị Thùy Liên\",\"Phan Thị Hồng Việt\"],12,0],[\"Tiếng Anh nâng cao 4\",[\"Lê Thị Kim Tuyến\",\"Võ Thị Thanh Ngà\"],6,0],[\"Tiếng Hàn 1\",[\"Nguyễn Hà Phương\"],2,0],[\"Tiếng Hàn doanh nghiệp 2\",[\"Lê Thị Thanh\"],2,0],[\"Tiếng Hàn doanh nghiệp 4\",[\"Nguyễn Hà Phương\"],1,0],[\"Tiếng Nhật 1\",[\"Nguyễn Thị Mai Phương\"],2,0],[\"Tiếng Nhật 4\",[\"Nguyễn Thị Mai Phương\"],1,0],[\"Tiếng nhật tăng cường\",[\"Nguyễn Thị Mai Phương\"],1,0],[\"Tín hiệu và hệ thống\",[\"Dương Hữu Ái\"],1,0],[\"Tổ chức sự kiện du lịch\",[\"Nguyễn Lê Ngọc Trâm\"],1,0],[\"Toán rời rạc\",[\"Đặng Đại  Thọ\",\"Đặng Thị Kim Ngân\",\"Nguyễn Ngọc Huyền Trân\"],12,1],[\"Trí tuệ nhân tạo\",[\"Lê Thị Thu Nga\"],1,0],[\"Triết học Mác - Lênin\",[\"Dương Thị Phượng\",\"Trần Văn Thái\"],9,0],[\"Trực quan hóa dữ liệu\",[\"Nguyễn Thanh\"],1,0],[\"Truyền thông Marketing tích hợp cơ bản\",[\"Ngô Hải Quỳnh\",\"Nguyễn Thị Khánh Hà\"],2,1],[\"Tư tưởng Hồ Chí Minh\",[\"Dương Thị Phượng\"],6,0],[\"Tuyến điểm du lịch Việt Nam\",[\"Nguyễn Thị Thảo Nhi\"],2,0],[\"Ứng dụng phần mềm tài chính\",[\"Lương Thủy Tiên\"],1,0],[\"Văn hóa du lịch\",[\"Nguyễn Lê Ngọc Trâm\"],3,0],[\"Vi điều khiển\",[\"Nguyễn Vũ Anh Quang\",\"Phan Thị Lan Anh\",\"Dương Ngọc Pháp\",\"Nguyễn Nhật Ân\",\"Trần Thị Trà Vinh\",\"Vương Công Đạt\",\"Phan Thị Quỳnh Hương\",\"Nguyễn Thị Huyền Trang\"],15,1],[\"Vi xử lý\",[\"Nguyễn Đức  Phước\",\"Phan Thị Quỳnh Hương\"],1,0],[\"Xác suất thống kê\",[\"Trần Thị Bích Hòa\",\"Hồ Thị Hồng Liên\"],17,0],[\"Xử lý ảnh cơ bản\",[\"Trần Thị Thúy Ngọc\"],3,0],[\"Xử lý ngôn ngữ tự nhiên\",[\"Huỳnh Công  Pháp\",\"Nguyễn Văn  Bình\"],2,1],[\"Xử lý tín hiệu số\",[\"Dương Hữu Ái\",\"Dương Ngọc Pháp\"],2,1]];\n\nreturn [{ json: { types: TYPES, styles: STYLES, levelWeights: LEVEL_WEIGHTS, scopePlan: SCOPE_PLAN, courses: COURSES } }];"
+      },
+      "id": "a272ebe3-07a2-4412-a37b-39b894c63d15",
+      "name": "Dataset Config",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        440,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Danh sách type cần sinh, bắt đầu từ type đầu tiên. Settings.onlyTypes (vd \"prefer_day,avoid_day\")\n// để chạy một phần; để trống = cả 20 type. Tên tab: \"[NEW] <type>\".\nconst settings = $('Settings').first().json;\nconst only = String(settings.onlyTypes || '').split(',').map((s) => s.trim()).filter(Boolean);\n\nconst types = $('Dataset Config').first().json.types\n  .filter((t) => !only.length || only.includes(t.key))\n  .map((t) => ({ ...t, sheetName: `[NEW] ${t.key}` }));\nif (!types.length) throw new Error(`onlyTypes \"${settings.onlyTypes}\" không khớp type nào`);\n\nreturn [{ json: { types, typeIndex: 0, results: [] } }];"
+      },
+      "id": "babb22c0-0260-442a-8907-3b42e9147fa8",
+      "name": "Build Types",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        660,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Type đang sinh, theo typeIndex nhận từ Build Types (lần đầu) hoặc từ Compute Batch (khi chuyển type).\n// `results` gom kết quả của các type đã xong, để Summary in ra ở cuối.\nconst { types } = $('Build Types').first().json;\nconst { typeIndex, results } = $input.first().json;\n\nreturn [{ json: { ...types[typeIndex], typeIndex, typeCount: types.length, results: results || [] } }];"
+      },
+      "id": "5dc6a31e-a636-4cfd-adae-f86e5596a305",
+      "name": "Current Type",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        880,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://sheets.googleapis.com/v4/spreadsheets/{{ $('Settings').first().json.spreadsheetId }}:batchUpdate",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "googleSheetsOAuth2Api",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ requests: [{ addSheet: { properties: { title: $('Current Type').first().json.sheetName } } }] }) }}",
+        "options": {}
+      },
+      "id": "dd7a9bf8-cbb0-40b2-9268-d04a3e815f9c",
+      "name": "Create Tab",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1100,
+        0
+      ],
+      "onError": "continueRegularOutput",
+      "notes": "Lỗi \"already exists\" khi tab đã có là bình thường."
+    },
+    {
+      "parameters": {
+        "url": "=https://sheets.googleapis.com/v4/spreadsheets/{{ $('Settings').first().json.spreadsheetId }}/values/{{ encodeURIComponent(\"'\" + $('Current Type').first().json.sheetName + \"'!C:C\") }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "googleSheetsOAuth2Api",
+        "options": {}
+      },
+      "id": "5ccd4cbd-e6b5-4107-bc5f-a243050ec325",
+      "name": "Read Rows",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1320,
+        0
+      ],
+      "executeOnce": true,
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "jsCode": "// Mỗi vòng lặp: đếm số câu đã có trong tab của type hiện tại, rồi chọn action cho Route:\n//   generate  — còn thiếu câu: dựng prompt gồm các slot (mức độ, phạm vi, giá trị) cho AI Agent\n//   next_type — type này đã đủ (hoặc quá số lượt): chuyển sang type kế tiếp\n//   finished  — hết type\n// Slot chỉ để định hướng và kiểm tra câu; workflow không dựng nhãn JSON (việc đó làm ở giai đoạn sau).\nconst settings = $('Settings').first().json;\nconst cfg = $('Dataset Config').first().json;\nconst t = $('Current Type').first().json;\n\nconst target = Number(settings.targetPerType) || 200;\nconst batchSize = Number(settings.batchSize) || 20;\nconst maxAttempts = Number(settings.maxAttemptsPerType) || 30;\n\n// ---------- Tab hiện tại: Read Rows đọc cột C (sentence), dòng 1 là header ----------\nconst values = $input.first().json.values || [];\nconst existing = values.slice(1).map((r) => String((r && r[0]) || '').trim()).filter(Boolean);\nconst count = existing.length;\nconst needHeader = values.length === 0;\n\n// Số lượt đã gọi AI cho type này: đọc từ lần chạy gần nhất của \"Parse & Validate\"\nlet last = null;\ntry { last = $('Parse & Validate').first().json; } catch (e) { last = null; }\nconst attempt = last && last.typeKey === t.key ? last.attempt + 1 : 1;\n\nconst need = Math.max(0, Math.min(batchSize, target - count));\nif (need === 0 || attempt > maxAttempts) {\n  const results = [...t.results, {\n    type: t.key,\n    sheet: t.sheetName,\n    rows: count,\n    aiCalls: attempt - 1,\n    status: need === 0 ? 'đủ' : `dừng: quá ${maxAttempts} lượt`,\n  }];\n  const hasNext = t.typeIndex + 1 < t.typeCount;\n  return [{ json: { action: hasNext ? 'next_type' : 'finished', typeIndex: t.typeIndex + 1, results } }];\n}\nconst base = { action: 'generate', typeKey: t.key, count, attempt, need, needHeader };\n\n// ---------- Ngẫu nhiên ----------\nconst rnd = (n) => Math.floor(Math.random() * n);\nconst pick = (arr) => arr[rnd(arr.length)];\nconst weighted = (pairs) => {\n  let r = Math.random() * pairs.reduce((s, p) => s + p[1], 0);\n  for (const [v, w] of pairs) if ((r -= w) < 0) return v;\n  return pairs[pairs.length - 1][0];\n};\nconst seq = (a, b) => Array.from({ length: b - a + 1 }, (_, i) => a + i);\nconst distinct = (k, gen) => { const s = new Set(); while (s.size < k) s.add(gen()); return [...s]; };\nconst sample = (arr, k) => [...arr].sort(() => Math.random() - 0.5).slice(0, k);\n\n// ---------- Giờ ----------\nconst toMin = (hm) => { const [h, m] = hm.split(':').map(Number); return h * 60 + m; };\nconst hhmm = (m) => `${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`;\nconst between = (from, to) => hhmm(toMin(from) + 30 * rnd((toMin(to) - toMin(from)) / 30 + 1));\nconst later = (hm, lo, hi) => hhmm(Math.min(toMin(hm) + lo + 30 * rnd((hi - lo) / 30 + 1), 18 * 60));\nconst PERIOD_STARTS = ['07:30', '08:30', '09:30', '10:30', '13:00', '14:00', '15:00'];\n\n// ---------- Thứ ----------\nconst DAY_ORDER = ['thứ 2', 'thứ 3', 'thứ 4', 'thứ 5', 'thứ 6', 'thứ 7', 'chủ nhật'];\nconst WEEKDAYS = DAY_ORDER.slice(0, 5);\nconst SCHOOL_DAYS = DAY_ORDER.slice(0, 6);\nconst sortDays = (ds) => ds.sort((a, b) => DAY_ORDER.indexOf(a) - DAY_ORDER.indexOf(b));\n\n// ---------- Danh mục môn ----------\nconst courses = cfg.courses.map(([name, teachers, maxGroup, english]) => ({ name, teachers, maxGroup, english: !!english }));\nconst pools = {\n  all: courses,\n  teacher: courses.filter((c) => c.teachers.length),\n  group: courses.filter((c) => c.maxGroup >= 2),\n  english: courses.filter((c) => c.english && !/tiếng anh/i.test(c.name)),\n};\n\n// ---------- Giá trị theo thuộc tính (session = buổi của phạm vi, nếu có) ----------\nconst GEN = {\n  language: () => weighted([['tiếng Anh', 7], ['tiếng Việt', 3]]),\n  day: (kind) => (kind === 'prefer'\n    ? weighted([\n      [() => pick(WEEKDAYS), 60], [() => 'thứ 7', 5],\n      [() => sortDays(distinct(2 + rnd(2), () => pick(WEEKDAYS))), 25], [() => 'ngày thường', 10],\n    ])\n    : weighted([\n      [() => pick(WEEKDAYS), 35], [() => 'thứ 7', 20], [() => 'chủ nhật', 8],\n      [() => sortDays(distinct(2, () => pick(SCHOOL_DAYS))), 22], [() => 'cuối tuần', 15],\n    ]))(),\n  session: (kind) => (kind === 'prefer'\n    ? weighted([['sáng', 40], ['chiều', 30], ['sáng sớm', 15], ['chiều muộn', 15]])\n    : weighted([['sáng', 20], ['chiều', 25], ['sáng sớm', 30], ['chiều muộn', 25]])),\n  periods: (kind) => {\n    if (kind === 'prefer') {\n      const a = 1 + rnd(7);\n      const b = Math.min(10, a + 1 + rnd(5));\n      return Math.random() < 0.6 ? { min: a, max: b } : seq(a, Math.min(b, a + 3));\n    }\n    return weighted([\n      [() => pick([{ min: 1, max: 2 }, { min: 1, max: 3 }, { min: 9, max: 10 }, { min: 8, max: 10 }, { min: 5, max: 6 }]), 35],\n      [() => { const a = 1 + rnd(9); return { min: a, max: Math.min(10, a + 1 + rnd(2)) }; }, 15],\n      [() => { const a = 1 + rnd(9); return seq(a, Math.min(10, a + 1 + rnd(2))); }, 25],\n      [() => pick([1, 2, 5, 6, 10]), 25],\n    ])();\n  },\n  start_period: (kind) => (kind === 'prefer'\n    ? weighted([\n      [() => ({ min: pick([2, 3, 3, 4, 4, 6, 7]) }), 70],\n      [() => 1 + rnd(9), 15],\n      [() => { const a = 1 + rnd(6); return { min: a, max: a + 1 + rnd(3) }; }, 15],\n    ])\n    : weighted([\n      [() => pick([1, 1, 2, 6, 9]), 45],\n      [() => ({ max: pick([1, 2, 2, 3]) }), 35],\n      [() => ({ min: pick([8, 9, 10]) }), 20],\n    ]))(),\n  end_period: (kind, session) => {\n    if (session === 'sáng') return kind === 'prefer' ? { max: pick([2, 3, 4]) } : pick([{ min: 5 }, 5]);\n    if (session === 'chiều') return kind === 'prefer' ? { max: pick([7, 8, 9]) } : pick([{ min: 9 }, { min: 10 }, 10]);\n    return (kind === 'prefer'\n      ? weighted([\n        [() => ({ max: pick([3, 4, 5, 7, 8, 9]) }), 75],\n        [() => 2 + rnd(9), 15],\n        [() => { const a = 2 + rnd(6); return { min: a, max: a + 1 + rnd(2) }; }, 10],\n      ])\n      : weighted([\n        [() => ({ min: pick([7, 8, 9, 10]) }), 60],\n        [() => pick([5, 9, 10]), 25],\n        [() => pick([{ min: 4, max: 5 }, { min: 9, max: 10 }]), 15],\n      ]))();\n  },\n  start_time: (kind, session) => {\n    if (session === 'sáng') return kind === 'prefer' ? { min: between('08:00', '10:30') } : { max: between('07:30', '08:30') };\n    if (session === 'chiều') return kind === 'prefer' ? { min: between('13:30', '15:00') } : { max: between('13:00', '14:00') };\n    return (kind === 'prefer'\n      ? weighted([\n        [() => ({ min: between('07:30', '14:00') }), 75],\n        [() => pick(PERIOD_STARTS), 10],\n        [() => { const a = between('07:30', '10:00'); return { min: a, max: later(a, 60, 180) }; }, 15],\n      ])\n      : weighted([\n        [() => ({ max: between('07:00', '09:30') }), 70],\n        [() => pick(['07:30', '13:00']), 15],\n        [() => ({ min: between('15:00', '17:00') }), 15],\n      ]))();\n  },\n  end_time: (kind, session) => {\n    if (session === 'sáng') return kind === 'prefer' ? { max: between('10:00', '12:00') } : { min: between('11:00', '12:00') };\n    if (session === 'chiều') return kind === 'prefer' ? { max: between('15:00', '17:00') } : { min: between('16:00', '18:00') };\n    return (kind === 'prefer'\n      ? weighted([\n        [() => ({ max: between('10:00', '17:30') }), 85],\n        [() => { const a = between('10:00', '15:00'); return { min: a, max: later(a, 60, 120) }; }, 15],\n      ])\n      : weighted([\n        [() => ({ min: between('15:30', '18:00') }), 85],\n        [() => { const a = between('11:00', '12:00'); return { min: a, max: later(a, 30, 60) }; }, 15],\n      ]))();\n  },\n};\n\nfunction makeSlot() {\n  const level = weighted(cfg.levelWeights);\n  const where = weighted(cfg.scopePlan[t.attr]);\n  let scope = null;\n  let value = null;\n  let teacher = null;\n  if (t.attr === 'teacher') {\n    const c = pick(pools.teacher);\n    teacher = pick(c.teachers);\n    if (where === 'course') scope = { course: c.name };\n  } else if (t.attr === 'class_group') {\n    const c = pick(pools.group);\n    const max = where === 'course' ? c.maxGroup : 10;\n    value = Math.random() < 0.75 ? 1 + rnd(max) : distinct(2, () => 1 + rnd(max)).sort((a, b) => a - b);\n    if (where === 'course') scope = { course: c.name };\n  } else {\n    if (where === 'course') scope = { course: pick(t.attr === 'language' ? pools.english : pools.all).name };\n    if (where === 'day') scope = { day: pick(SCHOOL_DAYS) };\n    if (where === 'session') scope = { session: pick(['sáng', 'chiều']) };\n    value = GEN[t.attr](t.kind, scope && scope.session);\n  }\n  return { level, scope, value, teacher };\n}\n\n// ---------- Mô tả slot cho AI ----------\nconst LEVEL_TEXT = {\n  normal: t.kind === 'prefer'\n    ? 'normal — từ nhẹ: muốn, thích, ưu tiên, mong, nếu được, nếu có thể'\n    : 'normal — từ nhẹ: không muốn, không thích, tránh, hạn chế, nếu được thì đừng',\n  high: 'high — phải có một trong: \"rất muốn\", \"rất cần\", \"rất mong\", \"rất không muốn\", \"quan trọng nhất\", \"ưu tiên hàng đầu\"',\n  must: 'must — phải có một trong: \"chỉ\", \"bắt buộc\", \"phải\", \"không thể\", \"nhất định\", \"tuyệt đối\"',\n};\n\nfunction scopeText(scope) {\n  if (!scope) return 'toàn bộ lịch (không nhắc môn, thứ hay buổi nào)';\n  if (scope.course) return `môn \"${scope.course}\" (nêu đúng tên môn này)`;\n  if (scope.day) return `các lớp vào ${scope.day}`;\n  return `các lớp buổi ${scope.session}`;\n}\n\nfunction timeSay(hm) {\n  const [h, m] = hm.split(':').map(Number);\n  const forms = [`${h}h${m ? String(m).padStart(2, '0') : ''}`, `${h} giờ${m ? ` ${m}` : ''}`];\n  if (h > 12) forms.push(`${h - 12} giờ${m ? ` ${m}` : ''} chiều`);\n  return forms.map((f) => `\"${f}\"`).join(' / ');\n}\n\nconst SESSION_TEXT = {\n  'sáng': 'buổi sáng (câu nói \"sáng\" hoặc \"buổi sáng\")',\n  'chiều': 'buổi chiều (câu nói \"chiều\" hoặc \"buổi chiều\")',\n  'sáng sớm': 'sáng sớm (câu phải có cụm \"sáng sớm\", không nói tiết)',\n  'chiều muộn': 'chiều muộn (câu phải có cụm \"chiều muộn\" hoặc \"cuối buổi chiều\", không nói tiết)',\n};\n\nfunction periodBound(v) {\n  const start = t.attr === 'start_period';\n  const verb = start ? 'bắt đầu' : 'kết thúc';\n  if (typeof v === 'number') return `lớp ${verb} đúng ở tiết ${v} (viết \"${verb} ở tiết ${v}\")`;\n  if (v.min != null && v.max != null) return `lớp ${verb} trong khoảng tiết ${v.min} đến tiết ${v.max}`;\n  if (v.min != null) {\n    return start\n      ? `lớp bắt đầu từ tiết ${v.min} trở đi (viết \"từ tiết ${v.min}\" hoặc \"không sớm hơn tiết ${v.min}\"; KHÔNG viết \"sau tiết …\")`\n      : `lớp kết thúc từ tiết ${v.min} trở đi (viết \"học tới tiết ${v.min}\" hoặc \"kết thúc ở tiết ${v.min} hoặc muộn hơn\")`;\n  }\n  const before = v.max < 10 ? `\"${start ? 'bắt đầu' : 'xong'} trước tiết ${v.max + 1}\" hoặc ` : '';\n  return start\n    ? `lớp bắt đầu muộn nhất ở tiết ${v.max} (viết ${before}\"bắt đầu muộn nhất tiết ${v.max}\")`\n    : `lớp kết thúc muộn nhất ở tiết ${v.max} (viết ${before}\"học đến tiết ${v.max} là xong\")`;\n}\n\nfunction timeBound(v) {\n  const start = t.attr === 'start_time';\n  const verb = start ? 'bắt đầu' : 'kết thúc';\n  if (typeof v === 'string') return `lớp ${verb} lúc ${v} (giờ viết ${timeSay(v)})`;\n  if (v.min && v.max) return `lớp ${verb} trong khoảng ${v.min} đến ${v.max} (giờ viết như ${timeSay(v.min)} … ${timeSay(v.max)})`;\n  if (v.min) return `lớp ${verb} sau ${v.min} (viết \"${start ? 'bắt đầu' : 'kết thúc'} sau …\" hoặc \"từ … trở đi\"; giờ viết ${timeSay(v.min)})`;\n  return start\n    ? `lớp bắt đầu trước ${v.max} (viết \"bắt đầu trước …\" hoặc \"học trước …\"; giờ viết ${timeSay(v.max)})`\n    : `lớp kết thúc trước ${v.max} (viết \"về trước …\", \"tan học trước …\" hoặc \"xong trước …\"; giờ viết ${timeSay(v.max)})`;\n}\n\nfunction condText(s) {\n  const v = s.value;\n  switch (t.attr) {\n    case 'teacher': {\n      const w = s.teacher.split(' ');\n      return `học với giảng viên ${s.teacher} (gọi theo cách sinh viên hay gọi: họ tên đầy đủ, \"${w.slice(-2).join(' ')}\" hoặc \"${w[w.length - 1]}\", có thể thêm \"thầy\"/\"cô\")`;\n    }\n    case 'class_group':\n      return Array.isArray(v) ? `nhóm ${v[0]} ${t.kind === 'prefer' ? 'hoặc' : 'và'} nhóm ${v[1]}` : `nhóm ${v}`;\n    case 'language':\n      return `lớp dạy bằng ${v}`;\n    case 'day': {\n      if (v === 'cuối tuần') return 'học vào cuối tuần (câu phải có cụm \"cuối tuần\")';\n      if (v === 'ngày thường') return 'học vào ngày thường, thứ 2 đến thứ 6 (câu phải có cụm \"ngày thường\" hoặc \"các ngày trong tuần\")';\n      const list = Array.isArray(v) ? v : [v];\n      return `học vào ${list.join(t.kind === 'prefer' ? ' hoặc ' : ' và ')} (có thể viết \"thứ 4\", \"thứ Tư\", \"T4\"…)`;\n    }\n    case 'session':\n      return `học ${SESSION_TEXT[v]}`;\n    case 'periods':\n      if (typeof v === 'number') return `học tiết ${v}`;\n      if (Array.isArray(v)) return `học các tiết ${v.join(', ')} (liệt kê từng tiết)`;\n      return `học trong khoảng tiết ${v.min} đến tiết ${v.max} (viết \"từ tiết ${v.min} đến tiết ${v.max}\" hoặc \"tiết ${v.min}-${v.max}\")`;\n    case 'start_period':\n    case 'end_period':\n      return periodBound(v);\n    default:\n      return timeBound(v);\n  }\n}\n\nconst nSlots = need + Math.ceil(need / 5); // dư một ít để bù câu bị loại\nconst slots = Array.from({ length: nSlots }, makeSlot);\nconst style = cfg.styles[(attempt - 1 + t.stt) % cfg.styles.length];\n\nconst lines = slots.map((s, i) => [\n  `${i + 1}. mức độ: ${LEVEL_TEXT[s.level]}`,\n  `   phạm vi: ${scopeText(s.scope)}`,\n  `   ${t.kind === 'prefer' ? 'MUỐN' : 'TRÁNH'}: ${condText(s)}`,\n].join('\\n'));\n\nconst shown = sample(existing, 25);\nconst prompt = [\n  `LOẠI: ${t.key} — ${t.desc}`,\n  `PHONG CÁCH LẦN NÀY: ${style.text}`,\n  '',\n  `Viết đúng ${nSlots} câu, câu thứ i ứng với slot i:`,\n  ...lines,\n  '',\n  shown.length ? `Đã có ${count} câu cho loại này. Không viết lại hay chỉ đổi vài chữ của các câu sau:\\n${shown.map((s) => `- ${s}`).join('\\n')}\\n` : '',\n  `Trả về đúng một JSON array ${nSlots} phần tử: [{\"slot\": 1, \"sentence\": \"...\"}, ...]`,\n].join('\\n');\n\nreturn [{ json: { ...base, style: style.name, slots, existing, prompt } }];"
+      },
+      "id": "2dc5755c-ae52-467f-bfe5-a67f6dbbb999",
+      "name": "Compute Batch",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1540,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "505c5305-2a61-4739-b1d3-7f8c468a7089",
+                    "leftValue": "={{ $('Compute Batch').first().json.action }}",
+                    "rightValue": "generate",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "generate"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "7ddba957-5f19-458b-bd00-0b0b9b3fecb7",
+                    "leftValue": "={{ $('Compute Batch').first().json.action }}",
+                    "rightValue": "next_type",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "next_type"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "f409d243-7c77-4aa4-9a6e-ae6e56e599de",
+                    "leftValue": "={{ $('Compute Batch').first().json.action }}",
+                    "rightValue": "finished",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "finished"
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra",
+          "renameFallbackOutput": "Unexpected"
+        }
+      },
+      "id": "3fc10d00-bb33-4102-a6cd-d867187560f7",
+      "name": "Route",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        1760,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Compute Batch').first().json.prompt }}",
+        "options": {
+          "systemMessage": "Bạn tạo dữ liệu huấn luyện cho hệ thống xếp thời khoá biểu của sinh viên Trường Đại học Công nghệ Thông tin và Truyền thông Việt – Hàn (VKU). Mỗi lần bạn nhận một danh sách slot. Với mỗi slot, viết MỘT câu tiếng Việt tự nhiên mà sinh viên gõ vào ô yêu cầu để nói đúng mong muốn của slot đó. Câu phải khớp slot hoàn toàn.\n\nKiến thức nền:\n- Một ngày có 10 tiết, mỗi tiết 50 phút. Giờ bắt đầu: tiết 1 07:30, tiết 2 08:30, tiết 3 09:30, tiết 4 10:30, tiết 5 11:30, tiết 6 13:00, tiết 7 14:00, tiết 8 15:00, tiết 9 16:00, tiết 10 17:00.\n- Buổi sáng là tiết 1–5, buổi chiều là tiết 6–10, sáng sớm là tiết 1–2, chiều muộn là tiết 8–10. Không có buổi tối. Lịch học từ thứ 2 đến thứ 7.\n- Mỗi môn có nhiều nhóm lớp (nhóm 1, nhóm 2…); mỗi nhóm do một giảng viên dạy, bằng tiếng Việt hoặc tiếng Anh.\n\nQuy tắc:\n1. Mỗi slot đúng một câu, chỉ chứa đúng một yêu cầu của slot. Không thêm thứ, buổi, tiết, giờ, môn, giảng viên, nhóm, phòng, khu hay mong muốn nào khác.\n2. MUỐN: câu thể hiện mong muốn có điều kiện đó, không dùng \"không muốn\", \"tránh\". TRÁNH: câu thể hiện ý không muốn / tránh điều kiện đó (không, tránh, né, hạn chế, ngại…). Không đảo nghĩa: TRÁNH \"lớp bắt đầu trước 8 giờ\" phải viết kiểu \"không muốn học trước 8 giờ\", không được viết thành \"muốn bắt đầu sau 8 giờ\".\n3. Giữ đúng đơn vị của slot: slot nói giờ thì câu nói giờ (không có chữ \"tiết\"); slot nói tiết thì câu nói tiết (không nói giờ); slot nói buổi thì câu nói buổi (không nói tiết hay giờ). Làm theo cách viết gợi ý trong ngoặc của slot.\n4. Mức độ:\n   - normal: chỉ dùng từ nhẹ (muốn, thích, ưu tiên, mong, nếu được, nếu có thể, không muốn, không thích, tránh, hạn chế). Không dùng \"rất\", \"chỉ\", \"phải\", \"bắt buộc\", \"nhất định\", \"tuyệt đối\", \"không thể\", \"quan trọng nhất\", \"ưu tiên hàng đầu\".\n   - high: phải có một trong \"rất muốn\", \"rất cần\", \"rất mong\", \"rất không muốn\", \"quan trọng nhất\", \"ưu tiên hàng đầu\"; không dùng từ của must.\n   - must: phải có một trong \"chỉ\", \"bắt buộc\", \"phải\", \"không thể\", \"nhất định\", \"tuyệt đối\".\n   - Phần lý do (nếu có) cũng không dùng các từ khoá mức độ ở trên, kể cả \"phải\".\n5. Phạm vi:\n   - Môn: câu phải có đúng tên môn của slot (được viết thường).\n   - Thứ / buổi: nói như điều kiện áp dụng (\"Thứ 4 thì…\", \"Hôm thứ 4…\", \"Các lớp buổi chiều…\"), không gộp thành một cụm với điều kiện chính kiểu \"học sáng thứ 4\" (cụm đó nghĩa là muốn cả thứ lẫn buổi).\n   - \"toàn bộ lịch\": không nhắc môn, thứ hay buổi nào.\n6. Không dùng \"riêng\", \"trừ\", \"ngoại trừ\", \"ngoài ra\". Không nhắc bạn bè, đổi khu, học online.\n7. Viết số bằng chữ số (tiết 3, nhóm 2, 10 giờ). Viết tiếng Việt có dấu.\n8. Các câu phải khác nhau rõ rệt về từ ngữ và cấu trúc, không mở đầu liên tục bằng cùng một cụm, không lặp lại các câu đã có được liệt kê.\n\nChỉ trả về một JSON array, không markdown, không giải thích:\n[{\"slot\": 1, \"sentence\": \"...\"}, {\"slot\": 2, \"sentence\": \"...\"}]",
+          "maxIterations": 3
+        }
+      },
+      "id": "d307ba9a-6752-4eaf-bf57-fa4250216f40",
+      "name": "AI Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        2000,
+        -200
+      ],
+      "onError": "continueRegularOutput",
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-flash-latest",
+        "options": {
+          "temperature": 0.9,
+          "maxOutputTokens": 16384
+        }
+      },
+      "id": "8b6041fa-1e33-46df-8c3b-a4e8442cc96a",
+      "name": "Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        2000,
+        20
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Đọc JSON array AI trả về, kiểm tra từng câu theo slot của nó và tạo các dòng để ghi vào tab.\n// Câu bị loại được ghi kèm lý do trong `rejected` (xem ở output của node này).\nconst settings = $('Settings').first().json;\nconst cfg = $('Dataset Config').first().json;\nconst t = $('Current Type').first().json;\nconst ctx = $('Compute Batch').first().json;\nconst agent = $input.first().json;\n\nconst HEADER = ['id', 'type', 'sentence', 'style', 'model', 'created_at'];\n\n// ---------- Chuẩn hoá chuỗi ----------\n// fold: bỏ dấu, chữ thường, chỉ giữ chữ/số; low: giữ dấu, bỏ dấu câu. Cả hai có khoảng trắng hai đầu.\nconst fold = (s) => ` ${String(s).normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[đĐ]/g, 'd')\n  .toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()} `;\nconst low = (s) => ` ${String(s).normalize('NFC').toLowerCase().replace(/[^\\p{L}\\p{N}]+/gu, ' ').trim()} `;\nconst norm = (s) => low(s).trim();\n\nfunction extractArray(raw) {\n  if (Array.isArray(raw)) return raw;\n  const text = String(raw || '').replace(/```(?:json)?/gi, '');\n  const a = text.indexOf('[');\n  const b = text.lastIndexOf(']');\n  if (a < 0 || b <= a) return [];\n  try {\n    const v = JSON.parse(text.slice(a, b + 1));\n    return Array.isArray(v) ? v : [];\n  } catch (e) {\n    return [];\n  }\n}\n\n// ---------- Từ khoá ----------\nconst MUST_RE = / (chỉ|bắt buộc|phải|không thể|nhất định|tuyệt đối|nhất quyết) /;\nconst NOT_MUST_RE = / (không phải|chẳng phải|đâu phải|phải không|phải chăng) /g;\nconst HIGH_RE = / rất (không )?(muốn|cần|mong) | quan trọng nhất | ưu tiên hàng đầu | ưu tiên số (1|một) | ưu tiên cao nhất /;\nconst INTENSE_RE = / (rất|cực kỳ|cực kì|vô cùng|hết sức) (không )?(muốn|cần|mong|thích|ghét|ngại|sợ|ưng) /;\nconst NEG_RE = / (không|ko|chẳng|chả|đừng|tránh|né|hạn chế|ngại|ghét|khỏi) /;\nconst PREFER_NEG_RE = / (không|ko|chẳng|chả|đừng) (muốn|thích|học|ưng|mong|xếp|cho) | tránh | né | ghét | ngại /;\nconst TEACHER_WORD_RE = / (thầy|cô|giảng viên|gv) /;\nconst PERIOD_WORD_RE = / tiết /;\nconst TIME_RE = /\\d{1,2}\\s*(giờ|h\\d{0,2}|g\\d{0,2})(?!\\p{L})|\\d{1,2}:\\d{2}/u;\n\n// Thứ (trên chuỗi fold)\nconst DAY_RE = {\n  'thứ 2': / thu (2|hai) | t2 /, 'thứ 3': / thu (3|ba) | t3 /, 'thứ 4': / thu (4|tu) | t4 /,\n  'thứ 5': / thu (5|nam) | t5 /, 'thứ 6': / thu (6|sau) | t6 /, 'thứ 7': / thu (7|bay) | t7 /,\n  'chủ nhật': / chu nhat | cn /,\n};\nconst DAY_GROUP_RE = { 'cuối tuần': / cuoi tuan /, 'ngày thường': / ngay thuong | cac ngay trong tuan / };\nconst WEEKDAY_KEYS = ['thứ 2', 'thứ 3', 'thứ 4', 'thứ 5', 'thứ 6'];\nconst daysIn = (f) => Object.keys(DAY_RE).filter((d) => DAY_RE[d].test(f));\nconst anyDayGroup = (f) => Object.values(DAY_GROUP_RE).some((re) => re.test(f));\n\n// Buổi (trên chuỗi low)\nfunction sessionsIn(l) {\n  const found = new Set();\n  let rest = l.replace(/ tối (đa|thiểu) /g, ' ');\n  if (/ (sáng sớm|đầu buổi sáng|sáng thật sớm) /.test(rest)) { found.add('sáng sớm'); rest = rest.replace(/ (sáng sớm|đầu buổi sáng|sáng thật sớm) /g, ' '); }\n  if (/ (chiều muộn|cuối buổi chiều|cuối chiều) /.test(rest)) { found.add('chiều muộn'); rest = rest.replace(/ (chiều muộn|cuối buổi chiều|cuối chiều) /g, ' '); }\n  if (/ sáng /.test(rest)) found.add('sáng');\n  if (/ chiều /.test(rest)) found.add('chiều');\n  if (/ (trưa|tối) /.test(rest)) found.add('khác');\n  return found;\n}\nconst sameSet = (a, b) => a.size === b.size && [...a].every((x) => b.has(x));\n\n// Tên môn để phát hiện câu nhắc môn khi không có phạm vi môn. So có dấu: \"Học sâu\" ≠ \"học sau 10 giờ\"\nconst courseNames = cfg.courses.map((c) => low(c[0])).filter((n) => n.trim().length >= 6);\n\n// Các số trong câu (chuỗi fold), bỏ số của \"thứ 2\"; \"9h30\" → 9, 30; \"T2\" không tính\nfunction numbersIn(f) {\n  const toks = f.trim().split(' ');\n  const out = new Set();\n  toks.forEach((tok, i) => {\n    if (toks[i - 1] === 'thu') return;\n    if (/^\\d+$/.test(tok)) out.add(Number(tok));\n    else if (/^\\d+[hg]\\d*$/.test(tok)) tok.match(/\\d+/g).forEach((d) => out.add(Number(d)));\n  });\n  return out;\n}\nconst hourForms = (hm) => { const h = Number(hm.split(':')[0]); return h > 12 ? [h, h - 12] : [h]; };\n\n// Tên giảng viên: phần đuôi dài nhất của họ tên xuất hiện trong câu (\"Mai Nga\", \"Nga\", …)\nfunction teacherAsSaid(full, sentenceFold) {\n  const words = full.split(/\\s+/);\n  for (let k = words.length; k >= 1; k--) {\n    const tail = words.slice(-k).join(' ');\n    if (sentenceFold.includes(fold(tail))) return tail;\n  }\n  return null;\n}\n\n// Trả về null nếu câu hợp lệ, ngược lại là lý do loại. said: tên giảng viên như trong câu (loại teacher)\nfunction check(sentence, slot, said) {\n  const scope = slot.scope || {};\n  const lFull = low(sentence);\n  const f = fold(sentence);\n  const words = lFull.trim().split(' ').length;\n  if (words < 4 || words > 45) return `độ dài ${words} từ`;\n  if (/[{}\\n]|json/i.test(sentence)) return 'có ký tự lạ';\n\n  // Phạm vi môn. Các kiểm tra từ khoá chạy trên câu đã bỏ tên môn và tên giảng viên:\n  // \"Khởi nghiệp và đổi mới sáng tạo\" không phải buổi sáng, \"(1 tín chỉ)\" không phải \"chỉ\".\n  let fNoCourse = f;\n  let l = lFull;\n  let raw = sentence.toLowerCase();\n  if (scope.course) {\n    const c = fold(scope.course);\n    if (!f.includes(c)) return 'thiếu tên môn của phạm vi';\n    fNoCourse = f.replace(c, ' ');\n    l = l.replace(low(scope.course), ' ');\n    raw = raw.replace(scope.course.toLowerCase(), ' ');\n  } else if (courseNames.some((n) => lFull.includes(n))) {\n    return 'nhắc tên môn khi phạm vi là toàn bộ lịch';\n  }\n  if (said) l = l.replace(low(said), ' ');\n  if (/ (riêng|trừ|ngoại trừ|ngoài ra) /.test(l)) return 'có từ ngoại lệ';\n\n  // Mức độ\n  const isMust = MUST_RE.test(l.replace(NOT_MUST_RE, ' '));\n  const isHigh = HIGH_RE.test(l);\n  if (slot.level === 'must' && !isMust) return 'must nhưng thiếu từ khoá must';\n  if (slot.level === 'high' && (!isHigh || isMust)) return 'high nhưng thiếu từ khoá high hoặc có từ khoá must';\n  if (slot.level === 'normal' && (isMust || isHigh || INTENSE_RE.test(l))) return 'normal nhưng có từ khoá high/must';\n\n  // prefer / avoid\n  if (t.kind === 'avoid' && !NEG_RE.test(l)) return 'avoid nhưng không có ý tránh';\n  if (t.kind === 'prefer' && PREFER_NEG_RE.test(l)) return 'prefer nhưng viết dạng phủ định';\n\n  // Thứ\n  const days = daysIn(fNoCourse);\n  if (t.attr === 'day') {\n    const v = slot.value;\n    if (v === 'cuối tuần' || v === 'ngày thường') {\n      if (!DAY_GROUP_RE[v].test(f)) return `thiếu cụm \"${v}\"`;\n      const allowed = v === 'cuối tuần' ? ['thứ 7', 'chủ nhật'] : WEEKDAY_KEYS;\n      if (days.some((d) => !allowed.includes(d))) return 'nhắc thêm thứ khác';\n    } else {\n      const want = new Set(Array.isArray(v) ? v : [v]);\n      if (!sameSet(new Set(days), want)) return `thứ trong câu (${days.join(', ') || 'không có'}) khác slot`;\n      if (anyDayGroup(f)) return 'nhắc thêm nhóm ngày';\n    }\n  } else if (scope.day) {\n    if (days.length !== 1 || days[0] !== scope.day || anyDayGroup(f)) return 'thứ của phạm vi không khớp';\n  } else if (days.length || anyDayGroup(f)) {\n    return 'nhắc thứ khi không có phạm vi thứ';\n  }\n\n  // Buổi: loại giờ được phép có \"10 giờ sáng\"\n  const sessions = sessionsIn(l);\n  const timeAttr = t.attr === 'start_time' || t.attr === 'end_time';\n  if (t.attr === 'session') {\n    if (!sameSet(sessions, new Set([slot.value]))) return `buổi trong câu (${[...sessions].join(', ') || 'không có'}) khác slot`;\n  } else if (scope.session) {\n    if (!sessions.has(scope.session) || (!timeAttr && sessions.size !== 1)) return 'buổi của phạm vi không khớp';\n  } else if (!timeAttr && sessions.size) {\n    return 'nhắc buổi khi không có phạm vi buổi';\n  }\n\n  // Đơn vị: giờ ↔ tiết\n  const hasPeriod = PERIOD_WORD_RE.test(l);\n  const hasTime = TIME_RE.test(raw);\n  if (timeAttr) {\n    if (!hasTime || hasPeriod) return 'loại giờ nhưng thiếu giờ hoặc có chữ \"tiết\"';\n  } else if (['periods', 'start_period', 'end_period'].includes(t.attr)) {\n    if (!hasPeriod || hasTime) return 'loại tiết nhưng thiếu chữ \"tiết\" hoặc có giờ';\n  } else if (hasPeriod || hasTime) {\n    return 'nhắc tiết/giờ ở loại không liên quan';\n  }\n\n  // Giảng viên\n  if (t.attr !== 'teacher' && TEACHER_WORD_RE.test(l)) return 'nhắc giảng viên ở loại khác';\n\n  // Số\n  const nums = numbersIn(fNoCourse);\n  const v = slot.value;\n  if (t.attr === 'class_group') {\n    const want = new Set(Array.isArray(v) ? v : [v]);\n    if (!sameSet(nums, want)) return `số nhóm trong câu (${[...nums].join(', ')}) khác slot`;\n  }\n  if (t.attr === 'periods') {\n    const want = new Set(typeof v === 'number' ? [v] : Array.isArray(v) ? v : [v.min, v.max]);\n    if (!sameSet(nums, want)) return `số tiết trong câu (${[...nums].join(', ')}) khác slot`;\n    if (/ (trước|sau) tiết /.test(l)) return 'dùng \"trước/sau tiết\" cho tập tiết';\n  }\n  if (t.attr === 'start_period' || t.attr === 'end_period') {\n    const exact = typeof v === 'number' ? [v] : [];\n    const bounds = typeof v === 'number' ? [] : [v.min, v.max].filter((x) => x != null);\n    const allowed = new Set([...exact, ...bounds, ...(v.max != null ? [v.max + 1] : [])]);\n    if ([...nums].some((n) => !allowed.has(n))) return `số tiết trong câu (${[...nums].join(', ')}) khác slot`;\n    if (v.min != null && !nums.has(v.min)) return 'thiếu tiết của cận dưới';\n    if (v.max != null && !nums.has(v.max) && !nums.has(v.max + 1)) return 'thiếu tiết của cận trên';\n    if (exact.length && !nums.has(exact[0])) return 'thiếu tiết';\n    if (/ sau tiết /.test(l)) return 'dùng \"sau tiết\" (mơ hồ)';\n    for (const m of l.matchAll(/ (trước|sớm hơn) tiết (\\d+) /g)) {\n      if (v.max == null || Number(m[2]) !== v.max + 1) return `\"${m[1]} tiết ${m[2]}\" không khớp cận trên`;\n    }\n    for (const m of l.matchAll(/ (từ|tới|đến|muộn nhất|trễ nhất|chậm nhất)( là)? tiết (\\d+) /g)) {\n      if (![...exact, ...bounds].includes(Number(m[3]))) return `\"${m[1]} tiết ${m[3]}\" không khớp slot`;\n    }\n    // Từ chỉ hướng phải khớp loại cận\n    const dir = exact.length ? / (từ|trước|sớm hơn|tới|đến|muộn nhất|trễ nhất|chậm nhất)( là)? tiết | trở đi | hoặc (muộn|sớm) hơn /\n      : v.max == null ? / không muộn hơn | (trước|muộn nhất|trễ nhất|chậm nhất)( là)? tiết /\n        : v.min == null ? / từ tiết | trở đi | không sớm hơn | hoặc muộn hơn / : null;\n    if (dir && dir.test(l)) return 'từ chỉ hướng (từ/trước/đến…) không khớp loại cận';\n  }\n  if (timeAttr) {\n    const times = typeof v === 'string' ? [v] : [v.min, v.max].filter(Boolean);\n    const allowed = new Set([0]);\n    for (const hm of times) { hourForms(hm).forEach((h) => allowed.add(h)); allowed.add(Number(hm.split(':')[1])); }\n    if ([...nums].some((n) => !allowed.has(n))) return `số giờ trong câu (${[...nums].join(', ')}) khác slot`;\n    if (times.some((hm) => !hourForms(hm).some((h) => nums.has(h)))) return 'thiếu giờ của slot';\n    const before = / (trước|muộn nhất|chậm nhất|trễ nhất)( là)?( lúc)? \\d/;\n    const after = / (sau|từ)( lúc)? \\d/;\n    const exactT = typeof v === 'string';\n    if ((exactT || !v.max) && before.test(l)) return '\"trước …\" nhưng slot không có cận trên';\n    if ((exactT || !v.min) && after.test(l)) return '\"sau/từ …\" nhưng slot không có cận dưới';\n  }\n\n  // Giá trị chữ\n  if (t.attr === 'language') {\n    const want = slot.value === 'tiếng Anh' ? / tieng anh | english / : / tieng viet | vietnamese /;\n    const other = slot.value === 'tiếng Anh' ? / tieng viet | vietnamese / : / tieng anh | english /;\n    if (!want.test(fNoCourse) || other.test(fNoCourse)) return 'ngôn ngữ trong câu khác slot';\n  }\n  return null;\n}\n\n// ---------- Duyệt kết quả ----------\nconst items = extractArray(agent.output ?? agent.text);\nconst seen = new Set(ctx.existing.map(norm));\nconst accepted = [];\nconst rejected = [];\nif (agent.error) rejected.push({ slot: null, reason: `AI lỗi: ${String(agent.error.message || agent.error).slice(0, 200)}` });\nif (!items.length && !agent.error) rejected.push({ slot: null, reason: 'không đọc được JSON array', raw: String(agent.output || '').slice(0, 300) });\n\nfor (const it of items) {\n  if (accepted.length >= ctx.need) break;\n  const slot = ctx.slots[Number(it && it.slot) - 1];\n  const sentence = String((it && it.sentence) || '').normalize('NFC').replace(/\\s+/g, ' ').trim();\n  if (!slot || !sentence) { rejected.push({ slot: it && it.slot, reason: 'thiếu slot/sentence' }); continue; }\n  const key = norm(sentence);\n  if (seen.has(key)) { rejected.push({ slot: it.slot, sentence, reason: 'trùng' }); continue; }\n\n  const said = t.attr === 'teacher' ? teacherAsSaid(slot.teacher, fold(sentence)) : null;\n  let reason = t.attr === 'teacher' && !said ? `không thấy tên giảng viên ${slot.teacher}` : null;\n  if (!reason) {\n    try { reason = check(sentence, slot, said); } catch (e) { reason = `lỗi kiểm tra: ${e.message}`; }\n  }\n  if (reason) { rejected.push({ slot: it.slot, sentence, reason }); continue; }\n\n  seen.add(key);\n  accepted.push([\n    `${t.key}_${String(ctx.count + accepted.length + 1).padStart(4, '0')}`,\n    t.key,\n    sentence,\n    ctx.style,\n    settings.modelLabel || '',\n    new Date().toISOString(),\n  ]);\n}\n\nconst values = accepted.length ? (ctx.needHeader ? [HEADER, ...accepted] : accepted) : [];\nreturn [{\n  json: {\n    typeKey: t.key,\n    attempt: ctx.attempt,\n    returned: items.length,\n    added: accepted.length,\n    rejectedCount: rejected.length,\n    rejected,\n    rowCount: values.length,\n    values,\n  },\n}];"
+      },
+      "id": "e8c217c1-726f-449d-ab4a-9f344ac0804e",
+      "name": "Parse & Validate",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2360,
+        -200
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "96782c61-5d03-4ec1-a8dc-b146620084ad",
+              "leftValue": "={{ $('Parse & Validate').first().json.rowCount }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "d1cfa658-c61d-4606-9b53-31ebf49c74dd",
+      "name": "Has Rows?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2580,
+        -200
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://sheets.googleapis.com/v4/spreadsheets/{{ $('Settings').first().json.spreadsheetId }}/values/{{ encodeURIComponent(\"'\" + $('Current Type').first().json.sheetName + \"'!A1\") }}:append?valueInputOption=RAW&insertDataOption=INSERT_ROWS",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "googleSheetsOAuth2Api",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ values: $('Parse & Validate').first().json.values }) }}",
+        "options": {}
+      },
+      "id": "0c40571b-f5dd-46dc-a915-e496f5fb366d",
+      "name": "Append Rows",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2800,
+        -300
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "jsCode": "// Kết quả cuối: mỗi type một dòng (số câu trong tab, số lượt gọi AI lần chạy này, trạng thái).\nreturn $('Compute Batch').first().json.results.map((r) => ({ json: r }));"
+      },
+      "id": "e6aa877b-d0f7-447d-86a0-201ce4f7760e",
+      "name": "Summary",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2000,
+        220
+      ]
+    },
+    {
+      "parameters": {
+        "errorMessage": "={{ 'Compute Batch trả về action không hợp lệ: ' + $('Compute Batch').first().json.action }}"
+      },
+      "id": "812a1488-0cf8-42ed-826e-cb2424384a8f",
+      "name": "Stop: Unexpected Action",
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        2000,
+        420
+      ]
+    }
+  ],
+  "connections": {
+    "Execute Workflow": {
+      "main": [
+        [
+          {
+            "node": "Settings",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Settings": {
+      "main": [
+        [
+          {
+            "node": "Dataset Config",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Dataset Config": {
+      "main": [
+        [
+          {
+            "node": "Build Types",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Types": {
+      "main": [
+        [
+          {
+            "node": "Current Type",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Current Type": {
+      "main": [
+        [
+          {
+            "node": "Create Tab",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Tab": {
+      "main": [
+        [
+          {
+            "node": "Read Rows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Rows": {
+      "main": [
+        [
+          {
+            "node": "Compute Batch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Compute Batch": {
+      "main": [
+        [
+          {
+            "node": "Route",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Route": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Current Type",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Summary",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Stop: Unexpected Action",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Parse & Validate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse & Validate": {
+      "main": [
+        [
+          {
+            "node": "Has Rows?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Has Rows?": {
+      "main": [
+        [
+          {
+            "node": "Append Rows",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Read Rows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append Rows": {
+      "main": [
+        [
+          {
+            "node": "Read Rows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "meta": {
+    "templateCredsSetupCompleted": false
+  }
+}
