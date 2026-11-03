@@ -48,6 +48,7 @@ Phần A làm bước [1], bước [2], và định nghĩa ngữ nghĩa mà bư�
 | D16 | ID ràng buộc do server gán (theo thứ tự trong mảng); `version` mặc định `"2.0"` | LLM sinh ít hơn | R9, R11 |
 | D17 | Mọi chỉ số được định nghĩa sao cho tuyến tính hoá được | So sánh công bằng giữa thuật toán chính xác và metaheuristic (Phần B) | R5 |
 | D18 | Trọng số = trọng số lớn nhất của các thuộc tính trong điều kiện và `scope` (trừ `course`), nhân 2 nếu `high` | Quy tắc đơn giản; chuyển thuộc tính qua lại giữa điều kiện và phạm vi không làm đổi điểm | R2, R4 |
+| D19 | `subjects_per_day` phạt theo bình phương độ lệch so với cận | Phạt tuyến tính chỉ đếm số ngày học: với 9 môn trên 6 ngày, lịch 4-1-1-1-1-1 và 2-2-2-1-1-1 cùng v = 3. Bình phương ưu tiên lịch chia đều | R5 |
 
 ## 3. Cấu trúc tài liệu ưu tiên (input)
 
@@ -145,7 +146,7 @@ Ghi chú:
 - `scope` của `limit` giới hạn những lớp được tính. Ví dụ `"scope": {"day": ["thứ 2", "thứ 4"]}` chỉ đo trên thứ 2 và thứ 4.
 - Hai cách viết khi sinh viên không nói con số cụ thể:
   - "Dồn lịch vào ít ngày nhất" → `{"limit": "study_days", "max": 1}`. Mỗi ngày học thêm bị phạt 1, nên tương đương với tối thiểu số ngày học.
-  - "Trải đều lịch trong tuần" → `{"limit": "subjects_per_day", "max": 1}`. Mỗi môn thêm vào cùng một ngày bị phạt 1, nên tương đương với trải ra nhiều ngày nhất.
+  - "Trải đều lịch trong tuần" → `{"limit": "subjects_per_day", "max": 1}`. Phạt bình phương (6.3) nên lịch tốt nhất là lịch chia đều nhất: ít môn hơn số ngày thì mỗi ngày một môn; 9 môn trên 6 ngày thì 2-2-2-1-1-1 (v = 3), không phải 4-1-1-1-1-1 (v = 9).
 
 ## 6. Ngữ nghĩa và cách tính phạt
 
@@ -174,7 +175,11 @@ v(c) = Σ trên các đơn vị u của chỉ số, chỉ tính lớp trong S_c,
 
 Cận nào không có thì bỏ số hạng tương ứng.
 
-Ví dụ: với `{"limit": "subjects_per_day", "max": 2}`, lịch có thứ 2 học 3 môn và thứ 4 học 1 môn thì v = (3 − 2) + 0 = 1. Thứ 4 không bị phạt vì ràng buộc không có `min`.
+Riêng `subjects_per_day` bình phương từng số hạng (D19):
+
+  max(0, m_u − max)² + max(0, min − m_u)²
+
+Ví dụ: với `{"limit": "subjects_per_day", "max": 2}`, lịch có thứ 2 học 3 môn và thứ 4 học 1 môn thì v = (3 − 2)² + 0 = 1. Thứ 4 không bị phạt vì ràng buộc không có `min`. Nếu thứ 2 học 4 môn thì v = (4 − 2)² = 4.
 
 ### 6.4 Quy tắc ngoại lệ (D10)
 
@@ -245,7 +250,7 @@ Ràng buộc 1 cụ thể hơn ràng buộc 0 và cùng nhóm `{session}`. Vì v
 | Loại | Cách tuyến tính hoá |
 |---|---|
 | `prefer` / `avoid` | v = Σ a_l · x_l, với a_l ∈ {0, 1} tính trước cho từng lớp ứng viên |
-| `subjects_per_day`, `subjects_per_session`, `periods_per_day` | m_u = Σ_{l ∈ u} hệ số_l · x_l. Biến phụ e_u ≥ m_u − max và d_u ≥ min · b_u − m_u, với b_u ∈ {0, 1} báo đơn vị u có học |
+| `subjects_per_day`, `subjects_per_session`, `periods_per_day` | m_u = Σ_{l ∈ u} hệ số_l · x_l. Biến phụ e_u ≥ m_u − max và d_u ≥ min · b_u − m_u, với b_u ∈ {0, 1} báo đơn vị u có học. Với `subjects_per_day`, e_u và d_u là số nguyên, phạt là s_u ≥ (2k − 1) · e_u − k(k − 1) với k = 1 … K (K là số môn); các mặt cắt này đúng bằng e_u² tại mọi giá trị nguyên. d_u làm tương tự |
 | `gap_periods` | Với mỗi cặp lớp (A, B) cùng ngày, A bắt đầu trước B: q_AB ≥ x_A + x_B − 1 − Σ_{C bắt đầu giữa A và B} x_C. Phạt = q_AB nhân với độ lệch của khoảng trống so với cận |
 | `consecutive_periods` | o_{d,t} = Σ x_l của các lớp phủ (ngày d, tiết t). Với mỗi cửa sổ (max + 1) tiết liên tiếp: w ≥ Σ o − max. Tổng w bằng Σ trên các khối của max(0, độ dài − max) |
 | `study_days` | y_d ≥ x_l với mọi lớp l vào ngày d; y_d ≤ Σ x_l; giá trị = Σ y_d |
