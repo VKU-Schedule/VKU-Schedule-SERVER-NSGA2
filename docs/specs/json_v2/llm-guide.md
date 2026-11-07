@@ -100,7 +100,7 @@ Ngoại lệ: "chỉ … nếu không còn lựa chọn" là `normal`.
 7. **Ý không biểu diễn được** (học cùng bạn, đổi khu giữa hai lớp…): chép nguyên văn vào `unsupported`.
 8. **Tên riêng:** nếu prompt có danh sách môn đã chọn và giảng viên, dùng đúng tên trong danh sách.
 
-## 6. Bộ dataset gồm: 20 type
+## 6. Bộ dataset gồm: 33 type
 
 Có thể đếm số loại ràng buộc ở hai mức.
 

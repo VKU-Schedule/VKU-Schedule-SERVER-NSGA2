@@ -101,7 +101,7 @@
     },
     {
       "parameters": {
-        "jsCode": "// Danh sách type cần sinh, bắt đầu từ type đầu tiên. Settings.onlyTypes (vd \"prefer_day,avoid_day\")\n// để chạy một phần; để trống = cả 20 type. Tên tab: \"[NEW] <type>\".\nconst settings = $('Settings').first().json;\nconst only = String(settings.onlyTypes || '').split(',').map((s) => s.trim()).filter(Boolean);\n\nconst types = $('Dataset Config').first().json.types\n  .filter((t) => !only.length || only.includes(t.key))\n  .map((t) => ({ ...t, sheetName: `[NEW] ${t.key}` }));\nif (!types.length) throw new Error(`onlyTypes \"${settings.onlyTypes}\" không khớp type nào`);\n\nreturn [{ json: { types, typeIndex: 0, results: [] } }];"
+        "jsCode": "// Danh sách type cần sinh, bắt đầu từ type đầu tiên. Settings.onlyTypes (vd \"prefer_day,avoid_day\")\n// để chạy một phần; để trống = cả 33 type. Tên tab: \"[NEW] <type>\".\nconst settings = $('Settings').first().json;\nconst only = String(settings.onlyTypes || '').split(',').map((s) => s.trim()).filter(Boolean);\n\nconst types = $('Dataset Config').first().json.types\n  .filter((t) => !only.length || only.includes(t.key))\n  .map((t) => ({ ...t, sheetName: `[NEW] ${t.key}` }));\nif (!types.length) throw new Error(`onlyTypes \"${settings.onlyTypes}\" không khớp type nào`);\n\nreturn [{ json: { types, typeIndex: 0, results: [] } }];"
       },
       "id": "babb22c0-0260-442a-8907-3b42e9147fa8",
       "name": "Build Types",
