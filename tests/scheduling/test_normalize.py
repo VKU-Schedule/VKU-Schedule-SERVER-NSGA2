@@ -222,7 +222,7 @@ def test_class_group_invalid(raw):
 
 def test_value_normalizers_cover_every_attribute_except_entities():
     from app.scheduling import vocab
-    assert set(n.VALUE_NORMALIZERS) | {"course", "teacher", "room"} == set(vocab.ATTRIBUTES)
+    assert set(n.VALUE_NORMALIZERS) | {"course", "teacher", "room", "review"} == set(vocab.ATTRIBUTES)
 
 
 # --- Dữ liệu lớp ----------------------------------------------------------------

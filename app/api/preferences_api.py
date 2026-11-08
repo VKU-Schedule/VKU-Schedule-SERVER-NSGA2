@@ -42,7 +42,8 @@ def validate_preferences():
     """
     Kiểm tra và chuẩn hoá tài liệu ưu tiên v2, không xếp lịch
     Dùng cho module LLM tự kiểm tra output. Tài liệu v1 (defaults / periods) được chuyển sang v2.
-    Spec: docs/specs/json_v2/design.md mục 3–9.
+    Ràng buộc `review` cần `aspect` / `sentiment` (gateway điền từ SA) và `review_stats` trong request.
+    Spec: docs/specs/json_v2/design.md mục 3–9, 17.
     ---
     tags:
       - Preferences
@@ -82,8 +83,32 @@ def validate_preferences():
                   - limit: "study_days"
                     max: 3
                     level: "high"
+                  - relation: "different_day"
+                    courses: ["Automat", "Cấu trúc dữ liệu và giải thuật"]
+                  - prefer:
+                      review: {phrase: "giảng viên dạy dễ hiểu", aspect: "ky_nang_giang_day", sentiment: "positive"}
                 unsupported:
                   - "muốn học cùng lớp với bạn Nam"
+            review_stats:
+              type: array
+              description: "Số review theo (môn, giảng viên, aspect), gateway lấy từ Review service. Cần khi có ràng buộc review; dòng sai bị bỏ kèm warning"
+              items:
+                type: object
+                properties:
+                  subject:
+                    type: string
+                  lecturer:
+                    type: string
+                  aspect:
+                    type: string
+                  positive:
+                    type: integer
+                  negative:
+                    type: integer
+                  total:
+                    type: integer
+              example:
+                - {subject: "Automat và ngôn ngữ hình thức", lecturer: "Dương Thị Mai Nga", aspect: "ky_nang_giang_day", positive: 12, negative: 1, total: 15}
     responses:
       200:
         description: Ràng buộc đã chuẩn hoá, kèm unsupported và warnings
@@ -94,7 +119,7 @@ def validate_preferences():
               type: string
             constraints:
               type: array
-              description: "NormalizedConstraint: id, kind, condition hoặc metric/min/max, scope, exclude, level, weight, source"
+              description: "NormalizedConstraint: id, kind, condition hoặc metric/min/max hoặc relation/courses, scope, exclude, level, weight, source"
               items:
                 type: object
             unsupported:
@@ -121,7 +146,8 @@ def validate_preferences():
 
     candidates, warnings = _load_candidates(current_app.db["ly_courses"], courses)
     try:
-        result = normalize_document(data["preferences"], [course["name"] for course in courses], candidates)
+        result = normalize_document(data["preferences"], [course["name"] for course in courses], candidates,
+                                    data.get("review_stats"))
     except DocumentError as exc:
         return jsonify({"error": str(exc)}), 400
 

@@ -29,7 +29,21 @@ _TYPE_NAMES: Dict[ValueType, str] = {
     ValueType.TEXT: "chuỗi",
     ValueType.INT: "số nguyên",
     ValueType.INT_OR_TEXT: "số nguyên hoặc chuỗi",
+    ValueType.REVIEW: "object {phrase, aspect, sentiment}",
 }
+
+
+class Review(BaseModel):
+    """Giảng viên theo đánh giá của sinh viên (design.md mục 17.1)."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    phrase: Annotated[str, Field(min_length=1)] = Field(
+        description="Cụm mô tả giảng viên ở dạng khẳng định, ví dụ \"giảng viên dạy dễ hiểu\". Module LLM ghi.")
+    aspect: Optional[Literal[vocab.REVIEW_ASPECTS]] = Field(
+        None, description="Khía cạnh do gateway điền từ SA service. Module LLM không ghi.")
+    sentiment: Optional[Literal[vocab.REVIEW_SENTIMENTS]] = Field(
+        None, description="Sentiment của cụm do gateway điền từ SA service. Module LLM không ghi.")
 
 
 def _range_model(bound_type: ValueType) -> Type[BaseModel]:
@@ -51,6 +65,8 @@ _RANGE_MODELS: Dict[ValueType, Type[BaseModel]] = {
 
 
 def _attribute_type(spec: AttributeSpec) -> Any:
+    if spec.value_type is ValueType.REVIEW:
+        return Review
     scalar = _SCALAR_TYPES[spec.value_type]
     values = Annotated[List[scalar], Field(min_length=1)]
     if spec.bound_type is None:
@@ -71,8 +87,11 @@ Filter: Type[BaseModel] = create_model(
 Bound = Annotated[StrictInt, Field(ge=0)]
 
 
+CourseName = Annotated[str, Field(min_length=1)]
+
+
 class Constraint(BaseModel):
-    """Một ràng buộc nguyên tử. Có đúng một trong prefer, avoid, limit."""
+    """Một ràng buộc nguyên tử. Có đúng một trong prefer, avoid, limit, relation."""
 
     model_config = ConfigDict(extra="forbid")
 
@@ -85,6 +104,14 @@ class Constraint(BaseModel):
     )
     min: Optional[Bound] = Field(None, description="Cận dưới của limit, tính cả biên.")
     max: Optional[Bound] = Field(None, description="Cận trên của limit, tính cả biên.")
+    relation: Optional[Literal[tuple(vocab.RELATIONS)]] = Field(
+        None,
+        description="Quan hệ giữa hai môn trong courses. "
+        + " ".join(f"{name}: {text}" for name, text in vocab.RELATIONS.items()),
+    )
+    courses: Optional[Annotated[List[CourseName], Field(min_length=vocab.RELATION_COURSE_COUNT,
+                                                         max_length=vocab.RELATION_COURSE_COUNT)]] = Field(
+        None, description="Đúng hai tên môn, chỉ đi với relation. Với before: môn học trước đứng đầu.")
     scope: Optional[Filter] = Field(None, description="Ràng buộc áp dụng cho những lớp nào. Thiếu = mọi lớp.")
     level: Literal[vocab.LEVELS] = Field(vocab.DEFAULT_LEVEL, description="must: bắt buộc; high: rất quan trọng; normal: mặc định.")
 
@@ -130,6 +157,8 @@ class ParsedConstraint:
             return "prefer"
         if self.constraint.avoid is not None:
             return "avoid"
+        if self.constraint.relation is not None:
+            return "relation"
         return "limit"
 
 
@@ -181,8 +210,27 @@ def _check_range(where: str, spec: AttributeSpec, value: Dict[str, Any]) -> None
         raise _ConstraintError(f"Khoảng của '{spec.name}' trong '{where}' có min ({low}) lớn hơn max ({high})")
 
 
+def _check_review(where: str, value: Any) -> None:
+    """V13 (design.md mục 17.1)."""
+    if not isinstance(value, dict):
+        raise _ConstraintError(f"'review' trong '{where}' phải là object {{phrase, aspect, sentiment}}")
+    extra = set(value) - set(Review.model_fields)
+    if extra:
+        raise _ConstraintError(f"'review' trong '{where}' chỉ có key phrase, aspect, sentiment; gặp {sorted(extra)}")
+    phrase = value.get("phrase")
+    if not isinstance(phrase, str) or not phrase.strip():
+        raise _ConstraintError(f"'review.phrase' trong '{where}' phải là chuỗi không rỗng")
+    aspect, sentiment = value.get("aspect"), value.get("sentiment")
+    if aspect is None or sentiment is None:
+        raise _ConstraintError("review chưa có aspect/sentiment (gateway chưa điền từ SA)")
+    if aspect not in vocab.REVIEW_ASPECTS:
+        raise _ConstraintError(f"'review.aspect' không thuộc {len(vocab.REVIEW_ASPECTS)} khía cạnh: {aspect!r}")
+    if sentiment not in vocab.REVIEW_SENTIMENTS:
+        raise _ConstraintError(f"'review.sentiment' phải là một trong {', '.join(vocab.REVIEW_SENTIMENTS)}, gặp {sentiment!r}")
+
+
 def _check_filter(where: str, value: Any) -> None:
-    """V4, V5 và phần V6 cần lý do rõ hơn lỗi mặc định của Pydantic."""
+    """V4, V5, V13 và phần V6 cần lý do rõ hơn lỗi mặc định của Pydantic."""
     if not isinstance(value, dict):
         raise _ConstraintError(f"'{where}' phải là object (bộ lọc)")
     if not value:
@@ -191,6 +239,13 @@ def _check_filter(where: str, value: Any) -> None:
         spec = vocab.ATTRIBUTES.get(name)
         if spec is None:
             raise _ConstraintError(f"Thuộc tính '{name}' không có trong từ vựng")
+        if spec.condition_only:
+            if where == "scope":
+                raise _ConstraintError(f"'{name}' chỉ dùng trong prefer/avoid, không dùng trong 'scope'")
+            if len(value) > 1:
+                raise _ConstraintError(f"'{name}' phải đứng một mình trong bộ lọc '{where}'; đưa thứ/buổi vào 'scope'")
+            _check_review(where, attr_value)
+            continue
         if isinstance(attr_value, dict):
             _check_range(where, spec, attr_value)
         elif isinstance(attr_value, list) and not attr_value:
@@ -213,6 +268,22 @@ def _check_limit(raw: Dict[str, Any]) -> None:
             raise _ConstraintError(f"Chỉ số '{metric.name}' không dùng cận '{key}'")
     if len(bounds) == 2 and bounds["min"] > bounds["max"]:
         raise _ConstraintError(f"min ({bounds['min']}) lớn hơn max ({bounds['max']})")
+
+
+def _check_relation(raw: Dict[str, Any]) -> None:
+    """V12 (design.md mục 17.2). Hai môn khác nhau được kiểm tra khi chuẩn hoá (khớp tên môn)."""
+    relation = raw["relation"]
+    if relation not in vocab.RELATIONS:
+        raise _ConstraintError(f"Quan hệ '{relation}' không có trong từ vựng ({', '.join(vocab.RELATIONS)})")
+    courses = raw.get("courses")
+    if (
+        not isinstance(courses, list)
+        or len(courses) != vocab.RELATION_COURSE_COUNT
+        or not all(isinstance(course, str) and course.strip() for course in courses)
+    ):
+        raise _ConstraintError(f"'relation' cần 'courses' là list đúng {vocab.RELATION_COURSE_COUNT} tên môn")
+    if raw.get("scope") is not None:
+        raise _ConstraintError("'relation' không dùng 'scope'; hai môn nằm trong 'courses'")
 
 
 def _type_error_reason(error: Dict[str, Any]) -> str:
@@ -245,8 +316,14 @@ def _parse_constraint(index: int, raw: Any, warnings: List[str]) -> Constraint:
     kinds = [kind for kind in vocab.KINDS if cleaned.get(kind) is not None]
     if len(kinds) != 1:
         found = ", ".join(kinds) if kinds else "không có"
-        raise _ConstraintError(f"Cần đúng một trong prefer, avoid, limit (gặp: {found})")
+        raise _ConstraintError(f"Cần đúng một trong {', '.join(vocab.KINDS)} (gặp: {found})")
     kind = kinds[0]
+
+    # V12
+    if kind == "relation":
+        _check_relation(cleaned)
+    elif cleaned.get("courses") is not None:
+        raise _ConstraintError("'courses' chỉ đi với 'relation'")
 
     # V3, V2
     if kind == "limit":
@@ -275,7 +352,7 @@ def parse_document(raw: Any) -> ParsedDocument:
     """Validate tài liệu ưu tiên v2.
 
     Lỗi của cả tài liệu (V9–V11) ném `DocumentError`. Lỗi của một ràng buộc
-    (V1–V7) đưa ràng buộc đó vào `unsupported`. Key lạ (V8) bị bỏ, kèm warning.
+    (V1–V7, V12, V13) đưa ràng buộc đó vào `unsupported`. Key lạ (V8) bị bỏ, kèm warning.
     """
     if not isinstance(raw, dict):
         raise DocumentError("Tài liệu ưu tiên phải là object")
@@ -340,6 +417,61 @@ def filter_items(model: Optional[BaseModel]) -> List[Tuple[str, Any]]:
         for name, value in model
         if value is not None
     ]
+
+
+# ---------------------------------------------------------------------------
+# Số liệu review trong request (design.md mục 17.1)
+# ---------------------------------------------------------------------------
+
+_REVIEW_STAT_TEXT = ("subject", "lecturer", "aspect")
+_REVIEW_STAT_COUNTS = ("positive", "negative", "total")
+
+
+@dataclass(frozen=True)
+class ReviewStat:
+    """Số review của một giảng viên, một môn, một aspect. Gateway lấy từ Review service."""
+
+    subject: str
+    lecturer: str
+    aspect: str
+    positive: int
+    negative: int
+    total: int
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {name: getattr(self, name) for name in _REVIEW_STAT_TEXT + _REVIEW_STAT_COUNTS}
+
+
+def _review_stat(row: Any) -> ReviewStat:
+    if not isinstance(row, dict):
+        raise ValueError("không phải object")
+    for name in _REVIEW_STAT_TEXT:
+        if not isinstance(row.get(name), str) or not row[name].strip():
+            raise ValueError(f"'{name}' phải là chuỗi không rỗng")
+    if row["aspect"] not in vocab.REVIEW_ASPECTS:
+        raise ValueError(f"aspect {row['aspect']!r} không thuộc {len(vocab.REVIEW_ASPECTS)} khía cạnh")
+    for name in _REVIEW_STAT_COUNTS:
+        if not _is_int(row.get(name)) or row[name] < 0:
+            raise ValueError(f"'{name}' phải là số nguyên ≥ 0")
+    if row["positive"] + row["negative"] > row["total"]:
+        raise ValueError("positive + negative lớn hơn total")
+    return ReviewStat(row["subject"].strip(), row["lecturer"].strip(), row["aspect"],
+                      row["positive"], row["negative"], row["total"])
+
+
+def parse_review_stats(raw: Any) -> Tuple[Optional[List[ReviewStat]], List[str]]:
+    """`review_stats` của request: dòng sai bị bỏ, kèm warning. `None` = request không gửi."""
+    if raw is None:
+        return None, []
+    if not isinstance(raw, list):
+        return None, ["Bỏ qua 'review_stats' vì không phải mảng"]
+    rows, warnings = [], []
+    for i, row in enumerate(raw):
+        try:
+            rows.append(_review_stat(row))
+        except ValueError as exc:
+            warnings.append(f"Bỏ qua dòng {i} của 'review_stats': {exc}")
+    return rows, warnings
 
 
 # ---------------------------------------------------------------------------

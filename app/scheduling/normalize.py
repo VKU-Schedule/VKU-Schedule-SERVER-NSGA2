@@ -14,7 +14,15 @@ from dataclasses import dataclass, field
 from typing import Any, Callable, Dict, FrozenSet, Iterable, List, Optional, Sequence, Tuple
 
 from app.scheduling import vocab
-from app.scheduling.schema import ParsedConstraint, ParsedDocument, UnsupportedItem, filter_items, parse_document
+from app.scheduling.schema import (
+    ParsedConstraint,
+    ParsedDocument,
+    ReviewStat,
+    UnsupportedItem,
+    filter_items,
+    parse_document,
+    parse_review_stats,
+)
 
 
 class NormalizeError(ValueError):
@@ -497,7 +505,36 @@ def class_time_range(periods: Sequence[int]) -> Optional[Tuple[int, int]]:
 # Chuẩn hoá cả tài liệu (design.md mục 6.4, 6.5, 7.6, 9)
 # ---------------------------------------------------------------------------
 
-# Bộ lọc đã chuẩn hoá: thuộc tính -> frozenset (giá trị chuẩn hoặc tiết) hoặc IntervalSet
+# ---------------------------------------------------------------------------
+# Đánh giá của sinh viên (design.md mục 17.1)
+# ---------------------------------------------------------------------------
+
+
+@dataclass(frozen=True)
+class ReviewTarget:
+    """Điều kiện `review` đã chuẩn hoá. Thuật toán (Phần B) quy về giảng viên bằng `review_stats`."""
+
+    phrase: str
+    aspect: str
+    sentiment: str  # sentiment mục tiêu: positive / negative
+
+    def to_dict(self) -> Dict[str, str]:
+        return {"phrase": self.phrase, "aspect": self.aspect, "sentiment": self.sentiment}
+
+
+def normalize_review(raw: Any) -> Tuple[ReviewTarget, List[str]]:
+    """aspect không gắn với giảng viên -> NormalizeError; neutral -> positive."""
+    aspect = raw["aspect"]
+    reason = vocab.REVIEW_UNSUPPORTED_ASPECTS.get(aspect)
+    if reason:
+        raise NormalizeError(f"aspect '{aspect}': {reason}")
+    sentiment = raw["sentiment"]
+    if sentiment not in ("positive", "negative"):
+        sentiment = vocab.REVIEW_NEUTRAL_AS
+    return ReviewTarget(" ".join(raw["phrase"].split()), aspect, sentiment), []
+
+
+# Bộ lọc đã chuẩn hoá: thuộc tính -> frozenset (giá trị chuẩn hoặc tiết), IntervalSet hoặc ReviewTarget
 NormalizedFilter = Dict[str, Any]
 
 LLM_UNSUPPORTED_REASON = "LLM không ánh xạ được"
@@ -506,7 +543,7 @@ LLM_UNSUPPORTED_REASON = "LLM không ánh xạ được"
 @dataclass
 class NormalizedConstraint:
     id: int
-    kind: str                                   # prefer / avoid / limit
+    kind: str                                   # prefer / avoid / limit / relation
     level: str
     weight: int
     source: Dict[str, Any]
@@ -516,12 +553,19 @@ class NormalizedConstraint:
     max: Optional[int] = None
     scope: NormalizedFilter = field(default_factory=dict)      # rỗng = mọi lớp
     exclude: List[NormalizedFilter] = field(default_factory=list)
+    relation: Optional[str] = None              # với relation
+    courses: Tuple[str, ...] = ()               # với relation: hai tên môn chuẩn, giữ thứ tự
 
     @property
     def group(self) -> Tuple[str, Any]:
-        """Nhóm của quy tắc ngoại lệ (6.4): cùng tập key điều kiện, hoặc cùng chỉ số."""
+        """Nhóm của quy tắc ngoại lệ (6.4): cùng tập key điều kiện, hoặc cùng chỉ số.
+
+        `relation` không thuộc nhóm nào (17.2): mỗi ràng buộc là một nhóm riêng.
+        """
         if self.kind == "limit":
             return "limit", self.metric
+        if self.kind == "relation":
+            return "relation", self.id
         return "filter", frozenset(self.condition)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -529,6 +573,9 @@ class NormalizedConstraint:
         if self.kind == "limit":
             data["metric"] = self.metric
             data.update({key: getattr(self, key) for key in ("min", "max") if getattr(self, key) is not None})
+        elif self.kind == "relation":
+            data["relation"] = self.relation
+            data["courses"] = list(self.courses)
         else:
             data["condition"] = filter_to_dict(self.condition)
         data.update({
@@ -547,6 +594,8 @@ class NormalizedDocument:
     constraints: List[NormalizedConstraint] = field(default_factory=list)
     unsupported: List[UnsupportedItem] = field(default_factory=list)
     warnings: List[str] = field(default_factory=list)
+    # Số liệu review đã validate, cho thuật toán quy `review` về giảng viên. Không có trong to_dict.
+    review_stats: List[ReviewStat] = field(default_factory=list)
 
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -564,7 +613,9 @@ def filter_to_dict(normalized: NormalizedFilter) -> Dict[str, Any]:
         if name not in normalized:
             continue
         value = normalized[name]
-        if vocab.ATTRIBUTES[name].kind is vocab.AttrKind.RANGE:
+        if vocab.ATTRIBUTES[name].kind is vocab.AttrKind.REVIEW:
+            data[name] = value.to_dict()
+        elif vocab.ATTRIBUTES[name].kind is vocab.AttrKind.RANGE:
             data[name] = [list(interval) for interval in value]
         else:
             data[name] = sorted(value)
@@ -584,9 +635,11 @@ def _flatten_candidates(candidates: Any) -> List[Any]:
 
 
 class _ConstraintContext:
-    def __init__(self, selected_courses: Sequence[str], classes: List[Any]):
+    def __init__(self, selected_courses: Sequence[str], classes: List[Any],
+                 review_stats: Optional[List[ReviewStat]] = None):
         self.selected_courses = list(selected_courses)
         self.classes = classes
+        self.review_stats = review_stats
 
     def teachers(self, courses: Optional[FrozenSet[str]]) -> List[str]:
         return [
@@ -607,6 +660,8 @@ def _normalize_filter(where: str, items: List[Tuple[str, Any]], context: _Constr
                 value, value_warnings = match_teachers(raw, context.teachers(scope_courses))
             elif name == "room":
                 value, room_areas, value_warnings = normalize_room(raw)
+            elif name == "review":
+                value, value_warnings = normalize_review(raw)
             else:
                 value, value_warnings = VALUE_NORMALIZERS[name](raw)
         except NormalizeError as exc:
@@ -623,18 +678,69 @@ def _normalize_filter(where: str, items: List[Tuple[str, Any]], context: _Constr
 
 
 def _weight(kind: str, level: str, metric: Optional[str], keys: Iterable[str]) -> int:
-    """design.md mục 6.5 (D18)."""
+    """design.md mục 6.5 (D18), 17.2."""
     if kind == "limit":
         base = vocab.METRICS[metric].weight
+    elif kind == "relation":
+        base = vocab.RELATION_WEIGHT
     else:
         base = max(vocab.ATTRIBUTES[name].weight for name in keys if vocab.ATTRIBUTES[name].weight is not None)
     return base * vocab.HIGH_MULTIPLIER if level == "high" else base
+
+
+def _normalize_relation(parsed: ParsedConstraint, context: _ConstraintContext,
+                        warnings: List[str]) -> NormalizedConstraint:
+    """design.md mục 17.2: mỗi tên khớp đúng một môn đã chọn, hai môn khác nhau."""
+    constraint = parsed.constraint
+    courses = []
+    for said in constraint.courses:
+        try:
+            matches, match_warnings = match_courses(said, context.selected_courses)
+        except NormalizeError as exc:
+            raise NormalizeError(f"'courses': {exc}") from None
+        warnings.extend(f"'courses': {warning}" for warning in match_warnings)
+        if len(matches) != 1:
+            raise NormalizeError(f"'courses': {_show(said)} khớp nhiều môn, cần đúng một môn")
+        courses.append(next(iter(matches)))
+    if courses[0] == courses[1]:
+        raise NormalizeError(f"'courses': hai tên cùng chỉ một môn ({courses[0]})")
+    return NormalizedConstraint(
+        id=parsed.index,
+        kind="relation",
+        level=constraint.level,
+        weight=_weight("relation", constraint.level, None, ()),
+        source=parsed.source,
+        relation=constraint.relation,
+        courses=tuple(courses),
+    )
+
+
+def _check_review_data(condition: NormalizedFilter, scope: NormalizedFilter, context: _ConstraintContext,
+                       warnings: List[str]) -> None:
+    """`review` cần `review_stats` trong request (design.md mục 17.1)."""
+    target = condition.get("review")
+    if target is None:
+        return
+    if context.review_stats is None:
+        raise NormalizeError("thiếu dữ liệu review ('review_stats' trong request)")
+    courses = scope.get("course") or frozenset(context.selected_courses)
+    folded = {fold_words(course): course for course in courses}
+    covered = {
+        folded[fold_words(row.subject)] for row in context.review_stats
+        if fold_words(row.subject) in folded
+        and (target.aspect == vocab.REVIEW_ALL_ASPECTS or row.aspect == target.aspect)
+    }
+    missing = sorted(set(courses) - covered)
+    if missing:
+        warnings.append(f"'review': không có số liệu aspect '{target.aspect}' cho môn {', '.join(missing)}")
 
 
 def _normalize_constraint(parsed: ParsedConstraint, context: _ConstraintContext,
                           warnings: List[str]) -> NormalizedConstraint:
     constraint = parsed.constraint
     kind = parsed.kind
+    if kind == "relation":
+        return _normalize_relation(parsed, context, warnings)
     condition_items = filter_items(constraint.prefer if kind == "prefer" else constraint.avoid)
     scope_items = filter_items(constraint.scope)
 
@@ -656,6 +762,8 @@ def _normalize_constraint(parsed: ParsedConstraint, context: _ConstraintContext,
     condition: NormalizedFilter = {}
     if kind != "limit":
         condition = _normalize_filter(kind, condition_items, context, scope.get("course"), warnings)
+
+        _check_review_data(condition, scope, context, warnings)
 
     keys = [name for name, _ in condition_items + scope_items if name != "course"]
     if kind != "limit" and not keys:
@@ -706,23 +814,36 @@ def _apply_exceptions(constraints: List[NormalizedConstraint], warnings: List[st
                     f"Ràng buộc {first.id} và {second.id} mâu thuẫn: cùng phạm vi, cùng điều kiện, "
                     f"một '{first.kind}' một '{second.kind}'. Cả hai vẫn được áp dụng"
                 )
+            elif (
+                first.kind == second.kind == "relation"
+                and frozenset(first.courses) == frozenset(second.courses)
+                and frozenset({first.relation, second.relation}) in vocab.RELATION_OPPOSITES
+            ):
+                warnings.append(
+                    f"Ràng buộc {first.id} và {second.id} mâu thuẫn: cùng hai môn, một '{first.relation}' "
+                    f"một '{second.relation}'. Cả hai vẫn được áp dụng"
+                )
 
 
 def normalize_document(doc: Any, selected_courses: Optional[Sequence[str]] = None,
-                       candidates: Any = None) -> NormalizedDocument:
+                       candidates: Any = None, review_stats: Any = None) -> NormalizedDocument:
     """Validate (nếu cần) và chuẩn hoá tài liệu ưu tiên v2.
 
     - `doc`: `ParsedDocument`, hoặc JSON thô (sẽ được `parse_document`).
     - `selected_courses`: tên các môn sinh viên đã chọn. Thiếu thì lấy từ `candidates`.
     - `candidates`: các lớp ứng viên (`ClassInfo` hoặc dict), dạng list hoặc dict môn -> list lớp.
+    - `review_stats`: số liệu review theo (môn, giảng viên, aspect) do gateway gửi (design.md mục 17.1).
+      Thiếu thì mọi ràng buộc `review` vào `unsupported`.
     """
     parsed = doc if isinstance(doc, ParsedDocument) else parse_document(doc)
     classes = _flatten_candidates(candidates)
     if selected_courses is None:
         selected_courses = list(dict.fromkeys(_get(cls, "course_name") for cls in classes))
-    context = _ConstraintContext(selected_courses, classes)
+    stats, stats_warnings = parse_review_stats(review_stats)
+    context = _ConstraintContext(selected_courses, classes, stats)
 
-    result = NormalizedDocument(version=parsed.version, warnings=list(parsed.warnings))
+    result = NormalizedDocument(version=parsed.version, warnings=list(parsed.warnings) + stats_warnings,
+                                review_stats=stats or [])
     unsupported = list(parsed.unsupported)
     for item in parsed.constraints:
         constraint_warnings: List[str] = []

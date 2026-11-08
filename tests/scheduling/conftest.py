@@ -77,6 +77,23 @@ CANDIDATES = {
 
 SELECTED_COURSES = list(CANDIDATES)
 
+# Số liệu review mẫu (design.md mục 17.1): gateway gửi kèm request, theo (môn, giảng viên, aspect)
+def _stat(subject, lecturer, aspect, positive, negative, total):
+    return {"subject": subject, "lecturer": lecturer, "aspect": aspect,
+            "positive": positive, "negative": negative, "total": total}
+
+
+REVIEW_STATS = [
+    _stat(AUTOMAT, "Dương Thị Mai Nga", "ky_nang_giang_day", 12, 1, 15),
+    _stat(AUTOMAT, "Trần Đình Sơn", "ky_nang_giang_day", 3, 0, 3),
+    _stat(AUTOMAT, "Trần Đình Sơn", "hanh_vi", 2, 6, 9),
+    _stat(AUTOMAT, "Nguyễn Đức Hiển", "cham_diem", 1, 5, 7),
+    _stat(CTDL, "Lê Song Toàn", "ky_nang_giang_day", 8, 2, 11),
+    _stat(CTDL, "Nguyễn Thanh Bình", "bai_tap", 10, 0, 10),
+    _stat(JAVA, "Trần Đình Sơn", "ky_nang_giang_day", 5, 1, 7),
+    _stat(JAVA, "Nguyễn Văn A", "hanh_vi", 1, 4, 5),
+]
+
 
 _HEADING = re.compile(r"^### (E\d+|12\.2)\b\s*(?:—\s*)?(.*)$", re.MULTILINE)
 _JSON_BLOCK = re.compile(r"```json\n(.*?)\n```", re.DOTALL)

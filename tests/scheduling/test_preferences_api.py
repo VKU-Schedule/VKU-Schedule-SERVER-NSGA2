@@ -3,7 +3,7 @@ import pytest
 from flask import Flask
 
 from app.api.preferences_api import preferences_bp
-from conftest import CANDIDATES, design_examples
+from conftest import CANDIDATES, REVIEW_STATS, design_examples, load_examples
 
 
 class FakeCollection:
@@ -31,12 +31,31 @@ def client():
 COURSES = [{"name": name} for name in CANDIDATES]
 
 
+EXPECTED = {example["id"]: example["expected"] for example in load_examples()}
+
+
 @pytest.mark.parametrize("example_id, raw", [(eid, raw) for eid, _, raw in design_examples()])
 def test_every_design_example_validates(client, example_id, raw):
-    response = client.post("/api/preferences/validate", json={"courses": COURSES, "preferences": raw})
+    response = client.post("/api/preferences/validate",
+                           json={"courses": COURSES, "preferences": raw, "review_stats": REVIEW_STATS})
     assert response.status_code == 200
     body = response.get_json()
-    assert len(body["constraints"]) == len(raw["constraints"])
+    assert len(body["constraints"]) == len(EXPECTED[example_id]["constraints"])
+
+
+def test_review_without_review_stats_is_unsupported(client):
+    raw = {"constraints": [{"prefer": {"review": {"phrase": "giảng viên dạy dễ hiểu", "aspect": "ky_nang_giang_day",
+                                                  "sentiment": "positive"}}}]}
+    body = client.post("/api/preferences/validate", json={"courses": COURSES, "preferences": raw}).get_json()
+    assert body["constraints"] == []
+    assert "thiếu dữ liệu review" in body["unsupported"][0]["reason"]
+
+
+def test_bad_review_stats_row_is_a_warning(client):
+    body = client.post("/api/preferences/validate", json={
+        "courses": COURSES, "preferences": {"constraints": []}, "review_stats": [REVIEW_STATS[0], {"subject": "x"}],
+    }).get_json()
+    assert body["warnings"] == ["Bỏ qua dòng 1 của 'review_stats': 'lecturer' phải là chuỗi không rỗng"]
 
 
 def test_response_shape(client):

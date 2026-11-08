@@ -13,7 +13,7 @@
       "description": "Các ràng buộc; mỗi ý một ràng buộc.",
       "items": {
         "additionalProperties": false,
-        "description": "Một ràng buộc nguyên tử. Có đúng một trong prefer, avoid, limit.",
+        "description": "Một ràng buộc nguyên tử. Có đúng một trong prefer, avoid, limit, relation.",
         "properties": {
           "prefer": {
             "additionalProperties": false,
@@ -413,6 +413,51 @@
                     "type": "array"
                   }
                 ]
+              },
+              "review": {
+                "additionalProperties": false,
+                "description": "Giảng viên theo đánh giá của sinh viên. Module LLM chỉ ghi phrase: cụm mô tả giảng viên ở dạng khẳng định, ví dụ {\"phrase\": \"giảng viên dạy dễ hiểu\"}. Chỉ dùng trong prefer/avoid và không kèm thuộc tính khác.",
+                "properties": {
+                  "phrase": {
+                    "description": "Cụm mô tả giảng viên ở dạng khẳng định, ví dụ \"giảng viên dạy dễ hiểu\". Module LLM ghi.",
+                    "minLength": 1,
+                    "title": "Phrase",
+                    "type": "string"
+                  },
+                  "aspect": {
+                    "enum": [
+                      "ky_nang_giang_day",
+                      "kinh_nghiem",
+                      "hanh_vi",
+                      "bai_tap",
+                      "cham_diem",
+                      "cung_cap_tai_lieu",
+                      "kien_thuc",
+                      "chuong_trinh_hoc",
+                      "thiet_bi_day_hoc",
+                      "de_xuat",
+                      "noi_chung"
+                    ],
+                    "type": "string",
+                    "description": "Khía cạnh do gateway điền từ SA service. Module LLM không ghi.",
+                    "title": "Aspect"
+                  },
+                  "sentiment": {
+                    "enum": [
+                      "positive",
+                      "negative",
+                      "neutral"
+                    ],
+                    "type": "string",
+                    "description": "Sentiment của cụm do gateway điền từ SA service. Module LLM không ghi.",
+                    "title": "Sentiment"
+                  }
+                },
+                "required": [
+                  "phrase"
+                ],
+                "title": "Review",
+                "type": "object"
               }
             },
             "title": "Filter",
@@ -816,6 +861,51 @@
                     "type": "array"
                   }
                 ]
+              },
+              "review": {
+                "additionalProperties": false,
+                "description": "Giảng viên theo đánh giá của sinh viên. Module LLM chỉ ghi phrase: cụm mô tả giảng viên ở dạng khẳng định, ví dụ {\"phrase\": \"giảng viên dạy dễ hiểu\"}. Chỉ dùng trong prefer/avoid và không kèm thuộc tính khác.",
+                "properties": {
+                  "phrase": {
+                    "description": "Cụm mô tả giảng viên ở dạng khẳng định, ví dụ \"giảng viên dạy dễ hiểu\". Module LLM ghi.",
+                    "minLength": 1,
+                    "title": "Phrase",
+                    "type": "string"
+                  },
+                  "aspect": {
+                    "enum": [
+                      "ky_nang_giang_day",
+                      "kinh_nghiem",
+                      "hanh_vi",
+                      "bai_tap",
+                      "cham_diem",
+                      "cung_cap_tai_lieu",
+                      "kien_thuc",
+                      "chuong_trinh_hoc",
+                      "thiet_bi_day_hoc",
+                      "de_xuat",
+                      "noi_chung"
+                    ],
+                    "type": "string",
+                    "description": "Khía cạnh do gateway điền từ SA service. Module LLM không ghi.",
+                    "title": "Aspect"
+                  },
+                  "sentiment": {
+                    "enum": [
+                      "positive",
+                      "negative",
+                      "neutral"
+                    ],
+                    "type": "string",
+                    "description": "Sentiment của cụm do gateway điền từ SA service. Module LLM không ghi.",
+                    "title": "Sentiment"
+                  }
+                },
+                "required": [
+                  "phrase"
+                ],
+                "title": "Review",
+                "type": "object"
               }
             },
             "title": "Filter",
@@ -845,6 +935,27 @@
             "type": "integer",
             "description": "Cận trên của limit, tính cả biên.",
             "title": "Max"
+          },
+          "relation": {
+            "enum": [
+              "same_day",
+              "different_day",
+              "before"
+            ],
+            "type": "string",
+            "description": "Quan hệ giữa hai môn trong courses. same_day: Hai môn học cùng một ngày. different_day: Hai môn không học cùng ngày. before: Môn thứ nhất học trước môn thứ hai trong cùng một ngày.",
+            "title": "Relation"
+          },
+          "courses": {
+            "items": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "maxItems": 2,
+            "minItems": 2,
+            "type": "array",
+            "description": "Đúng hai tên môn, chỉ đi với relation. Với before: môn học trước đứng đầu.",
+            "title": "Courses"
           },
           "scope": {
             "additionalProperties": false,
@@ -1244,6 +1355,51 @@
                     "type": "array"
                   }
                 ]
+              },
+              "review": {
+                "additionalProperties": false,
+                "description": "Giảng viên theo đánh giá của sinh viên. Module LLM chỉ ghi phrase: cụm mô tả giảng viên ở dạng khẳng định, ví dụ {\"phrase\": \"giảng viên dạy dễ hiểu\"}. Chỉ dùng trong prefer/avoid và không kèm thuộc tính khác.",
+                "properties": {
+                  "phrase": {
+                    "description": "Cụm mô tả giảng viên ở dạng khẳng định, ví dụ \"giảng viên dạy dễ hiểu\". Module LLM ghi.",
+                    "minLength": 1,
+                    "title": "Phrase",
+                    "type": "string"
+                  },
+                  "aspect": {
+                    "enum": [
+                      "ky_nang_giang_day",
+                      "kinh_nghiem",
+                      "hanh_vi",
+                      "bai_tap",
+                      "cham_diem",
+                      "cung_cap_tai_lieu",
+                      "kien_thuc",
+                      "chuong_trinh_hoc",
+                      "thiet_bi_day_hoc",
+                      "de_xuat",
+                      "noi_chung"
+                    ],
+                    "type": "string",
+                    "description": "Khía cạnh do gateway điền từ SA service. Module LLM không ghi.",
+                    "title": "Aspect"
+                  },
+                  "sentiment": {
+                    "enum": [
+                      "positive",
+                      "negative",
+                      "neutral"
+                    ],
+                    "type": "string",
+                    "description": "Sentiment của cụm do gateway điền từ SA service. Module LLM không ghi.",
+                    "title": "Sentiment"
+                  }
+                },
+                "required": [
+                  "phrase"
+                ],
+                "title": "Review",
+                "type": "object"
               }
             },
             "title": "Filter",

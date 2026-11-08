@@ -21,7 +21,7 @@ SUPPORTED_MAJOR_VERSION = 2
 # Loại ràng buộc và mức độ (design.md mục 3.2, 6.5)
 # ---------------------------------------------------------------------------
 
-KINDS = ("prefer", "avoid", "limit")
+KINDS = ("prefer", "avoid", "limit", "relation")
 FILTER_KINDS = ("prefer", "avoid")
 
 LEVELS = ("must", "high", "normal")
@@ -39,6 +39,7 @@ class AttrKind(str, Enum):
     VALUES = "values"    # tập giá trị chuẩn
     PERIODS = "periods"  # tập tiết
     RANGE = "range"      # khoảng đóng [a, b]
+    REVIEW = "review"    # cụm mô tả giảng viên kèm aspect, sentiment (design.md mục 17.1)
 
 
 class ValueType(str, Enum):
@@ -47,6 +48,7 @@ class ValueType(str, Enum):
     TEXT = "text"        # chuỗi
     INT = "int"          # số nguyên
     INT_OR_TEXT = "int_or_text"  # số nguyên hoặc chuỗi có số: "nhóm 2", "1-3", "10h"
+    REVIEW = "review"    # object {phrase, aspect, sentiment}
 
 
 @dataclass(frozen=True)
@@ -58,6 +60,7 @@ class AttributeSpec:
     weight: Optional[int]         # trọng số cơ sở; None = không tính vào trọng số (course)
     description: str              # mô tả cho JSON Schema (module LLM đọc)
     scope_only: bool = False      # chỉ có nghĩa trong scope; ở prefer/avoid sẽ được chuyển sang scope
+    condition_only: bool = False  # chỉ dùng trong prefer/avoid, đứng một mình trong bộ lọc (V4)
 
     @property
     def ordered(self) -> bool:
@@ -97,6 +100,11 @@ ATTRIBUTES: Dict[str, AttributeSpec] = {
                       "Khu học: \"K\" hoặc \"V\"."),
         AttributeSpec("room", AttrKind.VALUES, _T, None, 1,
                       "Mã phòng: \"A212\", \"V.A201\"."),
+        AttributeSpec("review", AttrKind.REVIEW, ValueType.REVIEW, None, 4,
+                      "Giảng viên theo đánh giá của sinh viên. Module LLM chỉ ghi phrase: cụm mô tả giảng viên "
+                      "ở dạng khẳng định, ví dụ {\"phrase\": \"giảng viên dạy dễ hiểu\"}. Chỉ dùng trong "
+                      "prefer/avoid và không kèm thuộc tính khác.",
+                      condition_only=True),
     )
 }
 
@@ -130,6 +138,42 @@ METRICS: Dict[str, MetricSpec] = {
                    "Số ngày đi học trong tuần."),
     )
 }
+
+# ---------------------------------------------------------------------------
+# Đánh giá của sinh viên (design.md mục 17.1)
+# ---------------------------------------------------------------------------
+
+# 11 khía cạnh của SA review service. aspect và sentiment do gateway điền từ SA;
+# repo này chỉ kiểm tra giá trị, không gọi SA.
+REVIEW_ASPECTS = (
+    "ky_nang_giang_day", "kinh_nghiem", "hanh_vi", "bai_tap", "cham_diem", "cung_cap_tai_lieu",
+    "kien_thuc", "chuong_trinh_hoc", "thiet_bi_day_hoc", "de_xuat", "noi_chung",
+)
+REVIEW_SENTIMENTS = ("positive", "negative", "neutral")
+REVIEW_NEUTRAL_AS = "positive"  # sentiment mục tiêu khi SA trả neutral
+
+# aspect không quy về giảng viên được -> lý do đưa vào unsupported
+REVIEW_UNSUPPORTED_ASPECTS: Dict[str, str] = {
+    "thiet_bi_day_hoc": "dữ liệu review không có phòng",
+    "chuong_trinh_hoc": "khía cạnh không gắn với giảng viên",
+    "de_xuat": "khía cạnh không gắn với giảng viên",
+}
+# noi_chung: thuật toán cộng số liệu của mọi aspect
+REVIEW_ALL_ASPECTS = "noi_chung"
+
+# ---------------------------------------------------------------------------
+# Quan hệ giữa hai môn (design.md mục 17.2)
+# ---------------------------------------------------------------------------
+
+RELATIONS: Dict[str, str] = {
+    "same_day": "Hai môn học cùng một ngày.",
+    "different_day": "Hai môn không học cùng ngày.",
+    "before": "Môn thứ nhất học trước môn thứ hai trong cùng một ngày.",
+}
+RELATION_WEIGHT = 3
+RELATION_COURSE_COUNT = 2
+# Hai quan hệ ngược nhau trên cùng cặp môn sinh warning mâu thuẫn
+RELATION_OPPOSITES: FrozenSet[FrozenSet[str]] = frozenset({frozenset({"same_day", "different_day"})})
 
 # ---------------------------------------------------------------------------
 # Tiết và giờ (design.md mục 7.1)

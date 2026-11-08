@@ -836,13 +836,14 @@ Từ ví dụ thứ hai trở đi, `version` được lược bỏ (mặc địn
 ]}
 ```
 
-### E28 — Đổi khu không được hỗ trợ (bổ sung)
-> "Tôi không muốn phải chạy từ khu K sang khu V giữa hai lớp liền nhau"
+### E28 — Tín chỉ không được hỗ trợ (bổ sung)
+> "Học kỳ này em muốn tổng tín chỉ không quá 18"
 
 ```json
-{"constraints": [], "unsupported": ["không muốn phải chạy từ khu K sang khu V giữa hai lớp liền nhau"]}
+{"constraints": [], "unsupported": ["muốn tổng tín chỉ không quá 18"]}
 ```
-- Không có chỉ số đổi khu (câu hỏi Q4: không phải vấn đề thật với sinh viên), nên cả câu vào `unsupported`.
+- Không có thuộc tính hay chỉ số nào về tín chỉ, nên cả câu vào `unsupported`.
+- Đổi khu K↔V giữa hai lớp liền nhau không còn dùng làm ví dụ: thời khoá biểu cố định của trường đã xử lý việc này (Q4).
 
 ### E29 — "Chỉ … nếu không còn lựa chọn" là tránh mềm (mẫu câu)
 > "Tôi chỉ học chiều thứ 2 nếu không còn lựa chọn nào khác"
@@ -884,6 +885,99 @@ Từ ví dụ thứ hai trở đi, `version` được lược bỏ (mặc địn
   {"avoid": {"day": "thứ 7"}}
 ], "unsupported": ["muốn học cùng lớp với bạn Nam"]}
 ```
+
+### E33 — Giảng viên theo đánh giá, theo môn (bổ sung)
+> "Môn Automat em muốn học với giảng viên dạy dễ hiểu"
+
+```json
+{"constraints": [
+  {"prefer": {"review": {"phrase": "giảng viên dạy dễ hiểu", "aspect": "ky_nang_giang_day", "sentiment": "positive"}},
+   "scope": {"course": "Automat"}}
+]}
+```
+- Module LLM chỉ ghi `phrase`; `aspect`, `sentiment` do gateway điền từ SA (17.1). Trọng số 4.
+- Thuật toán, với `review_stats` mẫu: Dương Thị Mai Nga p = 12, q = 1, n = 15 → s = 11/20 = 0,55; Trần Đình Sơn p = 3, q = 0, n = 3 → s = 3/8 = 0,375. Sentiment mục tiêu positive nên k = s. Kết quả `prefer {teacher: ["Dương Thị Mai Nga"]}`, scope Automat.
+
+### E34 — Tránh giảng viên chấm điểm khắt khe (bổ sung)
+> "Em không muốn học với giảng viên chấm điểm khắt khe"
+
+```json
+{"constraints": [
+  {"avoid": {"review": {"phrase": "giảng viên chấm điểm khắt khe", "aspect": "cham_diem", "sentiment": "negative"}}}
+]}
+```
+- Sentiment mục tiêu negative nên k = −s. Không có `scope`: thuật toán xét từng môn đã chọn. Automat có Nguyễn Đức Hiển p = 1, q = 5, n = 7 → k = 4/12 ≈ 0,33 > 0, nên `avoid {teacher: ["Nguyễn Đức Hiển"]}`.
+- Môn không có số liệu `cham_diem` được liệt kê trong warning.
+
+### E35 — Phòng có máy lạnh không quy về giảng viên được (bổ sung)
+> "Cho em xin phòng học có máy lạnh"
+
+```json
+{"constraints": [
+  {"prefer": {"review": {"phrase": "phòng học có máy lạnh", "aspect": "thiet_bi_day_hoc", "sentiment": "positive"}}}
+]}
+```
+- Aspect `thiet_bi_day_hoc` → `unsupported`, lý do "dữ liệu review không có phòng".
+
+### E36 — Hai môn cùng ngày (bổ sung)
+> "Em muốn Automat và Cấu trúc dữ liệu học cùng một ngày"
+
+```json
+{"constraints": [
+  {"relation": "same_day", "courses": ["Automat", "Cấu trúc dữ liệu"]}
+]}
+```
+- Trọng số 3. Automat thứ 6, Cấu trúc dữ liệu thứ 2 → v = 1. Đổi Cấu trúc dữ liệu sang thứ 6 → v = 0.
+
+### E37 — Hai môn khác ngày, bắt buộc (bổ sung)
+> "Mạng máy tính và Lập trình Java tuyệt đối không học chung một ngày"
+
+```json
+{"constraints": [
+  {"relation": "different_day", "courses": ["Mạng máy tính", "Lập trình Java"], "level": "must"}
+]}
+```
+- Ràng buộc cứng: lịch có hai môn cùng vào một thứ có H = 1.
+
+### E38 — Môn trước môn sau trong ngày, kèm phần không hỗ trợ (bổ sung)
+> "Hôm nào có cả hai thì em muốn học Cấu trúc dữ liệu trước Lập trình Java, và cho em học cùng lớp với bạn Hương"
+
+```json
+{"constraints": [
+  {"relation": "before", "courses": ["Cấu trúc dữ liệu", "Lập trình Java"]}
+], "unsupported": ["cho em học cùng lớp với bạn Hương"]}
+```
+- Cấu trúc dữ liệu thứ 6 tiết 1–2, Java thứ 6 tiết 1–3: cùng bắt đầu tiết 1, A không bắt đầu trước B → v = 1. Java ở thứ 3 → không có ngày chung → v = 1.
+
+### E39 — Nhiều ý, có giảng viên "khó tính" (bổ sung)
+> "thích học với giảng viên có kỹ năng giảng dạy tốt, tôi thích học ngày thứ 7 buổi chiều và nghỉ thứ 4, rất thích học với những giảng viên khó tính"
+
+```json
+{"constraints": [
+  {"prefer": {"review": {"phrase": "giảng viên có kỹ năng giảng dạy tốt", "aspect": "ky_nang_giang_day", "sentiment": "positive"}}},
+  {"prefer": {"day": "thứ 7", "session": "chiều"}},
+  {"avoid": {"day": "thứ 4"}},
+  {"prefer": {"review": {"phrase": "giảng viên khó tính", "aspect": "hanh_vi", "sentiment": "negative"}}, "level": "high"}
+]}
+```
+- Ràng buộc 3: sentiment mục tiêu negative nên k = −s. Thuật toán chọn giảng viên bị chê nhiều nhất ở `hanh_vi`, không đảo thành `avoid`. Kết quả chỉ gần đúng (17.1, Giới hạn).
+- Ràng buộc 0 và 3 cùng nhóm `{review}`, cùng phạm vi, khác điều kiện, nên không có warning mâu thuẫn (6.4).
+- "Thứ 7 buổi chiều" là một Filter hai key (AND), nghĩa là chiều thứ 7.
+
+### E40 — Câu dạng góp ý cho giảng viên (bổ sung)
+> "giảng viên nên giao bài tập nhiều hơn , chia nhóm để làm bài tập , giảng kỹ những vấn đề trọng tâm của môn học , đưa ra phương pháp để học hiệu quả hơn ."
+
+```json
+{"constraints": [
+  {"prefer": {"review": {"phrase": "giảng viên giao nhiều bài tập", "aspect": "bai_tap", "sentiment": "positive"}}},
+  {"prefer": {"review": {"phrase": "giảng viên chia nhóm để làm bài tập", "aspect": "ky_nang_giang_day", "sentiment": "positive"}}},
+  {"prefer": {"review": {"phrase": "giảng viên giảng kỹ những vấn đề trọng tâm của môn học", "aspect": "ky_nang_giang_day", "sentiment": "positive"}}},
+  {"prefer": {"review": {"phrase": "giảng viên đưa ra phương pháp để học hiệu quả", "aspect": "ky_nang_giang_day", "sentiment": "positive"}}}
+]}
+```
+- Module LLM viết lại mỗi cụm ở dạng khẳng định (bỏ "nên", "hơn"), theo 17.1.
+- Ràng buộc 1, 2, 3 có cùng `aspect` và cùng sentiment, nhưng `phrase` khác nhau, nên điều kiện khác nhau và không bị coi là trùng.
+- Câu dạng góp ý được hiểu là `prefer review` (QA4).
 
 ## 14. Hướng dẫn cho module LLM
 
@@ -938,11 +1032,11 @@ Từ ví dụ thứ hai trở đi, `version` được lược bỏ (mặc địn
 
 **Thêm một chỉ số:** làm tương tự, kèm theo đơn vị đo, cận cho phép, công thức đo và cách tuyến tính hoá (mục 5, 6.8).
 
-## 17. Mở rộng A2: `review` và `relation` (đề xuất, chờ duyệt)
+## 17. Mở rộng A2: `review` và `relation`
 
-> Bổ sung ngày 2026-11-08, theo requirements.md mục 10 (R14–R16) và [plan-a2-review-relation.md](plan-a2-review-relation.md). Mục này **chưa có code**. Mục 1–16 vẫn mô tả đúng phần đã làm. Khi được duyệt, nội dung mục này được gộp vào các mục 3–9 và 13 (task T17).
+> Bổ sung ngày 2026-11-08, theo requirements.md mục 10 (R14–R16) và [plan-a2-review-relation.md](plan-a2-review-relation.md). Đã có code cho phần validate và chuẩn hoá (`app/scheduling/`). Phần quy `review` về giảng viên và tính phạt `review` / `relation` làm ở Phần B.
 >
-> Ví dụ của mục này đánh số R1–R8, không phải `E…`, nên golden test (`tests/scheduling/conftest.py::design_examples`) chưa đọc tới.
+> Mục này là đặc tả đầy đủ của `review` và `relation`. Các mục 3.2, 4, 6.5, 8, 9, 10 có dòng tóm tắt trỏ về đây. Ví dụ nằm ở mục 13 (E33–E40).
 
 ### 17.1 Thuộc tính `review`
 
@@ -1088,107 +1182,15 @@ Khi cập nhật llm-guide (task T17): bỏ ví dụ "chạy từ khu K sang khu
 
 ### 17.4 Ví dụ
 
-Trong các ví dụ, danh sách môn đã chọn chứa đủ các môn được nhắc. JSON là dạng repo này nhận: `review` đã có `aspect` / `sentiment` do gateway điền.
+Các ví dụ của mục này nằm ở mục 13, E33–E40 (golden tests): `review` theo môn (E33), `avoid review` (E34), aspect không hỗ trợ (E35), ba loại `relation` (E36–E38), nhiều ý có giảng viên "khó tính" (E39), câu dạng góp ý (E40).
 
-### R1 — Giảng viên dạy dễ hiểu, theo môn
-> "Môn Lập trình Java em muốn học với giảng viên dạy dễ hiểu"
-
-```json
-{"constraints": [
-  {"prefer": {"review": {"phrase": "giảng viên dạy dễ hiểu", "aspect": "ky_nang_giang_day", "sentiment": "positive"}},
-   "scope": {"course": "Lập trình Java"}}
-]}
-```
-- Module LLM chỉ ghi `phrase`; `aspect` và `sentiment` do gateway điền từ SA. Trọng số 4.
-- `review_stats`: Lê Tân p = 12, q = 1, n = 15 → s = 11/20 = 0,55; Lê Thành Công p = 3, q = 0, n = 3 → s = 3/8 = 0,375. Sentiment mục tiêu positive nên k = s. Kết quả `prefer {teacher: ["Lê Tân"]}`, scope Lập trình Java.
-
-### R2 — Tránh giảng viên chấm khắt khe, cả lịch
-> "Em không muốn học với giảng viên chấm điểm khắt khe"
-
-```json
-{"constraints": [
-  {"avoid": {"review": {"phrase": "giảng viên chấm điểm khắt khe", "aspect": "cham_diem", "sentiment": "negative"}}}
-]}
-```
-- Sentiment mục tiêu negative nên k = −s. Không có `scope`, nên Phần B xét từng môn đã chọn và tạo một `avoid {teacher: T*}` cho mỗi môn có giảng viên với k > 0, tức là bị chê về chấm điểm.
-
-### R3 — Phòng có máy lạnh (không hỗ trợ)
-> "Cho em xin phòng học có máy lạnh"
-
-```json
-{"constraints": [
-  {"prefer": {"review": {"phrase": "phòng học có máy lạnh", "aspect": "thiet_bi_day_hoc", "sentiment": "positive"}}}
-]}
-```
-- Aspect `thiet_bi_day_hoc` → `unsupported`, lý do "dữ liệu review không có phòng". LLM viết `{"constraints": [], "unsupported": ["phòng học có máy lạnh"]}` cũng đúng; cả hai cho cùng kết quả.
-
-### R4 — Hai môn cùng ngày
-> "Em muốn Toán rời rạc và Lập trình Java học cùng một ngày"
-
-```json
-{"constraints": [
-  {"relation": "same_day", "courses": ["Toán rời rạc", "Lập trình Java"]}
-]}
-```
-- Lịch có Toán rời rạc thứ 2, Lập trình Java thứ 4 → v = 1, phạt = 3. Đổi Java sang thứ 2 → v = 0.
-
-### R5 — Hai môn khác ngày, bắt buộc
-> "Mạng máy tính và Học máy tuyệt đối không học chung một ngày"
-
-```json
-{"constraints": [
-  {"relation": "different_day", "courses": ["Mạng máy tính", "Học máy"], "level": "must"}
-]}
-```
-- Ràng buộc cứng: lịch có hai môn cùng vào thứ 3 có H = 1.
-
-### R6 — Trước sau trong ngày, kèm phần không hỗ trợ
-> "Hôm nào có cả hai thì em muốn học Kinh tế vĩ mô trước Quản trị học, và cho em học cùng lớp với bạn Hương"
-
-```json
-{"constraints": [
-  {"relation": "before", "courses": ["Kinh tế vĩ mô", "Quản trị học"]}
-], "unsupported": ["cho em học cùng lớp với bạn Hương"]}
-```
-- Kinh tế vĩ mô thứ 5 tiết 1–3, Quản trị học thứ 5 tiết 6–8 → v = 0. Nếu Quản trị học ở thứ 6 → không có ngày chung → v = 1.
-
-### R7 — Nhiều ý, có giảng viên "khó tính"
-> "thích học với giảng viên có kỹ năng giảng dạy tốt, tôi thích học ngày thứ 7 buổi chiều và nghỉ thứ 4, rất thích học với những giảng viên khó tính"
-
-```json
-{"constraints": [
-  {"prefer": {"review": {"phrase": "giảng viên có kỹ năng giảng dạy tốt", "aspect": "ky_nang_giang_day", "sentiment": "positive"}}},
-  {"prefer": {"day": "thứ 7", "session": "chiều"}},
-  {"avoid": {"day": "thứ 4"}},
-  {"prefer": {"review": {"phrase": "giảng viên khó tính", "aspect": "hanh_vi", "sentiment": "negative"}}, "level": "high"}
-]}
-```
-- `aspect` / `sentiment` là kết quả dự kiến của SA, do gateway điền.
-- Ràng buộc 3: sentiment mục tiêu negative nên k = −s. Kết quả là chọn giảng viên bị chê nhiều nhất ở `hanh_vi`, không phải tránh họ. Đây là trường hợp quy tắc cũ ("`prefer` + `negative` thì đảo thành `avoid`") hiểu sai ý sinh viên. Kết quả chỉ gần đúng, xem phần Giới hạn ở 17.1.
-- Ràng buộc 0 và 3 cùng nhóm `{review}`, cùng phạm vi, nhưng khác điều kiện, nên không có warning mâu thuẫn (6.4).
-- "Thứ 7 buổi chiều" là một Filter hai key (AND), nghĩa là chiều thứ 7.
-
-### R8 — Câu dạng góp ý cho giảng viên
-> "giảng viên nên giao bài tập nhiều hơn , chia nhóm để làm bài tập , giảng kỹ những vấn đề trọng tâm của môn học , đưa ra phương pháp để học hiệu quả hơn ."
-
-```json
-{"constraints": [
-  {"prefer": {"review": {"phrase": "giảng viên giao nhiều bài tập", "aspect": "bai_tap", "sentiment": "positive"}}},
-  {"prefer": {"review": {"phrase": "giảng viên chia nhóm để làm bài tập", "aspect": "ky_nang_giang_day", "sentiment": "positive"}}},
-  {"prefer": {"review": {"phrase": "giảng viên giảng kỹ những vấn đề trọng tâm của môn học", "aspect": "ky_nang_giang_day", "sentiment": "positive"}}},
-  {"prefer": {"review": {"phrase": "giảng viên đưa ra phương pháp để học hiệu quả", "aspect": "ky_nang_giang_day", "sentiment": "positive"}}}
-]}
-```
-- Module LLM viết lại mỗi cụm ở dạng khẳng định (bỏ "nên", "hơn"), theo 17.1. `aspect` / `sentiment` là kết quả dự kiến của SA, do gateway điền.
-- Câu này giống review góp ý hơn là yêu cầu xếp lịch. Có nên hiểu theo cách trên, hay đưa cả câu vào `unsupported`, là câu hỏi QA4 (requirements mục 10.2). R8 dùng cách hiểu đề xuất.
-
-### 17.5 Thay đổi code dự kiến (khi được duyệt)
+### 17.5 Code
 
 | File | Thay đổi |
 |---|---|
 | `vocab.py` | Thuộc tính `review` (trọng số 4), `RELATIONS` (trọng số 3), `REVIEW_ASPECTS` (11 giá trị và nhóm hỗ trợ / không hỗ trợ) |
-| `schema.py` | Model `Relation`, model `Review`; sửa V1, V4; thêm V12, V13; xuất lại `schema.json`, `schema.inline.json` |
+| `schema.py` | Model `Review`; field `relation`, `courses` của `Constraint`; sửa V1, V4; thêm V12, V13; `parse_review_stats`; xuất lại `schema.json`, `schema.inline.json` |
 | `normalize.py` | Chuẩn hoá `review` (bảng aspect) và `relation`; warning mâu thuẫn của `relation`. Không gọi service ngoài |
 | `app/api/` | Nhận `review_stats` trong request; validate từng dòng |
-| `tests/scheduling/` | Test V12, V13, `review_stats` sai, golden R1–R8 (sau khi gộp vào mục 13 thì đổi thành `E33`…) |
+| `tests/scheduling/` | `test_review_relation.py` (V12, V13, chuẩn hoá, `review_stats`); golden E33–E40 |
 | `validation/n8n/…workflow.json` | 5 type mới trong `TYPES`; slot và kiểm tra trong *Compute Batch* / *Parse & Validate* |

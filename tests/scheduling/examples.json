@@ -2459,11 +2459,11 @@
   },
   {
     "id": "E28",
-    "title": "Đổi khu không được hỗ trợ (bổ sung)",
+    "title": "Tín chỉ không được hỗ trợ (bổ sung)",
     "input": {
       "constraints": [],
       "unsupported": [
-        "không muốn phải chạy từ khu K sang khu V giữa hai lớp liền nhau"
+        "muốn tổng tín chỉ không quá 18"
       ]
     },
     "expected": {
@@ -2472,7 +2472,7 @@
       "unsupported": [
         {
           "index": null,
-          "source": "không muốn phải chạy từ khu K sang khu V giữa hai lớp liền nhau",
+          "source": "muốn tổng tín chỉ không quá 18",
           "reason": "LLM không ánh xạ được"
         }
       ],
@@ -2726,6 +2726,581 @@
         }
       ],
       "warnings": []
+    }
+  },
+  {
+    "id": "E33",
+    "title": "Giảng viên theo đánh giá, theo môn (bổ sung)",
+    "input": {
+      "constraints": [
+        {
+          "prefer": {
+            "review": {
+              "phrase": "giảng viên dạy dễ hiểu",
+              "aspect": "ky_nang_giang_day",
+              "sentiment": "positive"
+            }
+          },
+          "scope": {
+            "course": "Automat"
+          }
+        }
+      ]
+    },
+    "expected": {
+      "version": "2.0",
+      "constraints": [
+        {
+          "id": 0,
+          "kind": "prefer",
+          "condition": {
+            "review": {
+              "phrase": "giảng viên dạy dễ hiểu",
+              "aspect": "ky_nang_giang_day",
+              "sentiment": "positive"
+            }
+          },
+          "scope": {
+            "course": [
+              "Automat và ngôn ngữ hình thức"
+            ]
+          },
+          "exclude": [],
+          "level": "normal",
+          "weight": 4,
+          "source": {
+            "prefer": {
+              "review": {
+                "phrase": "giảng viên dạy dễ hiểu",
+                "aspect": "ky_nang_giang_day",
+                "sentiment": "positive"
+              }
+            },
+            "scope": {
+              "course": "Automat"
+            }
+          }
+        }
+      ],
+      "unsupported": [],
+      "warnings": []
+    }
+  },
+  {
+    "id": "E34",
+    "title": "Tránh giảng viên chấm điểm khắt khe (bổ sung)",
+    "input": {
+      "constraints": [
+        {
+          "avoid": {
+            "review": {
+              "phrase": "giảng viên chấm điểm khắt khe",
+              "aspect": "cham_diem",
+              "sentiment": "negative"
+            }
+          }
+        }
+      ]
+    },
+    "expected": {
+      "version": "2.0",
+      "constraints": [
+        {
+          "id": 0,
+          "kind": "avoid",
+          "condition": {
+            "review": {
+              "phrase": "giảng viên chấm điểm khắt khe",
+              "aspect": "cham_diem",
+              "sentiment": "negative"
+            }
+          },
+          "scope": {},
+          "exclude": [],
+          "level": "normal",
+          "weight": 4,
+          "source": {
+            "avoid": {
+              "review": {
+                "phrase": "giảng viên chấm điểm khắt khe",
+                "aspect": "cham_diem",
+                "sentiment": "negative"
+              }
+            }
+          }
+        }
+      ],
+      "unsupported": [],
+      "warnings": [
+        "Ràng buộc 0: 'review': không có số liệu aspect 'cham_diem' cho môn Bảo mật và an toàn hệ thống thông tin, Chủ nghĩa xã hội khoa học, Cấu trúc dữ liệu và giải thuật, Lập trình Java, Mạng máy tính, Tiếng Anh chuyên ngành 2, Tiếng anh nâng cao 4, Triết học Mac-Lenin"
+      ]
+    }
+  },
+  {
+    "id": "E35",
+    "title": "Phòng có máy lạnh không quy về giảng viên được (bổ sung)",
+    "input": {
+      "constraints": [
+        {
+          "prefer": {
+            "review": {
+              "phrase": "phòng học có máy lạnh",
+              "aspect": "thiet_bi_day_hoc",
+              "sentiment": "positive"
+            }
+          }
+        }
+      ]
+    },
+    "expected": {
+      "version": "2.0",
+      "constraints": [],
+      "unsupported": [
+        {
+          "index": 0,
+          "source": {
+            "prefer": {
+              "review": {
+                "phrase": "phòng học có máy lạnh",
+                "aspect": "thiet_bi_day_hoc",
+                "sentiment": "positive"
+              }
+            }
+          },
+          "reason": "'review' trong 'prefer': aspect 'thiet_bi_day_hoc': dữ liệu review không có phòng"
+        }
+      ],
+      "warnings": []
+    }
+  },
+  {
+    "id": "E36",
+    "title": "Hai môn cùng ngày (bổ sung)",
+    "input": {
+      "constraints": [
+        {
+          "relation": "same_day",
+          "courses": [
+            "Automat",
+            "Cấu trúc dữ liệu"
+          ]
+        }
+      ]
+    },
+    "expected": {
+      "version": "2.0",
+      "constraints": [
+        {
+          "id": 0,
+          "kind": "relation",
+          "relation": "same_day",
+          "courses": [
+            "Automat và ngôn ngữ hình thức",
+            "Cấu trúc dữ liệu và giải thuật"
+          ],
+          "scope": {},
+          "exclude": [],
+          "level": "normal",
+          "weight": 3,
+          "source": {
+            "relation": "same_day",
+            "courses": [
+              "Automat",
+              "Cấu trúc dữ liệu"
+            ]
+          }
+        }
+      ],
+      "unsupported": [],
+      "warnings": []
+    }
+  },
+  {
+    "id": "E37",
+    "title": "Hai môn khác ngày, bắt buộc (bổ sung)",
+    "input": {
+      "constraints": [
+        {
+          "relation": "different_day",
+          "courses": [
+            "Mạng máy tính",
+            "Lập trình Java"
+          ],
+          "level": "must"
+        }
+      ]
+    },
+    "expected": {
+      "version": "2.0",
+      "constraints": [
+        {
+          "id": 0,
+          "kind": "relation",
+          "relation": "different_day",
+          "courses": [
+            "Mạng máy tính",
+            "Lập trình Java"
+          ],
+          "scope": {},
+          "exclude": [],
+          "level": "must",
+          "weight": 3,
+          "source": {
+            "relation": "different_day",
+            "courses": [
+              "Mạng máy tính",
+              "Lập trình Java"
+            ],
+            "level": "must"
+          }
+        }
+      ],
+      "unsupported": [],
+      "warnings": []
+    }
+  },
+  {
+    "id": "E38",
+    "title": "Môn trước môn sau trong ngày, kèm phần không hỗ trợ (bổ sung)",
+    "input": {
+      "constraints": [
+        {
+          "relation": "before",
+          "courses": [
+            "Cấu trúc dữ liệu",
+            "Lập trình Java"
+          ]
+        }
+      ],
+      "unsupported": [
+        "cho em học cùng lớp với bạn Hương"
+      ]
+    },
+    "expected": {
+      "version": "2.0",
+      "constraints": [
+        {
+          "id": 0,
+          "kind": "relation",
+          "relation": "before",
+          "courses": [
+            "Cấu trúc dữ liệu và giải thuật",
+            "Lập trình Java"
+          ],
+          "scope": {},
+          "exclude": [],
+          "level": "normal",
+          "weight": 3,
+          "source": {
+            "relation": "before",
+            "courses": [
+              "Cấu trúc dữ liệu",
+              "Lập trình Java"
+            ]
+          }
+        }
+      ],
+      "unsupported": [
+        {
+          "index": null,
+          "source": "cho em học cùng lớp với bạn Hương",
+          "reason": "LLM không ánh xạ được"
+        }
+      ],
+      "warnings": []
+    }
+  },
+  {
+    "id": "E39",
+    "title": "Nhiều ý, có giảng viên \"khó tính\" (bổ sung)",
+    "input": {
+      "constraints": [
+        {
+          "prefer": {
+            "review": {
+              "phrase": "giảng viên có kỹ năng giảng dạy tốt",
+              "aspect": "ky_nang_giang_day",
+              "sentiment": "positive"
+            }
+          }
+        },
+        {
+          "prefer": {
+            "day": "thứ 7",
+            "session": "chiều"
+          }
+        },
+        {
+          "avoid": {
+            "day": "thứ 4"
+          }
+        },
+        {
+          "prefer": {
+            "review": {
+              "phrase": "giảng viên khó tính",
+              "aspect": "hanh_vi",
+              "sentiment": "negative"
+            }
+          },
+          "level": "high"
+        }
+      ]
+    },
+    "expected": {
+      "version": "2.0",
+      "constraints": [
+        {
+          "id": 0,
+          "kind": "prefer",
+          "condition": {
+            "review": {
+              "phrase": "giảng viên có kỹ năng giảng dạy tốt",
+              "aspect": "ky_nang_giang_day",
+              "sentiment": "positive"
+            }
+          },
+          "scope": {},
+          "exclude": [],
+          "level": "normal",
+          "weight": 4,
+          "source": {
+            "prefer": {
+              "review": {
+                "phrase": "giảng viên có kỹ năng giảng dạy tốt",
+                "aspect": "ky_nang_giang_day",
+                "sentiment": "positive"
+              }
+            }
+          }
+        },
+        {
+          "id": 1,
+          "kind": "prefer",
+          "condition": {
+            "day": [
+              "T7"
+            ],
+            "session": [
+              6,
+              7,
+              8,
+              9,
+              10
+            ]
+          },
+          "scope": {},
+          "exclude": [],
+          "level": "normal",
+          "weight": 3,
+          "source": {
+            "prefer": {
+              "day": "thứ 7",
+              "session": "chiều"
+            }
+          }
+        },
+        {
+          "id": 2,
+          "kind": "avoid",
+          "condition": {
+            "day": [
+              "T4"
+            ]
+          },
+          "scope": {},
+          "exclude": [],
+          "level": "normal",
+          "weight": 3,
+          "source": {
+            "avoid": {
+              "day": "thứ 4"
+            }
+          }
+        },
+        {
+          "id": 3,
+          "kind": "prefer",
+          "condition": {
+            "review": {
+              "phrase": "giảng viên khó tính",
+              "aspect": "hanh_vi",
+              "sentiment": "negative"
+            }
+          },
+          "scope": {},
+          "exclude": [],
+          "level": "high",
+          "weight": 8,
+          "source": {
+            "prefer": {
+              "review": {
+                "phrase": "giảng viên khó tính",
+                "aspect": "hanh_vi",
+                "sentiment": "negative"
+              }
+            },
+            "level": "high"
+          }
+        }
+      ],
+      "unsupported": [],
+      "warnings": [
+        "Ràng buộc 0: 'review': không có số liệu aspect 'ky_nang_giang_day' cho môn Bảo mật và an toàn hệ thống thông tin, Chủ nghĩa xã hội khoa học, Mạng máy tính, Tiếng Anh chuyên ngành 2, Tiếng anh nâng cao 4, Triết học Mac-Lenin",
+        "Ràng buộc 3: 'review': không có số liệu aspect 'hanh_vi' cho môn Bảo mật và an toàn hệ thống thông tin, Chủ nghĩa xã hội khoa học, Cấu trúc dữ liệu và giải thuật, Mạng máy tính, Tiếng Anh chuyên ngành 2, Tiếng anh nâng cao 4, Triết học Mac-Lenin"
+      ]
+    }
+  },
+  {
+    "id": "E40",
+    "title": "Câu dạng góp ý cho giảng viên (bổ sung)",
+    "input": {
+      "constraints": [
+        {
+          "prefer": {
+            "review": {
+              "phrase": "giảng viên giao nhiều bài tập",
+              "aspect": "bai_tap",
+              "sentiment": "positive"
+            }
+          }
+        },
+        {
+          "prefer": {
+            "review": {
+              "phrase": "giảng viên chia nhóm để làm bài tập",
+              "aspect": "ky_nang_giang_day",
+              "sentiment": "positive"
+            }
+          }
+        },
+        {
+          "prefer": {
+            "review": {
+              "phrase": "giảng viên giảng kỹ những vấn đề trọng tâm của môn học",
+              "aspect": "ky_nang_giang_day",
+              "sentiment": "positive"
+            }
+          }
+        },
+        {
+          "prefer": {
+            "review": {
+              "phrase": "giảng viên đưa ra phương pháp để học hiệu quả",
+              "aspect": "ky_nang_giang_day",
+              "sentiment": "positive"
+            }
+          }
+        }
+      ]
+    },
+    "expected": {
+      "version": "2.0",
+      "constraints": [
+        {
+          "id": 0,
+          "kind": "prefer",
+          "condition": {
+            "review": {
+              "phrase": "giảng viên giao nhiều bài tập",
+              "aspect": "bai_tap",
+              "sentiment": "positive"
+            }
+          },
+          "scope": {},
+          "exclude": [],
+          "level": "normal",
+          "weight": 4,
+          "source": {
+            "prefer": {
+              "review": {
+                "phrase": "giảng viên giao nhiều bài tập",
+                "aspect": "bai_tap",
+                "sentiment": "positive"
+              }
+            }
+          }
+        },
+        {
+          "id": 1,
+          "kind": "prefer",
+          "condition": {
+            "review": {
+              "phrase": "giảng viên chia nhóm để làm bài tập",
+              "aspect": "ky_nang_giang_day",
+              "sentiment": "positive"
+            }
+          },
+          "scope": {},
+          "exclude": [],
+          "level": "normal",
+          "weight": 4,
+          "source": {
+            "prefer": {
+              "review": {
+                "phrase": "giảng viên chia nhóm để làm bài tập",
+                "aspect": "ky_nang_giang_day",
+                "sentiment": "positive"
+              }
+            }
+          }
+        },
+        {
+          "id": 2,
+          "kind": "prefer",
+          "condition": {
+            "review": {
+              "phrase": "giảng viên giảng kỹ những vấn đề trọng tâm của môn học",
+              "aspect": "ky_nang_giang_day",
+              "sentiment": "positive"
+            }
+          },
+          "scope": {},
+          "exclude": [],
+          "level": "normal",
+          "weight": 4,
+          "source": {
+            "prefer": {
+              "review": {
+                "phrase": "giảng viên giảng kỹ những vấn đề trọng tâm của môn học",
+                "aspect": "ky_nang_giang_day",
+                "sentiment": "positive"
+              }
+            }
+          }
+        },
+        {
+          "id": 3,
+          "kind": "prefer",
+          "condition": {
+            "review": {
+              "phrase": "giảng viên đưa ra phương pháp để học hiệu quả",
+              "aspect": "ky_nang_giang_day",
+              "sentiment": "positive"
+            }
+          },
+          "scope": {},
+          "exclude": [],
+          "level": "normal",
+          "weight": 4,
+          "source": {
+            "prefer": {
+              "review": {
+                "phrase": "giảng viên đưa ra phương pháp để học hiệu quả",
+                "aspect": "ky_nang_giang_day",
+                "sentiment": "positive"
+              }
+            }
+          }
+        }
+      ],
+      "unsupported": [],
+      "warnings": [
+        "Ràng buộc 0: 'review': không có số liệu aspect 'bai_tap' cho môn Automat và ngôn ngữ hình thức, Bảo mật và an toàn hệ thống thông tin, Chủ nghĩa xã hội khoa học, Lập trình Java, Mạng máy tính, Tiếng Anh chuyên ngành 2, Tiếng anh nâng cao 4, Triết học Mac-Lenin",
+        "Ràng buộc 1: 'review': không có số liệu aspect 'ky_nang_giang_day' cho môn Bảo mật và an toàn hệ thống thông tin, Chủ nghĩa xã hội khoa học, Mạng máy tính, Tiếng Anh chuyên ngành 2, Tiếng anh nâng cao 4, Triết học Mac-Lenin",
+        "Ràng buộc 2: 'review': không có số liệu aspect 'ky_nang_giang_day' cho môn Bảo mật và an toàn hệ thống thông tin, Chủ nghĩa xã hội khoa học, Mạng máy tính, Tiếng Anh chuyên ngành 2, Tiếng anh nâng cao 4, Triết học Mac-Lenin",
+        "Ràng buộc 3: 'review': không có số liệu aspect 'ky_nang_giang_day' cho môn Bảo mật và an toàn hệ thống thông tin, Chủ nghĩa xã hội khoa học, Mạng máy tính, Tiếng Anh chuyên ngành 2, Tiếng anh nâng cao 4, Triết học Mac-Lenin"
+      ]
     }
   }
 ]
