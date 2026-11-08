@@ -66,7 +66,7 @@ Nghiên cứu cần cho ra hai kết quả:
 | Phần | Nội dung | Branch | Spec | Trạng thái |
 |---|---|---|---|---|
 | A | JSON Structure v2 | `feature/new_json_structure` | [`json_v2/`](json_v2/) | Code xong T1–T11 (`app/scheduling/`, 432 tests); chờ duyệt kết quả (T12) |
-| A2 | Mở rộng: `review`, `relation` | `feature/new_json_structure` | [`json_v2/`](json_v2/) (requirements mục 10, design mục 17, tasks Giai đoạn 7) | Đề xuất, chờ duyệt (T13); chưa có code |
+| A2 | Mở rộng: `review`, `relation` | `feature/new_json_structure` | [`json_v2/`](json_v2/) (requirements mục 10, design mục 17, tasks Giai đoạn 7) | Code xong T13–T17 (validate, chuẩn hoá); quy `review` về giảng viên và chấm phạt làm ở Phần B |
 | B | Thuật toán và so sánh | chưa tạo | `algorithms/` (chưa tạo) | Chưa bắt đầu; kế hoạch ở mục 7 |
 
 ## 6. Phần A — JSON Structure v2 (tóm tắt)
@@ -78,7 +78,7 @@ Nghiên cứu cần cho ra hai kết quả:
   - không làm mất thông tin âm thầm.
 - **Sản phẩm:**
   - spec trong `json_v2/`;
-  - package `app/scheduling/`: `vocab.py`, `schema.py` (Pydantic, validation V1–V11), `normalize.py`, `v1_adapter.py`;
+  - package `app/scheduling/`: `vocab.py`, `schema.py` (Pydantic, validation V1–V13), `normalize.py`, `v1_adapter.py`;
   - cho module LLM: hướng dẫn [`json_v2/llm-guide.md`](json_v2/llm-guide.md) (thay `data/docs-feature.md` của v1), JSON Schema `json_v2/schema.json` và `json_v2/schema.inline.json` (không `$ref`);
   - endpoint `POST /api/preferences/validate`;
   - tests trong `tests/scheduling/`, gồm golden tests cho mọi ví dụ của design.md (`examples.json`).

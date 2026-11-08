@@ -145,31 +145,31 @@ T0 ──► T1 ──► T2 ──► T3 ──► T4
     - Viết `docs/specs/algorithms/` (requirements, design, tasks) từ `docs/specs/README.md` mục 7.
   - Xong khi: bảng trạng thái ghi Phần A "đã xong" và Phần B "đang làm".
 
-## Giai đoạn 7 — Mở rộng A2: `review` và `relation` (đề xuất, chờ duyệt)
+## Giai đoạn 7 — Mở rộng A2: `review` và `relation`
 
-> Spec: requirements.md mục 10, design.md mục 17, [plan-a2-review-relation.md](plan-a2-review-relation.md). Chỉ bắt đầu khi T13 được duyệt.
+> Spec: requirements.md mục 10, design.md mục 17, [plan-a2-review-relation.md](plan-a2-review-relation.md). Duyệt ngày 2026-11-08.
 
-- [ ] **T13 — Duyệt spec A2 và trả lời QA1–QA4**
+- [x] **T13 — Duyệt spec A2 và trả lời QA1–QA4** (QA1, QA2 là việc của gateway; QA3, QA4 theo đề xuất)
   - Làm:
     - Duyệt requirements.md mục 10 và design.md mục 17.
     - Đánh giá SA `/predict` trên khoảng 25 câu `yes` của tab `[RELABEL] unsupported` cộng 30 câu tự viết; ghi độ chính xác aspect (QA2).
     - Thống nhất với gateway định dạng `review` (`phrase`, `aspect`, `sentiment`) và `review_stats` (QA1), và cách viết tên giảng viên (QA3).
   - Xong khi: bảng câu hỏi mở A2 có câu trả lời; trạng thái A2 trong `docs/specs/README.md` là "đã duyệt".
 
-- [ ] **T14 — Từ vựng và schema** (`vocab.py`, `schema.py`, `tests/scheduling/test_schema.py`)
+- [x] **T14 — Từ vựng và schema** (`vocab.py`, `schema.py`, `tests/scheduling/test_schema.py`)
   - Làm: thuộc tính `review`, `RELATIONS`, `REVIEW_ASPECTS`; model `Review`, `Relation`; sửa V1, V4; thêm V12, V13; xuất lại `schema.json` và `schema.inline.json`.
   - Xong khi: V12, V13 có ca hợp lệ và ca vi phạm; snapshot schema khớp.
 
-- [ ] **T15 — Chuẩn hoá** (`normalize.py`, `tests/scheduling/test_normalize.py`)
+- [x] **T15 — Chuẩn hoá** (`normalize.py`, `tests/scheduling/test_normalize.py`)
   - Làm: chuẩn hoá `review` theo bảng aspect ở 17.1; nhận và validate `review_stats` trong request; chuẩn hoá `relation` (khớp môn, warning mâu thuẫn). Không gọi service ngoài.
   - Xong khi: test có `review` thiếu aspect, aspect không hỗ trợ, thiếu `review_stats`, dòng `review_stats` sai, `relation` sai số môn.
 
-- [ ] **T16 — Golden tests R1–R8**
-  - Làm: chuyển R1–R8 thành `E33`–`E40` trong mục 13, sinh lại `examples.json` bằng `tests/scheduling/build_examples.py`.
+- [x] **T16 — Golden tests E33–E40**
+  - Làm: viết `E33`–`E40` trong mục 13 (đổi sang các môn trong bộ lớp mẫu), sinh lại `examples.json` bằng `tests/scheduling/build_examples.py`.
   - Xong khi: `test_examples.py` chạy xanh.
 
-- [ ] **T17 — Tài liệu**
-  - Làm: gộp mục 17 vào các mục 3–9 và 13 của design.md; cập nhật llm-guide.md (thuộc tính `review`, loại `relation`, dataset 38 type, bỏ ví dụ đổi khu ở mục 6.C); cập nhật CLAUDE.md và `docs/specs/README.md`.
+- [x] **T17 — Tài liệu**
+  - Làm: thêm dòng tóm tắt trỏ về mục 17 ở các mục 3.2, 4, 6.5, 8, 9, 10 của design.md (mục 17 giữ làm đặc tả đầy đủ); cập nhật llm-guide.md (thuộc tính `review`, loại `relation`, dataset 38 type, bỏ ví dụ đổi khu ở mục 6.C); cập nhật CLAUDE.md và `docs/specs/README.md`.
   - Xong khi: llm-guide.md không còn nhắc ý đổi khu như ví dụ unsupported; bảng phủ ở mục 13 có `review` và `relation`.
 
 - [ ] **T18 — Dataset n8n** (`validation/n8n/generate_single_sentences.workflow.json`)

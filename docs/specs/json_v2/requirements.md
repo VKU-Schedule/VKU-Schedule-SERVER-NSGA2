@@ -242,9 +242,9 @@ Trả lời ngày 2026-10-18.
 
 Đã xác minh từ dữ liệu, không cần hỏi: nhóm lớp (cột `Lớp`) là chuỗi số từ `"1"` đến `"22"`, nên được so sánh theo số nguyên.
 
-## 10. Mở rộng A2 — `review` và `relation` (đề xuất, chờ duyệt)
+## 10. Mở rộng A2 — `review` và `relation`
 
-> Bổ sung ngày 2026-11-08. Kế hoạch: [plan-a2-review-relation.md](plan-a2-review-relation.md). Cách làm: design.md mục 17. Các bước: tasks.md Giai đoạn 7.
+> Bổ sung và duyệt ngày 2026-11-08; đã có code cho phần validate và chuẩn hoá. Kế hoạch: [plan-a2-review-relation.md](plan-a2-review-relation.md). Cách làm: design.md mục 17. Các bước: tasks.md Giai đoạn 7.
 
 ### 10.1 Bối cảnh
 
@@ -284,6 +284,6 @@ TC:
 | # | Câu hỏi | Đề xuất |
 |---|---|---|
 | QA1 | Gateway lấy `review_stats` theo (môn, giảng viên, aspect) từ Review service bằng cách nào? | Việc của gateway và Review service, ngoài repo này. Repo chỉ quy định định dạng `review_stats` (design 17.1) |
-| QA2 | SA được train trên câu review, không phải câu mong muốn. Độ chính xác trên câu mong muốn có đủ không? | Đánh giá trên khoảng 25 câu `yes` cộng 30 câu tự viết (task T13). Việc của gateway và SA service. Dưới 80% thì gateway cần cách khác để điền aspect; repo này không đổi |
+| QA2 | SA được train trên câu review, không phải câu mong muốn. Độ chính xác trên câu mong muốn có đủ không? | Chưa đánh giá. Việc của gateway và SA service. Dưới 80% thì gateway cần cách khác để điền aspect; repo này không đổi |
 | QA3 | Tên `Lecturer` trong bảng Review có cùng cách viết với cột giảng viên của lớp không? | Dùng cách khớp tên ở design 7.5; tên không khớp thì bỏ qua giảng viên đó, kèm warning |
-| QA4 | Câu dạng góp ý gửi giảng viên ("giảng viên nên giao bài tập nhiều hơn…"), không nêu muốn chọn lớp, hiểu là `prefer review` hay đưa vào `unsupported`? | `prefer review` với cụm viết lại ở dạng khẳng định (design R8). Cách hiểu được chốt sẽ ghi vào llm-guide ở task T17 |
+| QA4 | Câu dạng góp ý gửi giảng viên ("giảng viên nên giao bài tập nhiều hơn…"), không nêu muốn chọn lớp, hiểu là `prefer review` hay đưa vào `unsupported`? | `prefer review` với cụm viết lại ở dạng khẳng định (design E40, llm-guide mục 2.1) |

@@ -12,11 +12,13 @@
   "version": "2.0",                 // tuỳ chọn, mặc định "2.0"
   "constraints": [                  // bắt buộc; mỗi ý của sinh viên là một phần tử
     {
-      // Đúng MỘT trong ba key sau:
+      // Đúng MỘT trong bốn key sau:
       "prefer": Filter,             // muốn các lớp thoả bộ lọc này
       "avoid":  Filter,             // muốn tránh các lớp thoả bộ lọc này
       "limit":  "<tên chỉ số>",     // giới hạn hình dạng lịch, đi kèm "min" và/hoặc "max"
+      "relation": "same_day" | "different_day" | "before",  // quan hệ giữa hai môn, đi kèm "courses"
       "min": number, "max": number, // chỉ dùng với "limit", số nguyên ≥ 0, tính cả biên
+      "courses": ["<môn A>", "<môn B>"],  // chỉ dùng với "relation", đúng 2 môn
 
       "scope": Filter,              // tuỳ chọn: ràng buộc áp dụng cho lớp nào; thiếu = mọi lớp
       "level": "must" | "high" | "normal"   // tuỳ chọn, mặc định "normal"
@@ -54,12 +56,38 @@ Nhiều key trong cùng một Filter kết hợp bằng **VÀ**: `{"day": "thứ
 | `duration` | số tiết của một buổi học | có | `{"min": 4}` = "lớp từ 4 tiết trở lên" |
 | `area` | khu | không | `"K"`, `"V"` |
 | `room` | phòng | không | `"A212"`, `"V.A201"`, `"K.A402"` |
+| `review` | giảng viên theo đánh giá của sinh viên (mục 3.1) | không | `{"phrase": "giảng viên dạy dễ hiểu"}` |
 
 Ghi chú:
 - **Giữ nguyên đơn vị sinh viên dùng.** "Từ tiết 3" → `start_period`; "sau 10 giờ" → `start_time`. Không tự đổi giờ ↔ tiết, buổi → tiết. Server tự quy đổi.
 - **`prefer` buổi/tiết** nghĩa là lớp nằm trọn trong khung đó; **`avoid` buổi/tiết** nghĩa là lớp có chạm vào khung đó.
 - Buổi: sáng = tiết 1–5, chiều = tiết 6–10, sáng sớm = 1–2, chiều muộn = 8–10. Không có buổi tối.
 - Giờ bắt đầu tiết: 1: 07:30, 2: 08:30, 3: 09:30, 4: 10:30, 5: 11:30, 6: 13:00, 7: 14:00, 8: 15:00, 9: 16:00, 10: 17:00.
+
+## 2.1 Thuộc tính `review` (giảng viên theo đánh giá)
+
+Dùng khi sinh viên mô tả **tính chất của giảng viên** mà không nêu tên: dạy dễ hiểu, nhiệt tình, chấm điểm thoáng, cho nhiều bài tập, khó tính…
+
+- Chỉ ghi `phrase`: `{"prefer": {"review": {"phrase": "giảng viên dạy dễ hiểu"}}}`. Không ghi `aspect`, `sentiment`; hệ thống tự điền.
+- `phrase` là **mô tả giảng viên ở dạng khẳng định**, giữ từ chính của sinh viên:
+  - câu góp ý thì bỏ "nên", "cần", "hơn", "mong": "giảng viên nên giao bài tập nhiều hơn" → `"giảng viên giao nhiều bài tập"`;
+  - giữ nguyên tính chất sinh viên muốn, kể cả khi nghe tiêu cực: "rất thích giảng viên khó tính" → `{"prefer": {"review": {"phrase": "giảng viên khó tính"}}, "level": "high"}`. Không đổi thành `avoid`.
+- Muốn → `prefer`; tránh → `avoid`. Cụm chỉ mô tả giảng viên, không chứa "không muốn".
+- `review` đứng một mình trong `prefer` / `avoid`. Môn, thứ, buổi đưa vào `scope`. Không đặt `review` trong `scope`.
+- Mỗi tính chất là một ràng buộc riêng.
+- Có tên giảng viên → dùng `teacher`, không dùng `review`.
+- Câu về **phòng, cơ sở vật chất** (máy lạnh, wifi, ổ cắm…) hay **nội dung môn học** không dùng `review`: chép vào `unsupported`.
+
+## 2.2 Loại ràng buộc `relation` (quan hệ giữa hai môn)
+
+| `relation` | Câu của sinh viên | Ví dụ |
+|---|---|---|
+| `same_day` | "hai môn A và B học cùng một ngày" | `{"relation": "same_day", "courses": ["A", "B"]}` |
+| `different_day` | "A và B không học cùng ngày", "học ở hai ngày khác nhau" | `{"relation": "different_day", "courses": ["A", "B"]}` |
+| `before` | "học A trước B trong cùng một ngày" | `{"relation": "before", "courses": ["A", "B"]}`: môn học trước đứng đầu |
+
+- `courses` có đúng 2 tên môn khác nhau. Không dùng `scope`, `min`, `max`.
+- Mức độ ghi bằng `level` như các ràng buộc khác.
 
 ## 3. Chỉ số của `limit`
 
@@ -90,23 +118,25 @@ Ngoại lệ: "chỉ … nếu không còn lựa chọn" là `normal`.
 
 1. **Mỗi ý → một ràng buộc.** Một ý có nhiều điều kiện cùng lúc ("sáng thứ 6 với thầy Sơn") → một Filter nhiều key.
 2. **Chỉ ghi điều sinh viên nói.** Không sinh `null`, mảng rỗng, hay ràng buộc mặc định. Câu không có yêu cầu nào → `{"constraints": []}`.
-3. **Chọn loại:** thích / muốn / ưu tiên → `prefer`; không thích / tránh / không muốn → `avoid`; giới hạn số lượng ("tối đa", "ít nhất", "không quá") → `limit`.
+3. **Chọn loại:** thích / muốn / ưu tiên → `prefer`; không thích / tránh / không muốn → `avoid`; giới hạn số lượng ("tối đa", "ít nhất", "không quá") → `limit`; hai môn cùng ngày / khác ngày / trước sau → `relation`.
 4. **Phạm vi và điều kiện:**
    - "áp dụng cho lớp nào?" (môn X, thứ 2, buổi chiều, lớp ở phòng P) → `scope`;
    - "muốn hoặc tránh điều gì?" → `prefer` / `avoid`;
    - tên môn luôn nằm trong `scope`.
 5. **Ngoại lệ** ("riêng", "trừ", "ngoại trừ"): viết ràng buộc chung như bình thường, rồi thêm một ràng buộc cho phần ngoại lệ với `scope` hẹp hơn. Server tự hiểu phần hẹp hơn thắng.
 6. **Lý do** ("vì gần nhà", "để đi làm thêm") không phải ràng buộc: bỏ qua.
-7. **Ý không biểu diễn được** (học cùng bạn, đổi khu giữa hai lớp…): chép nguyên văn vào `unsupported`.
+7. **Ý không biểu diễn được** (học cùng bạn, học online, phòng có máy lạnh, tín chỉ, lịch thi…): chép nguyên văn vào `unsupported`.
 8. **Tên riêng:** nếu prompt có danh sách môn đã chọn và giảng viên, dùng đúng tên trong danh sách.
 
-## 6. Bộ dataset gồm: 20 type
+## 6. Bộ dataset gồm: 38 type
 
 Có thể đếm số loại ràng buộc ở hai mức.
 
 Ở mức cú pháp, JSON v2 có 3 loại ràng buộc: `prefer`, `avoid`, `limit`.
 
-Khi xây dựng dataset theo cách 1 prompt = 1 ràng buộc, nên đếm theo tổ hợp loại ràng buộc × thuộc tính hoặc chỉ số. Theo cách đếm này, có **32 loại ràng buộc nguyên tử**, cộng thêm 1 loại `unsupported` dành cho câu không thể biểu diễn.
+Ở mức cú pháp còn có loại thứ tư, `relation`.
+
+Khi xây dựng dataset theo cách 1 prompt = 1 ràng buộc, nên đếm theo tổ hợp loại ràng buộc × thuộc tính hoặc chỉ số. Theo cách đếm này, có **37 loại ràng buộc nguyên tử**, cộng thêm 1 loại `unsupported` dành cho câu không thể biểu diễn. STT 1–33 giữ như cũ; STT 34–38 là phần mở rộng (mục D, E).
 
 ### A. `prefer` / `avoid` × 13 thuộc tính = 26 loại
 
@@ -147,9 +177,25 @@ Khi xây dựng dataset theo cách 1 prompt = 1 ràng buộc, nên đếm theo t
 
 Loại này dùng cho câu không thể ánh xạ vào schema hiện tại. Ví dụ:
 - "Học cùng lớp với bạn Nam".
-- "Không muốn chạy từ khu K sang khu V".
+- "Muốn tổng tín chỉ không quá 18".
+- "Cho em xin phòng học có máy lạnh".
 
 Các câu này được giữ nguyên trong `unsupported`, không ép chuyển thành một ràng buộc không phù hợp.
+
+### D. `prefer` / `avoid` × `review` = 2 loại
+
+| STT | Type | Câu mẫu |
+|---|---|---|
+| 34 | `prefer_review` | "Mong được học với giảng viên dạy dễ hiểu" |
+| 35 | `avoid_review` | "Không muốn học với giảng viên chấm điểm khắt khe" |
+
+### E. `relation` × 3 = 3 loại
+
+| STT | Type | Câu mẫu |
+|---|---|---|
+| 36 | `relation_same_day` | "Cho em xếp Toán rời rạc và Lập trình Java học cùng một ngày" |
+| 37 | `relation_different_day` | "Hai môn Mạng máy tính và Học máy đừng học chung một ngày" |
+| 38 | `relation_before` | "Trong cùng một ngày, em muốn học Kinh tế vĩ mô trước Quản trị học" |
 
 ## 7. Ví dụ
 
@@ -495,13 +541,13 @@ Các câu này được giữ nguyên trong `unsupported`, không ép chuyển t
 ]}
 ```
 
-### E28 — Đổi khu không được hỗ trợ (bổ sung)
-> "Tôi không muốn phải chạy từ khu K sang khu V giữa hai lớp liền nhau"
+### E28 — Tín chỉ không được hỗ trợ (bổ sung)
+> "Học kỳ này em muốn tổng tín chỉ không quá 18"
 
 ```json
-{"constraints": [], "unsupported": ["không muốn phải chạy từ khu K sang khu V giữa hai lớp liền nhau"]}
+{"constraints": [], "unsupported": ["muốn tổng tín chỉ không quá 18"]}
 ```
-- Không có chỉ số đổi khu (câu hỏi Q4: không phải vấn đề thật với sinh viên), nên cả câu vào `unsupported`.
+- Không có thuộc tính hay chỉ số nào về tín chỉ, nên cả câu vào `unsupported`.
 
 ### E29 — "Chỉ … nếu không còn lựa chọn" là tránh mềm (mẫu câu)
 > "Tôi chỉ học chiều thứ 2 nếu không còn lựa chọn nào khác"
@@ -544,11 +590,94 @@ Các câu này được giữ nguyên trong `unsupported`, không ép chuyển t
 ], "unsupported": ["muốn học cùng lớp với bạn Nam"]}
 ```
 
+### E33 — Giảng viên theo đánh giá, theo môn
+> "Môn Automat em muốn học với giảng viên dạy dễ hiểu"
+
+```json
+{"constraints": [
+  {"prefer": {"review": {"phrase": "giảng viên dạy dễ hiểu"}}, "scope": {"course": "Automat"}}
+]}
+```
+
+### E34 — Tránh giảng viên theo đánh giá
+> "Em không muốn học với giảng viên chấm điểm khắt khe"
+
+```json
+{"constraints": [
+  {"avoid": {"review": {"phrase": "giảng viên chấm điểm khắt khe"}}}
+]}
+```
+
+### E35 — Phòng, cơ sở vật chất: không dùng `review`
+> "Cho em xin phòng học có máy lạnh"
+
+```json
+{"constraints": [], "unsupported": ["cho em xin phòng học có máy lạnh"]}
+```
+
+### E36 — Hai môn cùng ngày
+> "Em muốn Automat và Cấu trúc dữ liệu học cùng một ngày"
+
+```json
+{"constraints": [
+  {"relation": "same_day", "courses": ["Automat", "Cấu trúc dữ liệu"]}
+]}
+```
+
+### E37 — Hai môn khác ngày, bắt buộc
+> "Mạng máy tính và Lập trình Java tuyệt đối không học chung một ngày"
+
+```json
+{"constraints": [
+  {"relation": "different_day", "courses": ["Mạng máy tính", "Lập trình Java"], "level": "must"}
+]}
+```
+
+### E38 — Môn trước môn sau, kèm phần không hỗ trợ
+> "Hôm nào có cả hai thì em muốn học Cấu trúc dữ liệu trước Lập trình Java, và cho em học cùng lớp với bạn Hương"
+
+```json
+{"constraints": [
+  {"relation": "before", "courses": ["Cấu trúc dữ liệu", "Lập trình Java"]}
+], "unsupported": ["cho em học cùng lớp với bạn Hương"]}
+```
+
+### E39 — Nhiều ý, có giảng viên "khó tính"
+> "thích học với giảng viên có kỹ năng giảng dạy tốt, tôi thích học ngày thứ 7 buổi chiều và nghỉ thứ 4, rất thích học với những giảng viên khó tính"
+
+```json
+{"constraints": [
+  {"prefer": {"review": {"phrase": "giảng viên có kỹ năng giảng dạy tốt"}}},
+  {"prefer": {"day": "thứ 7", "session": "chiều"}},
+  {"avoid": {"day": "thứ 4"}},
+  {"prefer": {"review": {"phrase": "giảng viên khó tính"}}, "level": "high"}
+]}
+```
+- "Rất thích giảng viên khó tính" vẫn là `prefer`: cụm mô tả đúng tính chất sinh viên muốn.
+
+### E40 — Câu dạng góp ý cho giảng viên
+> "giảng viên nên giao bài tập nhiều hơn , chia nhóm để làm bài tập , giảng kỹ những vấn đề trọng tâm của môn học , đưa ra phương pháp để học hiệu quả hơn ."
+
+```json
+{"constraints": [
+  {"prefer": {"review": {"phrase": "giảng viên giao nhiều bài tập"}}},
+  {"prefer": {"review": {"phrase": "giảng viên chia nhóm để làm bài tập"}}},
+  {"prefer": {"review": {"phrase": "giảng viên giảng kỹ những vấn đề trọng tâm của môn học"}}},
+  {"prefer": {"review": {"phrase": "giảng viên đưa ra phương pháp để học hiệu quả"}}}
+]}
+```
+- Mỗi cụm viết lại ở dạng khẳng định, bỏ "nên", "hơn".
+
 ## 8. Lỗi thường gặp
 
 | Sai | Đúng | Vì sao |
 |---|---|---|
-| `{"prefer": {"day": "thứ 2"}, "avoid": {"day": "thứ 7"}}` | hai ràng buộc riêng | mỗi ràng buộc chỉ có một trong `prefer` / `avoid` / `limit` |
+| `{"prefer": {"day": "thứ 2"}, "avoid": {"day": "thứ 7"}}` | hai ràng buộc riêng | mỗi ràng buộc chỉ có một trong `prefer` / `avoid` / `limit` / `relation` |
+| `{"prefer": {"review": {"phrase": "giảng viên nên giao bài tập nhiều hơn"}}}` | `{"prefer": {"review": {"phrase": "giảng viên giao nhiều bài tập"}}}` | cụm ở dạng khẳng định, không ở dạng góp ý |
+| `{"avoid": {"review": {"phrase": "giảng viên dễ tính"}}}` cho "thích giảng viên khó tính" | `{"prefer": {"review": {"phrase": "giảng viên khó tính"}}}` | giữ nguyên tính chất sinh viên muốn |
+| `{"prefer": {"review": {"phrase": "dạy dễ hiểu"}, "day": "thứ 2"}}` | `{"prefer": {"review": {"phrase": "giảng viên dạy dễ hiểu"}}, "scope": {"day": "thứ 2"}}` | `review` đứng một mình; thứ, buổi, môn vào `scope` |
+| `{"prefer": {"review": {"phrase": "phòng có máy lạnh"}}}` | `"unsupported": ["phòng có máy lạnh"]` | `review` chỉ dành cho giảng viên |
+| `{"relation": "same_day", "courses": ["A", "B"], "scope": {"day": "thứ 2"}}` | bỏ `scope` | `relation` không dùng `scope` |
 | `{"prefer": {"periods": [1,2,3,4,5]}}` cho "thích học sáng" | `{"prefer": {"session": "sáng"}}` | giữ đơn vị sinh viên dùng |
 | `{"prefer": {"start_period": {"min": 4}}}` cho "sau 10 giờ" | `{"prefer": {"start_time": {"min": "10:00"}}}` | không tự đổi giờ sang tiết |
 | `{"avoid": {"day": "thứ 7"}, "max": 0}` | bỏ `max` | `min` / `max` chỉ đi với `limit` |

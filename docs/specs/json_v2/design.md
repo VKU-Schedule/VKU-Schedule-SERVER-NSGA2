@@ -70,15 +70,17 @@ Phần A làm bước [1], bước [2], và định nghĩa ngữ nghĩa mà bư�
 
 ### 3.2 `Constraint`
 
-Mỗi ràng buộc có **đúng một** trong ba key `prefer`, `avoid`, `limit`.
+Mỗi ràng buộc có **đúng một** trong bốn key `prefer`, `avoid`, `limit`, `relation` (`relation`: mục 17.2).
 
 | Field | Kiểu | Bắt buộc | Ý nghĩa |
 |---|---|---|---|
-| `prefer` | `Filter` | Đúng một trong `prefer` / `avoid` / `limit` | Các lớp trong phạm vi **nên thoả** bộ lọc |
-| `avoid` | `Filter` | Đúng một trong `prefer` / `avoid` / `limit` | Các lớp trong phạm vi **nên tránh** bộ lọc |
-| `limit` | tên chỉ số (mục 5) | Đúng một trong `prefer` / `avoid` / `limit` | Chỉ số hình dạng lịch cần giới hạn |
+| `prefer` | `Filter` | Đúng một trong `prefer` / `avoid` / `limit` / `relation` | Các lớp trong phạm vi **nên thoả** bộ lọc |
+| `avoid` | `Filter` | Đúng một trong `prefer` / `avoid` / `limit` / `relation` | Các lớp trong phạm vi **nên tránh** bộ lọc |
+| `limit` | tên chỉ số (mục 5) | Đúng một trong `prefer` / `avoid` / `limit` / `relation` | Chỉ số hình dạng lịch cần giới hạn |
 | `min` | số nguyên ≥ 0 | Chỉ đi với `limit`; cần ít nhất một trong `min` / `max` | Cận dưới, tính cả biên |
 | `max` | số nguyên ≥ 0 | Chỉ đi với `limit`; cần ít nhất một trong `min` / `max` | Cận trên, tính cả biên |
+| `relation` | `"same_day"` / `"different_day"` / `"before"` | Đúng một trong `prefer` / `avoid` / `limit` / `relation` | Quan hệ giữa hai môn (17.2) |
+| `courses` | mảng đúng 2 tên môn | Chỉ đi với `relation` | Hai môn của quan hệ; với `before`, môn học trước đứng đầu |
 | `scope` | `Filter` | Không; thiếu nghĩa là mọi lớp | Ràng buộc áp dụng cho những lớp nào |
 | `level` | `"must"` / `"high"` / `"normal"` | Không, mặc định `"normal"` | Mức độ |
 
@@ -126,10 +128,12 @@ Ví dụ:
 | `duration` | số tiết hoặc khoảng | khoảng | số tiết của lớp | có | trong khoảng | trong khoảng |
 | `area` | `"K"`, `"khu V"` | `K` / `V` | `area` | — | bằng | bằng |
 | `room` | `"A212"`, `"V.A201"` | mã phòng (kèm khu nếu có tiền tố) | `room` (và `area`) | — | bằng | bằng |
+| `review` | `{"phrase": …}`; gateway điền `aspect`, `sentiment` | (phrase, aspect, sentiment mục tiêu) | giảng viên, qua `review_stats` (17.1) | — | giảng viên khớp cụm nhất | giảng viên khớp cụm nhất |
 
 Ghi chú:
 - **`course`** chỉ có nghĩa trong `scope`. Nếu `course` xuất hiện trong `prefer` / `avoid`, server chuyển nó sang `scope` (R2).
 - **`periods` và `session`** là thuộc tính dạng tập: list nghĩa là một tập tiết, không phải các lựa chọn. List nhiều buổi, ví dụ `["sáng sớm", "chiều muộn"]`, là hợp của các tập tiết.
+- **`review`** chỉ dùng trong `prefer` / `avoid` và đứng một mình trong bộ lọc. Đặc tả đầy đủ ở mục 17.1.
 - **Giờ và tiết:** LLM dùng đúng đơn vị mà sinh viên nói. "Từ tiết 3" → `start_period`; "sau 10 giờ" → `start_time`. Một bộ lọc có cả hai vẫn hợp lệ.
 
 ## 5. Chỉ số cho `limit`
@@ -213,7 +217,7 @@ Ràng buộc 1 cụ thể hơn ràng buộc 0 và cùng nhóm `{session}`. Vì v
 
 | Nhóm | Thuộc tính / chỉ số | Trọng số |
 |---|---|---|
-| Người | `teacher`, `class_group` | 4 |
+| Người | `teacher`, `class_group`, `review` | 4 |
 | Mốc thời gian | `day`, `start_period`, `end_period`, `start_time`, `end_time` | 3 |
 | Khung thời gian | `session`, `periods` | 2 |
 | Ngôn ngữ | `language` | 2 |
@@ -221,6 +225,7 @@ Ràng buộc 1 cụ thể hơn ràng buộc 0 và cùng nhóm `{session}`. Vì v
 | Thời lượng lớp | `duration` | 1 |
 | Nơi học | `area`, `room` | 1 |
 | Nhịp học | `gap_periods`, `consecutive_periods` | 1 |
+| Quan hệ hai môn | `relation` (17.2) | 3 |
 
 ### 6.6 `must` và trùng lịch
 
@@ -350,10 +355,10 @@ Giá trị giảng viên không xác định trong dữ liệu (`Khoa.…`, `.`)
 
 | # | Quy tắc | Khi vi phạm |
 |---|---|---|
-| V1 | Mỗi ràng buộc có đúng một trong `prefer`, `avoid`, `limit` | `unsupported` |
+| V1 | Mỗi ràng buộc có đúng một trong `prefer`, `avoid`, `limit`, `relation` | `unsupported` |
 | V2 | `limit` nằm trong danh sách chỉ số; có ít nhất một trong `min` / `max`; giá trị là số nguyên ≥ 0; `min ≤ max`; cận phải được chỉ số cho phép (mục 5) | `unsupported` |
 | V3 | `min` / `max` ở cấp ràng buộc chỉ đi với `limit` | `unsupported` |
-| V4 | Bộ lọc (`prefer`, `avoid`, `scope`) không rỗng; mọi key thuộc danh sách ở mục 4 | `unsupported` |
+| V4 | Bộ lọc (`prefer`, `avoid`, `scope`) không rỗng; mọi key thuộc danh sách ở mục 4; `review` không nằm trong `scope` và đứng một mình trong bộ lọc | `unsupported` |
 | V5 | Khoảng chỉ dùng cho thuộc tính có thứ tự; có ít nhất một cận; `min ≤ max` | `unsupported` |
 | V6 | Kiểu giá trị đúng với thuộc tính: chuỗi, số, list hay khoảng | `unsupported` |
 | V7 | `level` là một trong `must` / `high` / `normal` | `unsupported` |
@@ -361,6 +366,8 @@ Giá trị giảng viên không xác định trong dữ liệu (`Khoa.…`, `.`)
 | V9 | `constraints` thiếu hoặc không phải mảng | Lỗi 400 cho cả tài liệu |
 | V10 | Tài liệu có `defaults` hoặc `periods` (dạng v1) | Chuyển sang v2 qua adapter (mục 12.1; câu hỏi Q2), thêm warning "đã chuyển từ v1". Adapter lỗi → lỗi 400 |
 | V11 | `version` có phiên bản chính khác 2 | Lỗi 400 |
+| V12 | `relation` thuộc 3 giá trị; `courses` là list đúng 2 tên môn không rỗng; không có `scope`; `courses` chỉ đi với `relation` (17.2). Hai tên phải khớp hai môn khác nhau, mỗi tên đúng một môn (kiểm tra khi chuẩn hoá) | `unsupported` |
+| V13 | `review` là object `{phrase, aspect, sentiment}`: `phrase` không rỗng; `aspect` thuộc 11 khía cạnh; `sentiment` thuộc `positive` / `negative` / `neutral`. Thiếu `aspect` hoặc `sentiment` (gateway chưa điền) cũng vi phạm (17.1) | `unsupported` |
 
 Mỗi phần tử `unsupported` sinh ra từ validation gồm:
 - `index`: vị trí của ràng buộc trong mảng;
@@ -380,9 +387,10 @@ Ví dụ: ràng buộc `{"prefer": {"weather": "nắng"}}` ở vị trí 3 cho r
 | Field | Ý nghĩa |
 |---|---|
 | `id` | Vị trí trong mảng `constraints` gốc |
-| `kind` | `prefer` / `avoid` / `limit` |
+| `kind` | `prefer` / `avoid` / `limit` / `relation` |
 | `condition` | Bộ lọc đã chuẩn hoá (với `prefer` / `avoid`) |
 | `metric`, `min`, `max` | Với `limit` |
+| `relation`, `courses` | Với `relation`: loại quan hệ và hai tên môn chuẩn, giữ thứ tự (17.2) |
 | `scope` | Bộ lọc đã chuẩn hoá; rỗng nghĩa là mọi lớp |
 | `exclude` | Danh sách phạm vi loại trừ (6.4) |
 | `level`, `weight` | Mức độ và trọng số đã tính (6.5) |
@@ -391,9 +399,10 @@ Ví dụ: ràng buộc `{"prefer": {"weather": "nắng"}}` ở vị trí 3 cho r
 **Bộ lọc đã chuẩn hoá:** mỗi thuộc tính được ánh xạ sang một trong ba dạng:
 - tập giá trị chuẩn: `course`, `class_group`, `teacher`, `language`, `day`, `area`, `room`;
 - tập tiết: `session`, `periods`. Hai key này giữ riêng để đúng quy tắc AND ở mục 3.3;
-- khoảng [a, b]: `start_period`, `end_period`, `start_time` và `end_time` (tính bằng phút), `duration`.
+- khoảng [a, b]: `start_period`, `end_period`, `start_time` và `end_time` (tính bằng phút), `duration`;
+- `review`: bộ (phrase, aspect, sentiment mục tiêu), JSON `{"phrase", "aspect", "sentiment"}` (17.1).
 
-**`NormalizedDocument`** gồm `version`, `constraints` (danh sách `NormalizedConstraint`), `unsupported`, `warnings`.
+**`NormalizedDocument`** gồm `version`, `constraints` (danh sách `NormalizedConstraint`), `unsupported`, `warnings`, và `review_stats` đã validate cho thuật toán (không có trong JSON trả về).
 
 ## 10. Request và response v2 (dùng khi tích hợp ở Phần B)
 
@@ -410,9 +419,14 @@ Request `POST /api/schedule`:
     "constraints": [{"avoid": {"day": "thứ 7"}}],
     "unsupported": []
   },
+  "review_stats": [
+    {"subject": "Lập trình Java", "lecturer": "Lê Tân", "aspect": "ky_nang_giang_day", "positive": 12, "negative": 1, "total": 15}
+  ],
   "k": 5
 }
 ```
+
+`review_stats` (tuỳ chọn) là số review theo (môn, giảng viên, aspect), do gateway lấy từ Review service. Chỉ cần khi có ràng buộc `review` (17.1). `POST /api/preferences/validate` nhận cùng field này.
 
 `/api/reschedule` thêm field `pinned`, chứa các lớp đã đăng ký thành công, ví dụ `[{"course": "Lập trình Java", "class_index": "2"}]`. Môn được ghim chỉ còn đúng lớp đó làm ứng viên.
 
@@ -1178,7 +1192,7 @@ Gán nhãn lại các câu trong tab `[RELABEL] unsupported`:
 - câu `yes` về phòng (máy lạnh, wifi, ổ cắm, bàn ghế) → trả về `unsupported` (17.1, bước 2);
 - câu `xem xét bổ sung kiểu JSON` → type `relation` tương ứng.
 
-Khi cập nhật llm-guide (task T17): bỏ ví dụ "chạy từ khu K sang khu V" ở mục 6.C, thay bằng ví dụ unsupported khác ("muốn học cùng lớp với bạn Nam", "muốn tổng tín chỉ không quá 18").
+llm-guide (task T17) đã bỏ ví dụ "chạy từ khu K sang khu V" ở mục 6.C và E28, thay bằng ví dụ unsupported khác ("muốn tổng tín chỉ không quá 18", "phòng học có máy lạnh").
 
 ### 17.4 Ví dụ
 

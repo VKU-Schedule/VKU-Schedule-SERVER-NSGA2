@@ -12,6 +12,7 @@ Code comments, docstrings, log output and data (course names, days like "Thứ S
 
 This repo is being redesigned for a graduation thesis. **Read `docs/specs/README.md` before starting any work.** It holds the decisions already made, the status of each part, and the full plan:
 - **Part A:** JSON Structure v2 for constraints. Spec in `docs/specs/json_v2/`; branch `feature/new_json_structure`. Implemented in `app/scheduling/` (T1–T11 done); waiting for review (T12).
+- **Part A2:** `review` attribute and `relation` constraint kind (design.md §17, tasks stage 7). Validation and normalization are done (T13–T17); T18 (n8n dataset types) and scoring belong to later work.
 - **Part B:** algorithm comparison. Planned in README section 7; gets its own branch after Part A is approved.
 
 The rules:
@@ -74,12 +75,14 @@ uv venv --python 3.12 .venv && uv pip install --python .venv/bin/python -r requi
   - **Module-level DEAP state:** `creator.create(...)` and the shared `toolbox` live at module scope. `run_nsga_ii` re-registers the toolbox on every request. That is not safe under concurrent requests.
 - `app/scheduling/` (JSON v2, Part A). Spec: `docs/specs/json_v2/design.md`; section numbers below refer to it.
   - `vocab.py`: the single source of the vocabulary: attributes, metrics, levels and weights (6.5), period times (7.1), sessions (7.2), day/language/area aliases, unknown data values (6.7). Alias keys are stored "folded" (no diacritics, lowercase, no spaces).
-  - `schema.py`: Pydantic models (the `Filter` model is generated from `vocab.ATTRIBUTES`), `parse_document()` with per-constraint validation V1–V11 (a bad constraint goes to `unsupported`, a document-level error raises `DocumentError` → 400), and JSON Schema export.
+  - `schema.py`: Pydantic models (the `Filter` model is generated from `vocab.ATTRIBUTES`), `parse_document()` with per-constraint validation V1–V13 (a bad constraint goes to `unsupported`, a document-level error raises `DocumentError` → 400), and JSON Schema export.
   - `normalize.py`: surface value → canonical value, course/teacher matching against the selected courses' classes, and `normalize_document()` (course → scope, weights, more-specific-wins `exclude`, contradiction warnings). Also helpers that read class data (`class_day_code`, `class_area`, ...), which Part B's scorer will use.
   - `v1_adapter.py`: v1 `defaults`/`periods` → v2 (design 12.1); `parse_document` calls it automatically.
+  - `review` (§17.1): the LLM writes only `review.phrase`; the gateway fills `aspect`/`sentiment` from the SA service and sends per-lecturer counts as `review_stats` in the request. This repo never calls SA, Review or the LLM: it only normalizes, validates and solves. Mapping `review` to lecturers is the solver's job (Part B).
+  - `relation` (§17.2): `same_day` / `different_day` / `before` between exactly two selected courses.
   - Not done yet (Part B): scoring, solvers, and switching `/api/schedule` to v2.
-- `app/api/preferences_api.py`: `POST /api/preferences/validate` normalizes a v2 (or v1) document against the classes of `courses` and returns `{constraints, unsupported, warnings}` without scheduling.
-- `tests/scheduling/conftest.py`: the sample candidate classes, plus `design_examples()`, which reads the E1–E32 / 12.2 JSON blocks straight from design.md. `examples.json` is generated from those blocks; `test_examples.py` fails if design.md and examples.json drift apart.
+- `app/api/preferences_api.py`: `POST /api/preferences/validate` normalizes a v2 (or v1) document against the classes of `courses` (plus optional `review_stats`) and returns `{constraints, unsupported, warnings}` without scheduling.
+- `tests/scheduling/conftest.py`: the sample candidate classes and `REVIEW_STATS`, plus `design_examples()`, which reads the E1–E40 / 12.2 JSON blocks straight from design.md. `examples.json` is generated from those blocks; `test_examples.py` fails if design.md and examples.json drift apart.
 - `app/demo.py`: an older standalone copy of the constraint logic, run against the fixtures. It is not used by the API, so edits to `constraints_service.py` don't carry over to it.
 - `validation/` and `data/`: offline scripts and datasets (Excel cleaning, VIT5 training-data generation, a Gemini translation script). They are not part of the server or the Docker image.
 - `app/mock/docs/`: API and UI/UX notes for the frontend. `app/mock/mock_*` hold sample responses.
