@@ -12,7 +12,7 @@ Code comments, docstrings, log output and data (course names, days like "Thứ S
 
 This repo is being redesigned for a graduation thesis. **Read `docs/specs/README.md` before starting any work.** It holds the decisions already made, the status of each part, and the full plan:
 - **Part A:** JSON Structure v2 for constraints. Spec in `docs/specs/json_v2/`; branch `feature/new_json_structure`. Implemented in `app/scheduling/` (T1–T11 done); waiting for review (T12).
-- **Part A2:** `review` attribute and `relation` constraint kind (design.md §17, tasks stage 7). Validation and normalization are done (T13–T17); T18 (n8n dataset types) and scoring belong to later work.
+- **Part A2:** `review` attribute and `relation` constraint kind (design.md §17, tasks stage 7). Validation, normalization and the 5 new n8n dataset types are done (T13–T18); scoring belongs to Part B.
 - **Part B:** algorithm comparison. Planned in README section 7; gets its own branch after Part A is approved.
 
 The rules:

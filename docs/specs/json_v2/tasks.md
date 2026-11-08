@@ -172,9 +172,9 @@ T0 ──► T1 ──► T2 ──► T3 ──► T4
   - Làm: thêm dòng tóm tắt trỏ về mục 17 ở các mục 3.2, 4, 6.5, 8, 9, 10 của design.md (mục 17 giữ làm đặc tả đầy đủ); cập nhật llm-guide.md (thuộc tính `review`, loại `relation`, dataset 38 type, bỏ ví dụ đổi khu ở mục 6.C); cập nhật CLAUDE.md và `docs/specs/README.md`.
   - Xong khi: llm-guide.md không còn nhắc ý đổi khu như ví dụ unsupported; bảng phủ ở mục 13 có `review` và `relation`.
 
-- [ ] **T18 — Dataset n8n** (`validation/n8n/generate_single_sentences.workflow.json`)
+- [x] **T18 — Dataset n8n** (`validation/n8n/generate_single_sentences.workflow.json`)
   - Làm: thêm 5 type vào `TYPES`; slot và kiểm tra trong *Compute Batch* / *Parse & Validate*; gán nhãn lại tab `[RELABEL] unsupported`.
-  - Xong khi: workflow sinh được câu cho cả 38 type.
+  - Xong khi: workflow sinh được câu cho cả 38 type. Việc gán nhãn lại tab `[RELABEL] unsupported` làm trên Google Sheet.
 
 - Ngoài Phần A: quy `review` về giảng viên theo `review_stats` trong request, và chấm phạt `review` / `relation`, làm ở Phần B (design 17.1, 17.2).
 

@@ -66,7 +66,7 @@ Nghiên cứu cần cho ra hai kết quả:
 | Phần | Nội dung | Branch | Spec | Trạng thái |
 |---|---|---|---|---|
 | A | JSON Structure v2 | `feature/new_json_structure` | [`json_v2/`](json_v2/) | Code xong T1–T11 (`app/scheduling/`, 432 tests); chờ duyệt kết quả (T12) |
-| A2 | Mở rộng: `review`, `relation` | `feature/new_json_structure` | [`json_v2/`](json_v2/) (requirements mục 10, design mục 17, tasks Giai đoạn 7) | Code xong T13–T17 (validate, chuẩn hoá); quy `review` về giảng viên và chấm phạt làm ở Phần B |
+| A2 | Mở rộng: `review`, `relation` | `feature/new_json_structure` | [`json_v2/`](json_v2/) (requirements mục 10, design mục 17, tasks Giai đoạn 7) | Xong T13–T18 (validate, chuẩn hoá, dataset n8n 38 type); quy `review` về giảng viên và chấm phạt làm ở Phần B |
 | B | Thuật toán và so sánh | chưa tạo | `algorithms/` (chưa tạo) | Chưa bắt đầu; kế hoạch ở mục 7 |
 
 ## 6. Phần A — JSON Structure v2 (tóm tắt)
