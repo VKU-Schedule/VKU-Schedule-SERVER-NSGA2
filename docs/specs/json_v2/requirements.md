@@ -241,3 +241,45 @@ Trả lời ngày 2026-10-18.
 | Q5 | Khi ràng buộc `must` không thoả được: trả lịch tốt nhất kèm cảnh báo, hay không trả lịch nào? | Trả lịch tốt nhất kèm `infeasible` |
 
 Đã xác minh từ dữ liệu, không cần hỏi: nhóm lớp (cột `Lớp`) là chuỗi số từ `"1"` đến `"22"`, nên được so sánh theo số nguyên.
+
+## 10. Mở rộng A2 — `review` và `relation` (đề xuất, chờ duyệt)
+
+> Bổ sung ngày 2026-11-08. Kế hoạch: [plan-a2-review-relation.md](plan-a2-review-relation.md). Cách làm: design.md mục 17. Các bước: tasks.md Giai đoạn 7.
+
+### 10.1 Bối cảnh
+
+Khi sinh dataset câu đơn cho type `unsupported`, có hai nhóm câu lặp lại nhiều mà hệ thống thật ra **có thể** đáp ứng:
+- **Chất lượng giảng viên:** "học với giảng viên dạy dễ hiểu", "giảng viên chấm điểm thoáng", "thầy cô nhiệt tình". Hệ thống đã có VKU_SA_Model_Service (`POST /predict` → `{sentiment, aspect}`, 11 khía cạnh) và VKU_Review_Service (bảng Review: `ID, Text, Sentiment, Aspect, Subject, Lecturer`). Từ hai service này biết được giảng viên nào của một môn được đánh giá tốt ở một khía cạnh.
+- **Quan hệ giữa hai môn:** "hai môn X và Y học cùng một ngày", "không học cùng ngày", "học môn X trước môn Y trong cùng một ngày".
+
+Đổi khu K↔V giữa hai lớp liền nhau vẫn không làm (Q4); thời khoá biểu cố định của trường đã xử lý việc này.
+
+### R14 — Ràng buộc theo đánh giá của sinh viên (`review`)
+
+TC:
+- LLM chỉ chép cụm mô tả mong muốn (ví dụ "giảng viên dạy dễ hiểu") vào thuộc tính `review` của `prefer` / `avoid`. LLM không cần biết 11 khía cạnh.
+- Server xác định khía cạnh và sentiment của cụm bằng SA service. SA lỗi thì ràng buộc vẫn được giữ, kèm warning (R7).
+- Khía cạnh không gắn với giảng viên (`thiet_bi_day_hoc`, `chuong_trinh_hoc`, `de_xuat`) chuyển vào `unsupported` kèm lý do, vì bảng Review không có cột phòng và các khía cạnh này nói về môn học hoặc cơ sở vật chất.
+- Phần B quy ràng buộc về giảng viên cụ thể của từng môn dựa trên bảng Review, rồi chấm như ràng buộc `teacher`.
+
+### R15 — Quan hệ giữa hai môn (`relation`)
+
+TC:
+- Biểu diễn được ba ý: hai môn học cùng ngày; hai môn không học cùng ngày; môn A học trước môn B trong cùng một ngày.
+- Mỗi ràng buộc chỉ gồm đúng hai môn trong danh sách đã chọn. Sai thì chuyển vào `unsupported`.
+- Ngữ nghĩa phạt xác định và tuyến tính hoá được (R5, design 6.8).
+
+### R16 — Dataset cho module LLM
+
+TC:
+- Bộ dataset câu đơn tăng từ 33 lên 38 type: `prefer_review`, `avoid_review`, `relation_same_day`, `relation_different_day`, `relation_before`.
+- Câu đang nằm trong tab `unsupported` mà thuộc các type mới được gán nhãn lại, không bỏ đi.
+- llm-guide.md chỉ được cập nhật khi phần mở rộng đã được duyệt và có code, để module LLM không học key chưa tồn tại.
+
+### 10.2 Câu hỏi mở của A2
+
+| # | Câu hỏi | Đề xuất |
+|---|---|---|
+| QA1 | Review Service có trả được số review theo (Subject, Lecturer, Aspect, Sentiment) không? | Dùng lại `/api/reviews/stats` nếu lọc được theo aspect; nếu không thì thêm endpoint thống kê, hoặc Phần B đọc thẳng collection `review_course` |
+| QA2 | SA được train trên câu review, không phải câu mong muốn. Độ chính xác trên câu mong muốn có đủ không? | Đánh giá trên khoảng 25 câu `yes` cộng 30 câu tự viết (task T13). Dưới 80% thì dùng bảng từ khoá trong `vocab.py` làm nguồn chính |
+| QA3 | Tên `Lecturer` trong bảng Review có cùng cách viết với cột giảng viên của lớp không? | Dùng cách khớp tên ở design 7.5; tên không khớp thì bỏ qua giảng viên đó, kèm warning |

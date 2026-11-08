@@ -145,6 +145,39 @@ T0 ──► T1 ──► T2 ──► T3 ──► T4
     - Viết `docs/specs/algorithms/` (requirements, design, tasks) từ `docs/specs/README.md` mục 7.
   - Xong khi: bảng trạng thái ghi Phần A "đã xong" và Phần B "đang làm".
 
+## Giai đoạn 7 — Mở rộng A2: `review` và `relation` (đề xuất, chờ duyệt)
+
+> Spec: requirements.md mục 10, design.md mục 17, [plan-a2-review-relation.md](plan-a2-review-relation.md). Chỉ bắt đầu khi T13 được duyệt.
+
+- [ ] **T13 — Duyệt spec A2 và trả lời QA1–QA3**
+  - Làm:
+    - Duyệt requirements.md mục 10 và design.md mục 17.
+    - Đánh giá SA `/predict` trên khoảng 25 câu `yes` của tab `[RELABEL] unsupported` cộng 30 câu tự viết; ghi độ chính xác aspect (QA2).
+    - Kiểm tra Review Service có thống kê theo (Subject, Lecturer, Aspect, Sentiment) không (QA1), và cách viết tên `Lecturer` (QA3).
+  - Xong khi: bảng câu hỏi mở A2 có câu trả lời; trạng thái A2 trong `docs/specs/README.md` là "đã duyệt".
+
+- [ ] **T14 — Từ vựng và schema** (`vocab.py`, `schema.py`, `tests/scheduling/test_schema.py`)
+  - Làm: thuộc tính `review`, `RELATIONS`, `REVIEW_ASPECTS`, `REVIEW_KEYWORDS`; model `Relation`; sửa V1, V4; thêm V12; xuất lại `schema.json` và `schema.inline.json`.
+  - Xong khi: V12 có ca hợp lệ và ca vi phạm; snapshot schema khớp.
+
+- [ ] **T15 — Chuẩn hoá** (`normalize.py`, `tests/scheduling/test_normalize.py`)
+  - Làm: `SentimentProvider` (HTTP tới `SA_MODEL_URL`, bản fake); chuẩn hoá `review` theo bảng aspect ở 17.1; chuẩn hoá `relation` (khớp môn, warning mâu thuẫn).
+  - Xong khi: test có SA trả lời, SA lỗi (dùng từ khoá), aspect không hỗ trợ, `relation` sai số môn.
+
+- [ ] **T16 — Golden tests R1–R6**
+  - Làm: chuyển R1–R6 thành `E33`–`E38` trong mục 13, sinh lại `examples.json` bằng `tests/scheduling/build_examples.py`.
+  - Xong khi: `test_examples.py` chạy xanh.
+
+- [ ] **T17 — Tài liệu**
+  - Làm: gộp mục 17 vào các mục 3–9 và 13 của design.md; cập nhật llm-guide.md (thuộc tính `review`, loại `relation`, dataset 38 type, bỏ ví dụ đổi khu ở mục 6.C); cập nhật CLAUDE.md và `docs/specs/README.md`.
+  - Xong khi: llm-guide.md không còn nhắc ý đổi khu như ví dụ unsupported; bảng phủ ở mục 13 có `review` và `relation`.
+
+- [ ] **T18 — Dataset n8n** (`validation/n8n/generate_single_sentences.workflow.json`)
+  - Làm: thêm 5 type vào `TYPES`; slot và kiểm tra trong *Compute Batch* / *Parse & Validate*; gán nhãn lại tab `[RELABEL] unsupported`.
+  - Xong khi: workflow sinh được câu cho cả 38 type.
+
+- Ngoài Phần A: quy `review` về giảng viên theo bảng Review, và chấm phạt `review` / `relation`, làm ở Phần B (design 17.1, 17.2).
+
 ## Ma trận truy vết
 
 | Yêu cầu | Task |
@@ -162,3 +195,6 @@ T0 ──► T1 ──► T2 ──► T3 ──► T4
 | R11 Phiên bản | T3, T9 |
 | R12 Dữ liệu không xác định | T2, T5, T8 |
 | R13 Quy tắc chung và ngoại lệ | T7 |
+| R14 Ràng buộc theo đánh giá (`review`) | T13, T14, T15, T16 |
+| R15 Quan hệ giữa hai môn (`relation`) | T14, T15, T16 |
+| R16 Dataset cho module LLM | T17, T18 |

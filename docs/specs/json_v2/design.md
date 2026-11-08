@@ -937,3 +937,177 @@ Từ ví dụ thứ hai trở đi, `version` được lược bỏ (mặc địn
 6. Báo cho module LLM để bổ sung ví dụ huấn luyện cho thuộc tính mới.
 
 **Thêm một chỉ số:** làm tương tự, kèm theo đơn vị đo, cận cho phép, công thức đo và cách tuyến tính hoá (mục 5, 6.8).
+
+## 17. Mở rộng A2: `review` và `relation` (đề xuất, chờ duyệt)
+
+> Bổ sung ngày 2026-11-08, theo requirements.md mục 10 (R14–R16) và [plan-a2-review-relation.md](plan-a2-review-relation.md). Mục này **chưa có code**. Mục 1–16 vẫn mô tả đúng phần đã làm. Khi được duyệt, nội dung mục này được gộp vào các mục 3–9 và 13 (task T17).
+>
+> Ví dụ của mục này đánh số R1–R6, không phải `E…`, nên golden test (`tests/scheduling/conftest.py::design_examples`) chưa đọc tới.
+
+### 17.1 Thuộc tính `review`
+
+**Cách LLM viết.** `review` là thuộc tính của Filter, chỉ dùng trong `prefer` / `avoid`, không dùng trong `scope`. Giá trị là cụm mô tả mong muốn, chép nguyên văn từ câu của sinh viên:
+
+```
+{"prefer": {"review": "giảng viên dạy dễ hiểu"}, "scope": {"course": "Lập trình Java"}}
+{"avoid":  {"review": "giảng viên chấm điểm khắt khe"}}
+```
+
+- Chỉ dạng đơn (chuỗi), không có list hay khoảng.
+- Không kết hợp với key khác trong cùng một Filter (thêm vào V4). Ý gộp "thầy dạy dễ hiểu vào sáng thứ 2" được tách thành hai ràng buộc theo quy tắc 5.1 của llm-guide, hoặc đưa thứ / buổi vào `scope`.
+
+**Chuẩn hoá (repo này).**
+1. Gọi SA service `POST /predict` với `{"text": "<cụm>"}`, nhận `aspect` (một trong 11 giá trị) và `sentiment`.
+   - Việc gọi đi qua interface `SentimentProvider`, được truyền vào `normalize_document()`. Test dùng bản fake.
+   - SA lỗi hoặc không trả lời: tra bảng từ khoá `REVIEW_KEYWORDS` trong `vocab.py`. Ví dụ: dễ hiểu / truyền đạt / giảng → `ky_nang_giang_day`; chấm / điểm → `cham_diem`; dễ tính / vui tính / nhiệt tình / tận tâm → `hanh_vi`; tài liệu / slide → `cung_cap_tai_lieu`; bài tập → `bai_tap`; thực tế / kinh nghiệm → `kinh_nghiem`; kiến thức → `kien_thuc`. Không từ khoá nào khớp: `aspect = "noi_chung"`, kèm warning.
+2. Kiểm tra aspect:
+
+| Aspect | Kết quả |
+|---|---|
+| `ky_nang_giang_day`, `kinh_nghiem`, `hanh_vi`, `bai_tap`, `cham_diem`, `cung_cap_tai_lieu`, `kien_thuc` | Giữ, xét theo đúng aspect đó |
+| `noi_chung` | Giữ, xét trên mọi aspect |
+| `thiet_bi_day_hoc` | `unsupported`, lý do "bảng Review không có phòng" |
+| `chuong_trinh_hoc`, `de_xuat` | `unsupported`, lý do "khía cạnh không gắn với giảng viên" |
+
+3. Sentiment mục tiêu: lấy theo SA. Nếu SA trả `neutral` thì dùng `positive`.
+
+Điều kiện đã chuẩn hoá có dạng `{"review": {"phrase": "<cụm>", "aspect": "<aspect>", "sentiment": "<positive|negative>"}}`.
+
+**Trọng số:** 4 (nhóm Người, như `teacher`). **Quy tắc ngoại lệ (6.4):** nhóm theo key `{review}`.
+
+**Quy ra giảng viên (Phần B).** Bảng Review có `ID, Text, Sentiment, Aspect, Subject, Lecturer`. Với mỗi môn m trong phạm vi (thiếu `scope` thì là mọi môn đã chọn):
+1. Lọc review có `Subject = m`, và `Aspect = aspect` (với `noi_chung` thì không lọc aspect).
+2. Gom theo `Lecturer`: p = số review positive, q = số review negative, n = tổng số review.
+3. Điểm làm trơn: s = (p − q) / (n + α), với α = 5. Giảng viên có n = 0 thì giá trị là không xác định (6.7).
+4. Ghép `Lecturer` với giảng viên của các lớp ứng viên bằng cách khớp tên ở 7.5.
+5. Đổi thành ràng buộc `teacher` có sẵn, với `scope` là môn m:
+   - `prefer` với sentiment `positive`: `prefer {teacher: T⁺}`, T⁺ là các giảng viên có s lớn nhất;
+   - `avoid`: `avoid {teacher: T⁻}`, T⁻ là các giảng viên có s nhỏ nhất, với điều kiện s < 0;
+   - `prefer` với sentiment `negative` (ví dụ "giảng viên không khó tính"): xử lý như `avoid` với sentiment `positive`.
+
+   Hoà điểm thì giữ cả. Môn không có giảng viên nào đủ dữ liệu thì bỏ môn đó, kèm warning.
+
+Từ đây, phạt tính như 6.2 và tuyến tính hoá như 6.8. Có thể nâng cấp sau: phạt theo mức, a_l = 1 − chuẩn_hoá(s) ∈ [0, 1], vẫn tuyến tính.
+
+### 17.2 Loại ràng buộc `relation`
+
+**Cú pháp.** Loại thứ tư, cạnh `prefer` / `avoid` / `limit` (sửa V1: mỗi ràng buộc có đúng một trong bốn key).
+
+```
+{"relation": "same_day" | "different_day" | "before", "courses": ["<môn A>", "<môn B>"], "level"?: ...}
+```
+
+| Giá trị | Ý của sinh viên |
+|---|---|
+| `same_day` | "hai môn A và B học cùng một ngày" |
+| `different_day` | "A và B không học cùng ngày", "học ở hai ngày khác nhau" |
+| `before` | "học A trước B trong cùng một ngày"; thứ tự trong `courses` là thứ tự sinh viên muốn |
+
+**Validation V12.** `courses` có đúng 2 phần tử; hai tên khớp được hai môn **khác nhau** trong danh sách đã chọn (khớp tên như 7.4); không có `scope`, `prefer`, `avoid`, `min`, `max`. Vi phạm → `unsupported`.
+
+**Ngữ nghĩa phạt.** Gọi D_A, D_B là tập các thứ có lớp được chọn của môn A, B. Lớp không có lịch không tính (6.7); nếu một trong hai môn không có lớp có lịch thì v = 0.
+- `same_day`: v = 1 nếu D_A ∩ D_B = ∅, ngược lại v = 0.
+- `different_day`: v = |D_A ∩ D_B|.
+- `before`:
+  - D_A ∩ D_B = ∅ → v = 1 (không cùng ngày nên không thoả);
+  - ngược lại, v = số thứ d ∈ D_A ∩ D_B mà tiết bắt đầu của A trong ngày d không nhỏ hơn tiết bắt đầu của B.
+
+**Trọng số:** 3 (nhóm Mốc thời gian). **Quy tắc ngoại lệ:** `relation` không thuộc nhóm nào. Hai `relation` ngược nhau trên cùng cặp môn (`same_day` và `different_day`) sinh warning "mâu thuẫn".
+
+**Tuyến tính hoá.** Với mỗi cặp lớp ứng viên (l_A, l_B), tính trước chi phí c(l_A, l_B) theo công thức trên; đặt z ≥ x_A + x_B − 1, z ≥ 0; v = Σ c(l_A, l_B) · z.
+
+**Mô hình nội bộ (bổ sung mục 9).** `NormalizedConstraint` có `kind = "relation"`, thêm field `relation` và `courses` (tên môn chuẩn); `condition`, `scope`, `exclude` rỗng.
+
+### 17.3 Dataset
+
+Từ 33 lên 38 type:
+
+| STT | Type | Câu mẫu |
+|---|---|---|
+| 34 | `prefer_review` | "Mong được học với giảng viên dạy dễ hiểu" |
+| 35 | `avoid_review` | "Không muốn học với giảng viên chấm điểm khắt khe" |
+| 36 | `relation_same_day` | "Cho em xếp Toán rời rạc và Lập trình Java học cùng một ngày" |
+| 37 | `relation_different_day` | "Hai môn Mạng máy tính và Học máy đừng học chung một ngày" |
+| 38 | `relation_before` | "Trong cùng một ngày, em muốn học Kinh tế vĩ mô trước Quản trị học" |
+
+Gán nhãn lại các câu trong tab `[RELABEL] unsupported`:
+- câu `yes` về giảng viên → `prefer_review`;
+- câu `yes` về phòng (máy lạnh, wifi, ổ cắm, bàn ghế) → trả về `unsupported` (17.1, bước 2);
+- câu `xem xét bổ sung kiểu JSON` → type `relation` tương ứng.
+
+Khi cập nhật llm-guide (task T17): bỏ ví dụ "chạy từ khu K sang khu V" ở mục 6.C, thay bằng ví dụ unsupported khác ("muốn học cùng lớp với bạn Nam", "muốn tổng tín chỉ không quá 18").
+
+### 17.4 Ví dụ
+
+Trong các ví dụ, danh sách môn đã chọn chứa đủ các môn được nhắc.
+
+### R1 — Giảng viên dạy dễ hiểu, theo môn
+> "Môn Lập trình Java em muốn học với giảng viên dạy dễ hiểu"
+
+```json
+{"constraints": [
+  {"prefer": {"review": "giảng viên dạy dễ hiểu"}, "scope": {"course": "Lập trình Java"}}
+]}
+```
+- SA: `{"sentiment": "positive", "aspect": "ky_nang_giang_day"}` → condition `{"review": {"phrase": "giảng viên dạy dễ hiểu", "aspect": "ky_nang_giang_day", "sentiment": "positive"}}`, weight 4.
+- Phần B, ví dụ số liệu: Lê Tân p = 12, q = 1, n = 15 → s = 11/20 = 0,55; Lê Thành Công p = 3, q = 0, n = 3 → s = 3/8 = 0,375. Kết quả `prefer {teacher: ["Lê Tân"]}`, scope Lập trình Java.
+
+### R2 — Tránh giảng viên chấm khắt khe, cả lịch
+> "Em không muốn học với giảng viên chấm điểm khắt khe"
+
+```json
+{"constraints": [
+  {"avoid": {"review": "giảng viên chấm điểm khắt khe"}}
+]}
+```
+- SA: `negative`, `cham_diem`. Không có `scope`, nên Phần B xét từng môn đã chọn và tạo một `avoid {teacher: T⁻}` cho mỗi môn có giảng viên đủ dữ liệu và s < 0.
+
+### R3 — Phòng có máy lạnh (không hỗ trợ)
+> "Cho em xin phòng học có máy lạnh"
+
+```json
+{"constraints": [
+  {"prefer": {"review": "phòng học có máy lạnh"}}
+]}
+```
+- SA: `thiet_bi_day_hoc` → `unsupported`, lý do "bảng Review không có phòng". LLM viết `{"constraints": [], "unsupported": ["phòng học có máy lạnh"]}` cũng đúng; cả hai cho cùng kết quả.
+
+### R4 — Hai môn cùng ngày
+> "Em muốn Toán rời rạc và Lập trình Java học cùng một ngày"
+
+```json
+{"constraints": [
+  {"relation": "same_day", "courses": ["Toán rời rạc", "Lập trình Java"]}
+]}
+```
+- Lịch có Toán rời rạc thứ 2, Lập trình Java thứ 4 → v = 1, phạt = 3. Đổi Java sang thứ 2 → v = 0.
+
+### R5 — Hai môn khác ngày, bắt buộc
+> "Mạng máy tính và Học máy tuyệt đối không học chung một ngày"
+
+```json
+{"constraints": [
+  {"relation": "different_day", "courses": ["Mạng máy tính", "Học máy"], "level": "must"}
+]}
+```
+- Ràng buộc cứng: lịch có hai môn cùng vào thứ 3 có H = 1.
+
+### R6 — Trước sau trong ngày, kèm phần không hỗ trợ
+> "Hôm nào có cả hai thì em muốn học Kinh tế vĩ mô trước Quản trị học, và cho em học cùng lớp với bạn Hương"
+
+```json
+{"constraints": [
+  {"relation": "before", "courses": ["Kinh tế vĩ mô", "Quản trị học"]}
+], "unsupported": ["cho em học cùng lớp với bạn Hương"]}
+```
+- Kinh tế vĩ mô thứ 5 tiết 1–3, Quản trị học thứ 5 tiết 6–8 → v = 0. Nếu Quản trị học ở thứ 6 → không có ngày chung → v = 1.
+
+### 17.5 Thay đổi code dự kiến (khi được duyệt)
+
+| File | Thay đổi |
+|---|---|
+| `vocab.py` | Thuộc tính `review` (trọng số 4), `RELATIONS` (trọng số 3), `REVIEW_ASPECTS`, `REVIEW_KEYWORDS` |
+| `schema.py` | Model `Relation`; sửa V1, V4; thêm V12; xuất lại `schema.json`, `schema.inline.json` |
+| `normalize.py` | `SentimentProvider` (HTTP tới `SA_MODEL_URL`, bản fake cho test); chuẩn hoá `review` và `relation`; warning mâu thuẫn của `relation` |
+| `tests/scheduling/` | Test V12, fake SA, golden R1–R6 (sau khi gộp vào mục 13 thì đổi thành `E33`…) |
+| `validation/n8n/…workflow.json` | 5 type mới trong `TYPES`; slot và kiểm tra trong *Compute Batch* / *Parse & Validate* |
