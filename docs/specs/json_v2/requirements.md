@@ -257,7 +257,8 @@ Khi sinh dataset câu đơn cho type `unsupported`, có hai nhóm câu lặp l�
 ### R14 — Ràng buộc theo đánh giá của sinh viên (`review`)
 
 TC:
-- LLM chỉ chép cụm mô tả mong muốn (ví dụ "giảng viên dạy dễ hiểu") vào thuộc tính `review` của `prefer` / `avoid`. LLM không cần biết 11 khía cạnh.
+- LLM viết cụm mô tả giảng viên mong muốn, ở dạng khẳng định (ví dụ "giảng viên dạy dễ hiểu"; câu góp ý "nên giao bài tập nhiều hơn" viết thành "giảng viên giao nhiều bài tập"), vào thuộc tính `review` của `prefer` / `avoid`. LLM không cần biết 11 khía cạnh.
+- Sinh viên muốn một tính chất nghe tiêu cực ("thích giảng viên khó tính") thì hệ thống chọn giảng viên khớp tính chất đó, không đảo nghĩa.
 - Server xác định khía cạnh và sentiment của cụm bằng SA service. SA lỗi thì ràng buộc vẫn được giữ, kèm warning (R7).
 - Khía cạnh không gắn với giảng viên (`thiet_bi_day_hoc`, `chuong_trinh_hoc`, `de_xuat`) chuyển vào `unsupported` kèm lý do, vì bảng Review không có cột phòng và các khía cạnh này nói về môn học hoặc cơ sở vật chất.
 - Phần B quy ràng buộc về giảng viên cụ thể của từng môn dựa trên bảng Review, rồi chấm như ràng buộc `teacher`.
@@ -283,3 +284,4 @@ TC:
 | QA1 | Review Service có trả được số review theo (Subject, Lecturer, Aspect, Sentiment) không? | Dùng lại `/api/reviews/stats` nếu lọc được theo aspect; nếu không thì thêm endpoint thống kê, hoặc Phần B đọc thẳng collection `review_course` |
 | QA2 | SA được train trên câu review, không phải câu mong muốn. Độ chính xác trên câu mong muốn có đủ không? | Đánh giá trên khoảng 25 câu `yes` cộng 30 câu tự viết (task T13). Dưới 80% thì dùng bảng từ khoá trong `vocab.py` làm nguồn chính |
 | QA3 | Tên `Lecturer` trong bảng Review có cùng cách viết với cột giảng viên của lớp không? | Dùng cách khớp tên ở design 7.5; tên không khớp thì bỏ qua giảng viên đó, kèm warning |
+| QA4 | Câu dạng góp ý gửi giảng viên ("giảng viên nên giao bài tập nhiều hơn…"), không nêu muốn chọn lớp, hiểu là `prefer review` hay đưa vào `unsupported`? | `prefer review` với cụm viết lại ở dạng khẳng định (design R8). Cách hiểu được chốt sẽ ghi vào llm-guide ở task T17 |

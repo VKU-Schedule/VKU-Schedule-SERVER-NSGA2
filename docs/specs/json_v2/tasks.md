@@ -149,7 +149,7 @@ T0 ──► T1 ──► T2 ──► T3 ──► T4
 
 > Spec: requirements.md mục 10, design.md mục 17, [plan-a2-review-relation.md](plan-a2-review-relation.md). Chỉ bắt đầu khi T13 được duyệt.
 
-- [ ] **T13 — Duyệt spec A2 và trả lời QA1–QA3**
+- [ ] **T13 — Duyệt spec A2 và trả lời QA1–QA4**
   - Làm:
     - Duyệt requirements.md mục 10 và design.md mục 17.
     - Đánh giá SA `/predict` trên khoảng 25 câu `yes` của tab `[RELABEL] unsupported` cộng 30 câu tự viết; ghi độ chính xác aspect (QA2).
@@ -164,8 +164,8 @@ T0 ──► T1 ──► T2 ──► T3 ──► T4
   - Làm: `SentimentProvider` (HTTP tới `SA_MODEL_URL`, bản fake); chuẩn hoá `review` theo bảng aspect ở 17.1; chuẩn hoá `relation` (khớp môn, warning mâu thuẫn).
   - Xong khi: test có SA trả lời, SA lỗi (dùng từ khoá), aspect không hỗ trợ, `relation` sai số môn.
 
-- [ ] **T16 — Golden tests R1–R6**
-  - Làm: chuyển R1–R6 thành `E33`–`E38` trong mục 13, sinh lại `examples.json` bằng `tests/scheduling/build_examples.py`.
+- [ ] **T16 — Golden tests R1–R8**
+  - Làm: chuyển R1–R8 thành `E33`–`E40` trong mục 13, sinh lại `examples.json` bằng `tests/scheduling/build_examples.py`.
   - Xong khi: `test_examples.py` chạy xanh.
 
 - [ ] **T17 — Tài liệu**

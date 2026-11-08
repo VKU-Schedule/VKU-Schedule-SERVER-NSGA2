@@ -1,6 +1,15 @@
 # Plan: tăng độ đa dạng của type `unsupported` (n8n) và viết spec cho `review` và `relation`
 
 > Trạng thái: đã duyệt plan (2026-11-08). Phần 2 là spec đề xuất, chờ duyệt trước khi code.
+>
+> Sửa sau khi duyệt plan (2026-11-08):
+> - Số type là 38, không phải 37.
+> - Phần mở rộng nằm ở design.md mục 17, không phải mục 14.
+> - Cụm `review` được viết lại ở dạng khẳng định, không chép nguyên văn.
+> - Sentiment mục tiêu là sentiment của chính cụm, nên `prefer` + `negative` không còn bị đảo thành `avoid`.
+> - Có thêm ví dụ R7, R8 và câu hỏi QA4.
+>
+> Nội dung hiện hành nằm ở design.md mục 17.
 
 ## Context
 
