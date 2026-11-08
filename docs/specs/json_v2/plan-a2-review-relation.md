@@ -8,6 +8,7 @@
 > - Cụm `review` được viết lại ở dạng khẳng định, không chép nguyên văn.
 > - Sentiment mục tiêu là sentiment của chính cụm, nên `prefer` + `negative` không còn bị đảo thành `avoid`.
 > - Có thêm ví dụ R7, R8 và câu hỏi QA4.
+> - **Phạm vi repo:** repo chỉ chuẩn hoá, validate và chạy thuật toán, không gọi SA hay Review. Vì vậy đã bỏ `SentimentProvider` và `REVIEW_KEYWORDS`. Gateway điền `aspect` / `sentiment` vào `review` và gửi `review_stats` trong request.
 >
 > Nội dung hiện hành nằm ở design.md mục 17.
 

@@ -254,14 +254,16 @@ Khi sinh dataset câu đơn cho type `unsupported`, có hai nhóm câu lặp l�
 
 Đổi khu K↔V giữa hai lớp liền nhau vẫn không làm (Q4); thời khoá biểu cố định của trường đã xử lý việc này.
 
+**Phạm vi repo:** repo này chỉ nhận JSON đã được parse từ văn bản, rồi chuẩn hoá, validate và chạy thuật toán. Repo không gọi SA, Review hay LLM. Dữ liệu từ các service đó do gateway điền vào JSON hoặc gửi kèm request.
+
 ### R14 — Ràng buộc theo đánh giá của sinh viên (`review`)
 
 TC:
 - LLM viết cụm mô tả giảng viên mong muốn, ở dạng khẳng định (ví dụ "giảng viên dạy dễ hiểu"; câu góp ý "nên giao bài tập nhiều hơn" viết thành "giảng viên giao nhiều bài tập"), vào thuộc tính `review` của `prefer` / `avoid`. LLM không cần biết 11 khía cạnh.
 - Sinh viên muốn một tính chất nghe tiêu cực ("thích giảng viên khó tính") thì hệ thống chọn giảng viên khớp tính chất đó, không đảo nghĩa.
-- Server xác định khía cạnh và sentiment của cụm bằng SA service. SA lỗi thì ràng buộc vẫn được giữ, kèm warning (R7).
-- Khía cạnh không gắn với giảng viên (`thiet_bi_day_hoc`, `chuong_trinh_hoc`, `de_xuat`) chuyển vào `unsupported` kèm lý do, vì bảng Review không có cột phòng và các khía cạnh này nói về môn học hoặc cơ sở vật chất.
-- Phần B quy ràng buộc về giảng viên cụ thể của từng môn dựa trên bảng Review, rồi chấm như ràng buộc `teacher`.
+- Gateway gọi SA để điền `aspect` và `sentiment` của cụm, và gửi số liệu review theo (môn, giảng viên, aspect) trong `review_stats`. Repo này chỉ validate và dùng. Thiếu một trong hai thì ràng buộc vào `unsupported` kèm lý do (R7).
+- Khía cạnh không gắn với giảng viên (`thiet_bi_day_hoc`, `chuong_trinh_hoc`, `de_xuat`) chuyển vào `unsupported` kèm lý do, vì dữ liệu review không có phòng và các khía cạnh này nói về môn học hoặc cơ sở vật chất.
+- Thuật toán (Phần B) quy ràng buộc về giảng viên cụ thể của từng môn dựa trên `review_stats`, rồi chấm như ràng buộc `teacher`.
 
 ### R15 — Quan hệ giữa hai môn (`relation`)
 
@@ -281,7 +283,7 @@ TC:
 
 | # | Câu hỏi | Đề xuất |
 |---|---|---|
-| QA1 | Review Service có trả được số review theo (Subject, Lecturer, Aspect, Sentiment) không? | Dùng lại `/api/reviews/stats` nếu lọc được theo aspect; nếu không thì thêm endpoint thống kê, hoặc Phần B đọc thẳng collection `review_course` |
-| QA2 | SA được train trên câu review, không phải câu mong muốn. Độ chính xác trên câu mong muốn có đủ không? | Đánh giá trên khoảng 25 câu `yes` cộng 30 câu tự viết (task T13). Dưới 80% thì dùng bảng từ khoá trong `vocab.py` làm nguồn chính |
+| QA1 | Gateway lấy `review_stats` theo (môn, giảng viên, aspect) từ Review service bằng cách nào? | Việc của gateway và Review service, ngoài repo này. Repo chỉ quy định định dạng `review_stats` (design 17.1) |
+| QA2 | SA được train trên câu review, không phải câu mong muốn. Độ chính xác trên câu mong muốn có đủ không? | Đánh giá trên khoảng 25 câu `yes` cộng 30 câu tự viết (task T13). Việc của gateway và SA service. Dưới 80% thì gateway cần cách khác để điền aspect; repo này không đổi |
 | QA3 | Tên `Lecturer` trong bảng Review có cùng cách viết với cột giảng viên của lớp không? | Dùng cách khớp tên ở design 7.5; tên không khớp thì bỏ qua giảng viên đó, kèm warning |
 | QA4 | Câu dạng góp ý gửi giảng viên ("giảng viên nên giao bài tập nhiều hơn…"), không nêu muốn chọn lớp, hiểu là `prefer review` hay đưa vào `unsupported`? | `prefer review` với cụm viết lại ở dạng khẳng định (design R8). Cách hiểu được chốt sẽ ghi vào llm-guide ở task T17 |

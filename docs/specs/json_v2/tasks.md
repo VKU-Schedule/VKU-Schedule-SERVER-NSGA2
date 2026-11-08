@@ -153,16 +153,16 @@ T0 ──► T1 ──► T2 ──► T3 ──► T4
   - Làm:
     - Duyệt requirements.md mục 10 và design.md mục 17.
     - Đánh giá SA `/predict` trên khoảng 25 câu `yes` của tab `[RELABEL] unsupported` cộng 30 câu tự viết; ghi độ chính xác aspect (QA2).
-    - Kiểm tra Review Service có thống kê theo (Subject, Lecturer, Aspect, Sentiment) không (QA1), và cách viết tên `Lecturer` (QA3).
+    - Thống nhất với gateway định dạng `review` (`phrase`, `aspect`, `sentiment`) và `review_stats` (QA1), và cách viết tên giảng viên (QA3).
   - Xong khi: bảng câu hỏi mở A2 có câu trả lời; trạng thái A2 trong `docs/specs/README.md` là "đã duyệt".
 
 - [ ] **T14 — Từ vựng và schema** (`vocab.py`, `schema.py`, `tests/scheduling/test_schema.py`)
-  - Làm: thuộc tính `review`, `RELATIONS`, `REVIEW_ASPECTS`, `REVIEW_KEYWORDS`; model `Relation`; sửa V1, V4; thêm V12; xuất lại `schema.json` và `schema.inline.json`.
-  - Xong khi: V12 có ca hợp lệ và ca vi phạm; snapshot schema khớp.
+  - Làm: thuộc tính `review`, `RELATIONS`, `REVIEW_ASPECTS`; model `Review`, `Relation`; sửa V1, V4; thêm V12, V13; xuất lại `schema.json` và `schema.inline.json`.
+  - Xong khi: V12, V13 có ca hợp lệ và ca vi phạm; snapshot schema khớp.
 
 - [ ] **T15 — Chuẩn hoá** (`normalize.py`, `tests/scheduling/test_normalize.py`)
-  - Làm: `SentimentProvider` (HTTP tới `SA_MODEL_URL`, bản fake); chuẩn hoá `review` theo bảng aspect ở 17.1; chuẩn hoá `relation` (khớp môn, warning mâu thuẫn).
-  - Xong khi: test có SA trả lời, SA lỗi (dùng từ khoá), aspect không hỗ trợ, `relation` sai số môn.
+  - Làm: chuẩn hoá `review` theo bảng aspect ở 17.1; nhận và validate `review_stats` trong request; chuẩn hoá `relation` (khớp môn, warning mâu thuẫn). Không gọi service ngoài.
+  - Xong khi: test có `review` thiếu aspect, aspect không hỗ trợ, thiếu `review_stats`, dòng `review_stats` sai, `relation` sai số môn.
 
 - [ ] **T16 — Golden tests R1–R8**
   - Làm: chuyển R1–R8 thành `E33`–`E40` trong mục 13, sinh lại `examples.json` bằng `tests/scheduling/build_examples.py`.
@@ -176,7 +176,7 @@ T0 ──► T1 ──► T2 ──► T3 ──► T4
   - Làm: thêm 5 type vào `TYPES`; slot và kiểm tra trong *Compute Batch* / *Parse & Validate*; gán nhãn lại tab `[RELABEL] unsupported`.
   - Xong khi: workflow sinh được câu cho cả 38 type.
 
-- Ngoài Phần A: quy `review` về giảng viên theo bảng Review, và chấm phạt `review` / `relation`, làm ở Phần B (design 17.1, 17.2).
+- Ngoài Phần A: quy `review` về giảng viên theo `review_stats` trong request, và chấm phạt `review` / `relation`, làm ở Phần B (design 17.1, 17.2).
 
 ## Ma trận truy vết
 

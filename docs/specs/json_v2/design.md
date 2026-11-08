@@ -946,46 +946,82 @@ Từ ví dụ thứ hai trở đi, `version` được lược bỏ (mặc địn
 
 ### 17.1 Thuộc tính `review`
 
-**Cách LLM viết.** `review` là thuộc tính của Filter, chỉ dùng trong `prefer` / `avoid`, không dùng trong `scope`. Giá trị là **cụm mô tả giảng viên, viết ở dạng khẳng định**, giữ nguyên từ ngữ chính của sinh viên:
+**Phạm vi của repo này.** Repo chỉ nhận JSON đã được parse từ văn bản, rồi chuẩn hoá, validate và chạy thuật toán. Repo **không** gọi SA service, Review service hay LLM. Mọi dữ liệu lấy từ các service đó do bên gọi (gateway) chuẩn bị và gửi kèm request.
+
+**Luồng dữ liệu.**
 
 ```
-{"prefer": {"review": "giảng viên dạy dễ hiểu"}, "scope": {"course": "Lập trình Java"}}
-{"avoid":  {"review": "giảng viên chấm điểm khắt khe"}}
+Văn bản ─► Module LLM ─► {"review": {"phrase": ...}}
+                              │
+              Gateway gọi SA /predict(phrase), điền aspect + sentiment;
+              lấy số liệu review theo giảng viên từ Review service
+                              │
+                              ▼
+        Repo này: chuẩn hoá ─► validate ─► thuật toán (dùng review_stats)
 ```
 
-- **Không giữ dạng góp ý.** Bỏ "nên", "cần", "hơn", "mong": "giảng viên nên giao bài tập nhiều hơn" → `"giảng viên giao nhiều bài tập"`. SA được train trên review, nên với dạng góp ý thường trả `de_xuat` hoặc `negative`. Trong `train1.csv`, "thầy nên cho thêm bài tập về nhà" có nhãn negative `bai_tap` và `de_xuat`. Kết quả là ràng buộc rơi vào `unsupported`, hoặc bị hiểu ngược thành "giảng viên bị chê về bài tập".
-- **Giữ nguyên tính chất sinh viên muốn, kể cả khi nghe tiêu cực:** "rất thích giảng viên khó tính" → `{"prefer": {"review": "giảng viên khó tính"}, "level": "high"}`. Không đổi thành "giảng viên nghiêm khắc", không đảo thành `avoid`.
-- Chiều muốn hay tránh nằm ở `prefer` / `avoid`; cụm chỉ mô tả giảng viên.
+**JSON mà repo này nhận.** `review` là thuộc tính của Filter, chỉ dùng trong `prefer` / `avoid`, không dùng trong `scope`. Giá trị là object:
 
-- Chỉ dạng đơn (chuỗi), không có list hay khoảng.
-- Không kết hợp với key khác trong cùng một Filter (thêm vào V4). Ý gộp "thầy dạy dễ hiểu vào sáng thứ 2" được tách thành hai ràng buộc theo quy tắc 5.1 của llm-guide, hoặc đưa thứ / buổi vào `scope`.
+```
+{"prefer": {"review": {"phrase": "giảng viên dạy dễ hiểu", "aspect": "ky_nang_giang_day", "sentiment": "positive"}},
+ "scope": {"course": "Lập trình Java"}}
+```
 
-**Chuẩn hoá (repo này).**
-1. Gọi SA service `POST /predict` với `{"text": "<cụm>"}`, nhận `aspect` (một trong 11 giá trị) và `sentiment`.
-   - Việc gọi đi qua interface `SentimentProvider`, được truyền vào `normalize_document()`. Test dùng bản fake.
-   - SA lỗi hoặc không trả lời: tra bảng từ khoá `REVIEW_KEYWORDS` trong `vocab.py`. Ví dụ: dễ hiểu / truyền đạt / giảng → `ky_nang_giang_day`; chấm / điểm → `cham_diem`; dễ tính / vui tính / nhiệt tình / tận tâm → `hanh_vi`; tài liệu / slide → `cung_cap_tai_lieu`; bài tập → `bai_tap`; thực tế / kinh nghiệm → `kinh_nghiem`; kiến thức → `kien_thuc`. Không từ khoá nào khớp: `aspect = "noi_chung"`, kèm warning.
-2. Kiểm tra aspect:
+| Field | Ai điền | Ý nghĩa |
+|---|---|---|
+| `phrase` | Module LLM | Cụm mô tả giảng viên mong muốn, dùng để hiển thị và giải thích |
+| `aspect` | Gateway, từ SA | Một trong 11 khía cạnh |
+| `sentiment` | Gateway, từ SA | `positive` / `negative` / `neutral`: sentiment của chính cụm |
+
+- Không kết hợp với key khác trong cùng một Filter (thêm vào V4). Thứ / buổi đưa vào `scope`, hoặc tách thành ràng buộc khác.
+- **Quy tắc cho module LLM** (ghi vào llm-guide ở task T17):
+  - LLM chỉ ghi `phrase`.
+  - Cụm là mô tả giảng viên ở dạng khẳng định, bỏ dạng góp ý ("nên", "cần", "hơn", "mong"): "giảng viên nên giao bài tập nhiều hơn" → `"giảng viên giao nhiều bài tập"`. SA được train trên review, nên với dạng góp ý thường trả `de_xuat` hoặc `negative`.
+  - Giữ nguyên tính chất sinh viên muốn, kể cả khi nghe tiêu cực: "rất thích giảng viên khó tính" → `{"prefer": {"review": {"phrase": "giảng viên khó tính"}}, "level": "high"}`.
+  - Chiều muốn hay tránh nằm ở `prefer` / `avoid`; cụm chỉ mô tả giảng viên.
+
+**Validation V13** (repo này):
+- `phrase` là chuỗi không rỗng;
+- `aspect` thuộc 11 giá trị;
+- `sentiment` thuộc `positive` / `negative` / `neutral`.
+
+Thiếu `aspect` hoặc `sentiment` (gateway chưa điền) → `unsupported`, lý do "review chưa có aspect/sentiment".
+
+**Chuẩn hoá** (repo này, không gọi service nào):
+1. Kiểm tra aspect:
 
 | Aspect | Kết quả |
 |---|---|
 | `ky_nang_giang_day`, `kinh_nghiem`, `hanh_vi`, `bai_tap`, `cham_diem`, `cung_cap_tai_lieu`, `kien_thuc` | Giữ, xét theo đúng aspect đó |
 | `noi_chung` | Giữ, xét trên mọi aspect |
-| `thiet_bi_day_hoc` | `unsupported`, lý do "bảng Review không có phòng" |
+| `thiet_bi_day_hoc` | `unsupported`, lý do "dữ liệu review không có phòng" |
 | `chuong_trinh_hoc`, `de_xuat` | `unsupported`, lý do "khía cạnh không gắn với giảng viên" |
 
-3. **Sentiment mục tiêu** là sentiment mà SA gán cho chính cụm: "giảng viên khó tính" → `negative`, "giảng viên dạy dễ hiểu" → `positive`. Nếu SA trả `neutral` thì dùng `positive`. Sentiment mục tiêu cho biết review **giống cụm** là review positive hay negative. Nó **không** quyết định muốn hay tránh; việc đó do `prefer` / `avoid` quyết định.
+2. **Sentiment mục tiêu** là `sentiment` của cụm; `neutral` được coi là `positive`. Sentiment mục tiêu cho biết review **giống cụm** là review positive hay negative. Nó **không** quyết định muốn hay tránh; việc đó do `prefer` / `avoid` quyết định.
 
-Điều kiện đã chuẩn hoá có dạng `{"review": {"phrase": "<cụm>", "aspect": "<aspect>", "sentiment": "<positive|negative>"}}`.
+Điều kiện đã chuẩn hoá: `{"review": {"phrase": ..., "aspect": ..., "sentiment": "positive" | "negative"}}`.
 
 **Trọng số:** 4 (nhóm Người, như `teacher`). **Quy tắc ngoại lệ (6.4):** nhóm theo key `{review}`.
 
-**Quy ra giảng viên (Phần B).** Bảng Review có `ID, Text, Sentiment, Aspect, Subject, Lecturer`. Với mỗi môn m trong phạm vi (thiếu `scope` thì là mọi môn đã chọn):
-1. Lọc review có `Subject = m`, và `Aspect = aspect` (với `noi_chung` thì không lọc aspect).
-2. Gom theo `Lecturer`: p = số review positive, q = số review negative, n = tổng số review.
-3. Điểm làm trơn: s = (p − q) / (n + α), với α = 5. Giảng viên có n = 0 thì giá trị là không xác định (6.7).
-4. Ghép `Lecturer` với giảng viên của các lớp ứng viên bằng cách khớp tên ở 7.5.
-5. **Độ khớp với cụm:** k = s nếu sentiment mục tiêu là `positive`; k = −s nếu là `negative`. k lớn nghĩa là review về giảng viên giống điều cụm mô tả.
-6. Đổi thành ràng buộc `teacher` có sẵn, với `scope` là môn m. T* là các giảng viên có k lớn nhất, với điều kiện k > 0:
+**Số liệu review trong request.** Bổ sung cho mục 10: request có thêm field tuỳ chọn `review_stats`, do gateway lấy từ Review service:
+
+```
+"review_stats": [
+  {"subject": "Lập trình Java", "lecturer": "Lê Tân", "aspect": "ky_nang_giang_day",
+   "positive": 12, "negative": 1, "total": 15}
+]
+```
+
+- Mỗi dòng ứng với một bộ (môn, giảng viên, aspect).
+- Validate: số nguyên ≥ 0, và `positive + negative ≤ total`. Dòng sai bị bỏ qua, kèm warning.
+- Request có `review` nhưng không có `review_stats` → ràng buộc `review` vào `unsupported`, lý do "thiếu dữ liệu review".
+
+**Quy ra giảng viên (thuật toán, Phần B).** Với mỗi môn m trong phạm vi (thiếu `scope` thì là mọi môn đã chọn):
+1. Lấy các dòng `review_stats` có `subject = m` và `aspect = aspect` (với `noi_chung` thì cộng mọi aspect). Đặt p = positive, q = negative, n = total.
+2. Điểm làm trơn: s = (p − q) / (n + α), với α = 5. Giảng viên không có dòng nào thì giá trị là không xác định (6.7).
+3. **Độ khớp với cụm:** k = s nếu sentiment mục tiêu là `positive`; k = −s nếu là `negative`.
+4. Ghép `lecturer` với giảng viên của các lớp ứng viên bằng cách khớp tên ở 7.5.
+5. Đổi thành ràng buộc `teacher` có sẵn, với `scope` là môn m. T* là các giảng viên có k lớn nhất, với điều kiện k > 0:
    - `prefer` → `prefer {teacher: T*}`;
    - `avoid` → `avoid {teacher: T*}`.
 
@@ -998,9 +1034,9 @@ Từ ví dụ thứ hai trở đi, `version` được lược bỏ (mặc địn
 | "tránh giảng viên chấm điểm khắt khe" | `avoid` | negative | tránh giảng viên bị chê nhiều nhất ở `cham_diem` |
 | "không thích giảng viên vui tính" | `avoid` | positive | tránh giảng viên được khen nhiều nhất ở `hanh_vi` |
 
-**Giới hạn.** Review cùng một aspect và cùng sentiment gộp nhiều lý do khác nhau. Ví dụ, review negative ở `hanh_vi` gồm cả "khó tính", "đi trễ", "nghỉ dạy không báo". Vì vậy cụm mang sentiment negative (như "khó tính") chỉ khớp gần đúng. Có thể nâng cấp sau: so độ giống giữa cụm và nội dung `Text` của từng review, thay vì chỉ dựa trên (aspect, sentiment). Việc đánh giá giới hạn này nằm trong QA2.
+Từ đây, phạt tính như 6.2 và tuyến tính hoá như 6.8. Có thể nâng cấp sau: phạt theo mức, a_l = 1 − chuẩn_hoá(k) ∈ [0, 1], vẫn tuyến tính.
 
-Từ đây, phạt tính như 6.2 và tuyến tính hoá như 6.8. Có thể nâng cấp sau: phạt theo mức, a_l = 1 − chuẩn_hoá(s) ∈ [0, 1], vẫn tuyến tính.
+**Giới hạn.** Review cùng aspect và cùng sentiment gộp nhiều lý do. Ví dụ, review negative ở `hanh_vi` gồm cả "khó tính", "đi trễ", "nghỉ dạy không báo". Vì vậy cụm mang sentiment negative chỉ khớp gần đúng. Muốn chính xác hơn thì gateway phải gửi số liệu đã lọc theo nội dung review; repo này không đổi.
 
 ### 17.2 Loại ràng buộc `relation`
 
@@ -1052,38 +1088,39 @@ Khi cập nhật llm-guide (task T17): bỏ ví dụ "chạy từ khu K sang khu
 
 ### 17.4 Ví dụ
 
-Trong các ví dụ, danh sách môn đã chọn chứa đủ các môn được nhắc.
+Trong các ví dụ, danh sách môn đã chọn chứa đủ các môn được nhắc. JSON là dạng repo này nhận: `review` đã có `aspect` / `sentiment` do gateway điền.
 
 ### R1 — Giảng viên dạy dễ hiểu, theo môn
 > "Môn Lập trình Java em muốn học với giảng viên dạy dễ hiểu"
 
 ```json
 {"constraints": [
-  {"prefer": {"review": "giảng viên dạy dễ hiểu"}, "scope": {"course": "Lập trình Java"}}
+  {"prefer": {"review": {"phrase": "giảng viên dạy dễ hiểu", "aspect": "ky_nang_giang_day", "sentiment": "positive"}},
+   "scope": {"course": "Lập trình Java"}}
 ]}
 ```
-- SA: `{"sentiment": "positive", "aspect": "ky_nang_giang_day"}` → condition `{"review": {"phrase": "giảng viên dạy dễ hiểu", "aspect": "ky_nang_giang_day", "sentiment": "positive"}}`, weight 4.
-- Phần B, ví dụ số liệu: Lê Tân p = 12, q = 1, n = 15 → s = 11/20 = 0,55; Lê Thành Công p = 3, q = 0, n = 3 → s = 3/8 = 0,375. Kết quả `prefer {teacher: ["Lê Tân"]}`, scope Lập trình Java.
+- Module LLM chỉ ghi `phrase`; `aspect` và `sentiment` do gateway điền từ SA. Trọng số 4.
+- `review_stats`: Lê Tân p = 12, q = 1, n = 15 → s = 11/20 = 0,55; Lê Thành Công p = 3, q = 0, n = 3 → s = 3/8 = 0,375. Sentiment mục tiêu positive nên k = s. Kết quả `prefer {teacher: ["Lê Tân"]}`, scope Lập trình Java.
 
 ### R2 — Tránh giảng viên chấm khắt khe, cả lịch
 > "Em không muốn học với giảng viên chấm điểm khắt khe"
 
 ```json
 {"constraints": [
-  {"avoid": {"review": "giảng viên chấm điểm khắt khe"}}
+  {"avoid": {"review": {"phrase": "giảng viên chấm điểm khắt khe", "aspect": "cham_diem", "sentiment": "negative"}}}
 ]}
 ```
-- SA: `negative`, `cham_diem`, nên k = −s. Không có `scope`, nên Phần B xét từng môn đã chọn và tạo một `avoid {teacher: T*}` cho mỗi môn có giảng viên với k > 0, tức là bị chê về chấm điểm.
+- Sentiment mục tiêu negative nên k = −s. Không có `scope`, nên Phần B xét từng môn đã chọn và tạo một `avoid {teacher: T*}` cho mỗi môn có giảng viên với k > 0, tức là bị chê về chấm điểm.
 
 ### R3 — Phòng có máy lạnh (không hỗ trợ)
 > "Cho em xin phòng học có máy lạnh"
 
 ```json
 {"constraints": [
-  {"prefer": {"review": "phòng học có máy lạnh"}}
+  {"prefer": {"review": {"phrase": "phòng học có máy lạnh", "aspect": "thiet_bi_day_hoc", "sentiment": "positive"}}}
 ]}
 ```
-- SA: `thiet_bi_day_hoc` → `unsupported`, lý do "bảng Review không có phòng". LLM viết `{"constraints": [], "unsupported": ["phòng học có máy lạnh"]}` cũng đúng; cả hai cho cùng kết quả.
+- Aspect `thiet_bi_day_hoc` → `unsupported`, lý do "dữ liệu review không có phòng". LLM viết `{"constraints": [], "unsupported": ["phòng học có máy lạnh"]}` cũng đúng; cả hai cho cùng kết quả.
 
 ### R4 — Hai môn cùng ngày
 > "Em muốn Toán rời rạc và Lập trình Java học cùng một ngày"
@@ -1120,14 +1157,14 @@ Trong các ví dụ, danh sách môn đã chọn chứa đủ các môn được
 
 ```json
 {"constraints": [
-  {"prefer": {"review": "giảng viên có kỹ năng giảng dạy tốt"}},
+  {"prefer": {"review": {"phrase": "giảng viên có kỹ năng giảng dạy tốt", "aspect": "ky_nang_giang_day", "sentiment": "positive"}}},
   {"prefer": {"day": "thứ 7", "session": "chiều"}},
   {"avoid": {"day": "thứ 4"}},
-  {"prefer": {"review": "giảng viên khó tính"}, "level": "high"}
+  {"prefer": {"review": {"phrase": "giảng viên khó tính", "aspect": "hanh_vi", "sentiment": "negative"}}, "level": "high"}
 ]}
 ```
-- Ràng buộc 0: SA `ky_nang_giang_day`, `positive`.
-- Ràng buộc 3: SA `hanh_vi`, `negative`, nên k = −s. Kết quả là chọn giảng viên bị chê nhiều nhất ở `hanh_vi`, không phải tránh họ. Đây là trường hợp quy tắc cũ ("`prefer` + `negative` thì đảo thành `avoid`") hiểu sai ý sinh viên. Kết quả chỉ gần đúng, xem phần Giới hạn ở 17.1.
+- `aspect` / `sentiment` là kết quả dự kiến của SA, do gateway điền.
+- Ràng buộc 3: sentiment mục tiêu negative nên k = −s. Kết quả là chọn giảng viên bị chê nhiều nhất ở `hanh_vi`, không phải tránh họ. Đây là trường hợp quy tắc cũ ("`prefer` + `negative` thì đảo thành `avoid`") hiểu sai ý sinh viên. Kết quả chỉ gần đúng, xem phần Giới hạn ở 17.1.
 - Ràng buộc 0 và 3 cùng nhóm `{review}`, cùng phạm vi, nhưng khác điều kiện, nên không có warning mâu thuẫn (6.4).
 - "Thứ 7 buổi chiều" là một Filter hai key (AND), nghĩa là chiều thứ 7.
 
@@ -1136,21 +1173,22 @@ Trong các ví dụ, danh sách môn đã chọn chứa đủ các môn được
 
 ```json
 {"constraints": [
-  {"prefer": {"review": "giảng viên giao nhiều bài tập"}},
-  {"prefer": {"review": "giảng viên chia nhóm để làm bài tập"}},
-  {"prefer": {"review": "giảng viên giảng kỹ những vấn đề trọng tâm của môn học"}},
-  {"prefer": {"review": "giảng viên đưa ra phương pháp để học hiệu quả"}}
+  {"prefer": {"review": {"phrase": "giảng viên giao nhiều bài tập", "aspect": "bai_tap", "sentiment": "positive"}}},
+  {"prefer": {"review": {"phrase": "giảng viên chia nhóm để làm bài tập", "aspect": "ky_nang_giang_day", "sentiment": "positive"}}},
+  {"prefer": {"review": {"phrase": "giảng viên giảng kỹ những vấn đề trọng tâm của môn học", "aspect": "ky_nang_giang_day", "sentiment": "positive"}}},
+  {"prefer": {"review": {"phrase": "giảng viên đưa ra phương pháp để học hiệu quả", "aspect": "ky_nang_giang_day", "sentiment": "positive"}}}
 ]}
 ```
-- Mỗi cụm được viết lại ở dạng khẳng định (bỏ "nên", "hơn"), theo 17.1. Aspect dự kiến lần lượt là `bai_tap`, `ky_nang_giang_day`, `ky_nang_giang_day`, `ky_nang_giang_day`, đều `positive`.
+- Module LLM viết lại mỗi cụm ở dạng khẳng định (bỏ "nên", "hơn"), theo 17.1. `aspect` / `sentiment` là kết quả dự kiến của SA, do gateway điền.
 - Câu này giống review góp ý hơn là yêu cầu xếp lịch. Có nên hiểu theo cách trên, hay đưa cả câu vào `unsupported`, là câu hỏi QA4 (requirements mục 10.2). R8 dùng cách hiểu đề xuất.
 
 ### 17.5 Thay đổi code dự kiến (khi được duyệt)
 
 | File | Thay đổi |
 |---|---|
-| `vocab.py` | Thuộc tính `review` (trọng số 4), `RELATIONS` (trọng số 3), `REVIEW_ASPECTS`, `REVIEW_KEYWORDS` |
-| `schema.py` | Model `Relation`; sửa V1, V4; thêm V12; xuất lại `schema.json`, `schema.inline.json` |
-| `normalize.py` | `SentimentProvider` (HTTP tới `SA_MODEL_URL`, bản fake cho test); chuẩn hoá `review` và `relation`; warning mâu thuẫn của `relation` |
-| `tests/scheduling/` | Test V12, fake SA, golden R1–R8 (sau khi gộp vào mục 13 thì đổi thành `E33`…) |
+| `vocab.py` | Thuộc tính `review` (trọng số 4), `RELATIONS` (trọng số 3), `REVIEW_ASPECTS` (11 giá trị và nhóm hỗ trợ / không hỗ trợ) |
+| `schema.py` | Model `Relation`, model `Review`; sửa V1, V4; thêm V12, V13; xuất lại `schema.json`, `schema.inline.json` |
+| `normalize.py` | Chuẩn hoá `review` (bảng aspect) và `relation`; warning mâu thuẫn của `relation`. Không gọi service ngoài |
+| `app/api/` | Nhận `review_stats` trong request; validate từng dòng |
+| `tests/scheduling/` | Test V12, V13, `review_stats` sai, golden R1–R8 (sau khi gộp vào mục 13 thì đổi thành `E33`…) |
 | `validation/n8n/…workflow.json` | 5 type mới trong `TYPES`; slot và kiểm tra trong *Compute Batch* / *Parse & Validate* |
