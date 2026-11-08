@@ -80,7 +80,7 @@ Mỗi ràng buộc có **đúng một** trong bốn key `prefer`, `avoid`, `limi
 | `min` | số nguyên ≥ 0 | Chỉ đi với `limit`; cần ít nhất một trong `min` / `max` | Cận dưới, tính cả biên |
 | `max` | số nguyên ≥ 0 | Chỉ đi với `limit`; cần ít nhất một trong `min` / `max` | Cận trên, tính cả biên |
 | `relation` | `"same_day"` / `"different_day"` / `"before"` | Đúng một trong `prefer` / `avoid` / `limit` / `relation` | Quan hệ giữa hai môn (17.2) |
-| `courses` | mảng đúng 2 tên môn | Chỉ đi với `relation` | Hai môn của quan hệ; với `before`, môn học trước đứng đầu |
+| `courses` | mảng 2–4 tên môn | Chỉ đi với `relation` | Các môn của quan hệ; với `before`, theo thứ tự học trong ngày |
 | `scope` | `Filter` | Không; thiếu nghĩa là mọi lớp | Ràng buộc áp dụng cho những lớp nào |
 | `level` | `"must"` / `"high"` / `"normal"` | Không, mặc định `"normal"` | Mức độ |
 
@@ -366,7 +366,7 @@ Giá trị giảng viên không xác định trong dữ liệu (`Khoa.…`, `.`)
 | V9 | `constraints` thiếu hoặc không phải mảng | Lỗi 400 cho cả tài liệu |
 | V10 | Tài liệu có `defaults` hoặc `periods` (dạng v1) | Chuyển sang v2 qua adapter (mục 12.1; câu hỏi Q2), thêm warning "đã chuyển từ v1". Adapter lỗi → lỗi 400 |
 | V11 | `version` có phiên bản chính khác 2 | Lỗi 400 |
-| V12 | `relation` thuộc 3 giá trị; `courses` là list đúng 2 tên môn không rỗng; không có `scope`; `courses` chỉ đi với `relation` (17.2). Hai tên phải khớp hai môn khác nhau, mỗi tên đúng một môn (kiểm tra khi chuẩn hoá) | `unsupported` |
+| V12 | `relation` thuộc 3 giá trị; `courses` là list 2–4 tên môn không rỗng; không có `scope`; `courses` chỉ đi với `relation` (17.2). Các tên phải khớp các môn khác nhau, mỗi tên đúng một môn (kiểm tra khi chuẩn hoá) | `unsupported` |
 | V13 | `review` là object `{phrase, aspect, sentiment}`: `phrase` không rỗng; `aspect` thuộc 11 khía cạnh; `sentiment` thuộc `positive` / `negative` / `neutral`. Thiếu `aspect` hoặc `sentiment` (gateway chưa điền) cũng vi phạm (17.1) | `unsupported` |
 
 Mỗi phần tử `unsupported` sinh ra từ validation gồm:
@@ -993,6 +993,16 @@ Từ ví dụ thứ hai trở đi, `version` được lược bỏ (mặc địn
 - Ràng buộc 1, 2, 3 có cùng `aspect` và cùng sentiment, nhưng `phrase` khác nhau, nên điều kiện khác nhau và không bị coi là trùng.
 - Câu dạng góp ý được hiểu là `prefer review` (QA4).
 
+### E41 — Ba môn cùng một ngày (bổ sung)
+> "Em muốn Automat, Cấu trúc dữ liệu và Lập trình Java học chung một ngày"
+
+```json
+{"constraints": [
+  {"relation": "same_day", "courses": ["Automat", "Cấu trúc dữ liệu", "Lập trình Java"]}
+]}
+```
+- Cần một ngày mà cả ba môn cùng học (17.2). Automat thứ 6, Cấu trúc dữ liệu thứ 6, Java thứ 6 → v = 0. Đổi Java sang thứ 3 → không còn ngày chung → v = 1, dù Automat và Cấu trúc dữ liệu vẫn cùng thứ 6.
+
 ## 14. Hướng dẫn cho module LLM
 
 1. **Mỗi ý → một ràng buộc.** Câu có nhiều ý → nhiều ràng buộc. Một ý gồm nhiều điều kiện cùng lúc ("sáng thứ 6 với thầy Sơn") → một bộ lọc có nhiều key.
@@ -1151,29 +1161,42 @@ Từ đây, phạt tính như 6.2 và tuyến tính hoá như 6.8. Có thể nâ
 **Cú pháp.** Loại thứ tư, cạnh `prefer` / `avoid` / `limit` (sửa V1: mỗi ràng buộc có đúng một trong bốn key).
 
 ```
-{"relation": "same_day" | "different_day" | "before", "courses": ["<môn A>", "<môn B>"], "level"?: ...}
+{"relation": "same_day" | "different_day" | "before", "courses": ["<môn 1>", "<môn 2>", ...], "level"?: ...}
 ```
 
-| Giá trị | Ý của sinh viên |
-|---|---|
-| `same_day` | "hai môn A và B học cùng một ngày" |
-| `different_day` | "A và B không học cùng ngày", "học ở hai ngày khác nhau" |
-| `before` | "học A trước B trong cùng một ngày"; thứ tự trong `courses` là thứ tự sinh viên muốn |
+`courses` có từ 2 đến 4 môn. Trần 4 môn vì câu nhắc nhiều môn hơn rất hiếm, và câu càng dài thì LLM càng dễ chép sai tên môn.
 
-**Validation V12.** `courses` có đúng 2 phần tử; hai tên khớp được hai môn **khác nhau** trong danh sách đã chọn (khớp tên như 7.4); không có `scope`, `prefer`, `avoid`, `min`, `max`. Vi phạm → `unsupported`.
+| Giá trị | Ý của sinh viên | Với 3–4 môn |
+|---|---|---|
+| `same_day` | "hai môn A và B học cùng một ngày" | Có **một ngày chung** mà mọi môn đều học. Không phải "từng cặp có ngày chung" |
+| `different_day` | "A và B không học cùng ngày", "học ở hai ngày khác nhau" | **Không có hai môn nào** học cùng ngày ("mỗi môn một ngày") |
+| `before` | "học A trước B trong cùng một ngày" | Theo chuỗi: A trước B, B trước C… Thứ tự trong `courses` là thứ tự sinh viên muốn |
 
-**Ngữ nghĩa phạt.** Gọi D_A, D_B là tập các thứ có lớp được chọn của môn A, B. Lớp không có lịch không tính (6.7); nếu một trong hai môn không có lớp có lịch thì v = 0.
-- `same_day`: v = 1 nếu D_A ∩ D_B = ∅, ngược lại v = 0.
-- `different_day`: v = |D_A ∩ D_B|.
-- `before`:
-  - D_A ∩ D_B = ∅ → v = 1 (không cùng ngày nên không thoả);
-  - ngược lại, v = số thứ d ∈ D_A ∩ D_B mà tiết bắt đầu của A trong ngày d không nhỏ hơn tiết bắt đầu của B.
+**Validation V12.**
+- `courses` có 2–4 phần tử; mỗi tên khớp đúng một môn trong danh sách đã chọn (khớp tên như 7.4), và các môn **khác nhau**.
+- Không có `scope`, `prefer`, `avoid`, `min`, `max`.
+- Vi phạm → `unsupported`.
 
-**Trọng số:** 3 (nhóm Mốc thời gian). **Quy tắc ngoại lệ:** `relation` không thuộc nhóm nào. Hai `relation` ngược nhau trên cùng cặp môn (`same_day` và `different_day`) sinh warning "mâu thuẫn".
+**Ngữ nghĩa phạt.** Gọi D_i là tập các thứ có lớp được chọn của môn thứ i trong `courses`. Lớp không có lịch không tính (6.7): môn không có lớp có lịch bị bỏ khỏi quan hệ; nếu còn ít hơn 2 môn thì v = 0.
+- `same_day`: v = 1 nếu ∩ D_i = ∅ (không có ngày nào mọi môn cùng học), ngược lại v = 0.
 
-**Tuyến tính hoá.** Với mỗi cặp lớp ứng viên (l_A, l_B), tính trước chi phí c(l_A, l_B) theo công thức trên; đặt z ≥ x_A + x_B − 1, z ≥ 0; v = Σ c(l_A, l_B) · z.
+  Ví dụ: A và B cùng thứ 2, B và C cùng thứ 4 → không có ngày chung cho cả ba → v = 1.
+- `different_day`: v = Σ trên mọi cặp i < j của |D_i ∩ D_j|.
+- `before`: v = Σ trên các cặp liền kề (i, i + 1) của phạt cặp:
+  - D_i ∩ D_{i+1} = ∅ → 1 (không cùng ngày nên không thoả);
+  - ngược lại, số thứ d ∈ D_i ∩ D_{i+1} mà tiết bắt đầu của môn i trong ngày d không nhỏ hơn tiết bắt đầu của môn i + 1.
 
-**Mô hình nội bộ (bổ sung mục 9).** `NormalizedConstraint` có `kind = "relation"`, thêm field `relation` và `courses` (tên môn chuẩn); `condition`, `scope`, `exclude` rỗng.
+Với 2 môn, ba công thức trên giống bản cũ.
+
+**Trọng số:** 3 (nhóm Mốc thời gian). **Quy tắc ngoại lệ:** `relation` không thuộc nhóm nào.
+
+**Mâu thuẫn:** một `same_day` và một `different_day` có chung ít nhất hai môn sinh warning "mâu thuẫn". Cả hai vẫn được áp dụng.
+
+**Tuyến tính hoá.**
+- `different_day`, `before`: tách thành các cặp (mọi cặp, hoặc các cặp liền kề). Với mỗi cặp lớp ứng viên (l_i, l_j), tính trước chi phí c(l_i, l_j); đặt z ≥ x_i + x_j − 1, z ≥ 0; v = Σ c · z.
+- `same_day`: với mỗi thứ d, biến y_d ∈ {0, 1} với y_d ≤ Σ_{l ∈ môn i, l học thứ d} x_l cho mọi môn i (y_d = 1 chỉ khi mọi môn có lớp vào thứ d). Đặt v ≥ 1 − Σ_d y_d, v ≥ 0.
+
+**Mô hình nội bộ (bổ sung mục 9).** `NormalizedConstraint` có `kind = "relation"`, thêm field `relation` và `courses` (tên môn chuẩn, giữ thứ tự); `condition`, `scope`, `exclude` rỗng.
 
 ### 17.3 Dataset
 
@@ -1196,7 +1219,7 @@ llm-guide (task T17) đã bỏ ví dụ "chạy từ khu K sang khu V" ở mục
 
 ### 17.4 Ví dụ
 
-Các ví dụ của mục này nằm ở mục 13, E33–E40 (golden tests): `review` theo môn (E33), `avoid review` (E34), aspect không hỗ trợ (E35), ba loại `relation` (E36–E38), nhiều ý có giảng viên "khó tính" (E39), câu dạng góp ý (E40).
+Các ví dụ của mục này nằm ở mục 13, E33–E41 (golden tests): `review` theo môn (E33), `avoid review` (E34), aspect không hỗ trợ (E35), ba loại `relation` (E36–E38), nhiều ý có giảng viên "khó tính" (E39), câu dạng góp ý (E40), `relation` ba môn (E41).
 
 ### 17.5 Code
 
@@ -1206,5 +1229,5 @@ Các ví dụ của mục này nằm ở mục 13, E33–E40 (golden tests): `re
 | `schema.py` | Model `Review`; field `relation`, `courses` của `Constraint`; sửa V1, V4; thêm V12, V13; `parse_review_stats`; xuất lại `schema.json`, `schema.inline.json` |
 | `normalize.py` | Chuẩn hoá `review` (bảng aspect) và `relation`; warning mâu thuẫn của `relation`. Không gọi service ngoài |
 | `app/api/` | Nhận `review_stats` trong request; validate từng dòng |
-| `tests/scheduling/` | `test_review_relation.py` (V12, V13, chuẩn hoá, `review_stats`); golden E33–E40 |
+| `tests/scheduling/` | `test_review_relation.py` (V12, V13, chuẩn hoá, `review_stats`); golden E33–E41 |
 | `validation/n8n/…workflow.json` | 5 type mới trong `TYPES`; slot và kiểm tra trong *Compute Batch* / *Parse & Validate* |

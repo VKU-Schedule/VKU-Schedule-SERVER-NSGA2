@@ -18,7 +18,7 @@
       "limit":  "<tên chỉ số>",     // giới hạn hình dạng lịch, đi kèm "min" và/hoặc "max"
       "relation": "same_day" | "different_day" | "before",  // quan hệ giữa hai môn, đi kèm "courses"
       "min": number, "max": number, // chỉ dùng với "limit", số nguyên ≥ 0, tính cả biên
-      "courses": ["<môn A>", "<môn B>"],  // chỉ dùng với "relation", đúng 2 môn
+      "courses": ["<môn A>", "<môn B>"],  // chỉ dùng với "relation", 2–4 môn
 
       "scope": Filter,              // tuỳ chọn: ràng buộc áp dụng cho lớp nào; thiếu = mọi lớp
       "level": "must" | "high" | "normal"   // tuỳ chọn, mặc định "normal"
@@ -78,7 +78,7 @@ Dùng khi sinh viên mô tả **tính chất của giảng viên** mà không n�
 - Có tên giảng viên → dùng `teacher`, không dùng `review`.
 - Câu về **phòng, cơ sở vật chất** (máy lạnh, wifi, ổ cắm…) hay **nội dung môn học** không dùng `review`: chép vào `unsupported`.
 
-## 2.2 Loại ràng buộc `relation` (quan hệ giữa hai môn)
+## 2.2 Loại ràng buộc `relation` (quan hệ giữa các môn)
 
 | `relation` | Câu của sinh viên | Ví dụ |
 |---|---|---|
@@ -86,7 +86,12 @@ Dùng khi sinh viên mô tả **tính chất của giảng viên** mà không n�
 | `different_day` | "A và B không học cùng ngày", "học ở hai ngày khác nhau" | `{"relation": "different_day", "courses": ["A", "B"]}` |
 | `before` | "học A trước B trong cùng một ngày" | `{"relation": "before", "courses": ["A", "B"]}`: môn học trước đứng đầu |
 
-- `courses` có đúng 2 tên môn khác nhau. Không dùng `scope`, `min`, `max`.
+- `courses` có 2–4 tên môn khác nhau. Câu nhắc hơn 4 môn thì chép vào `unsupported`. Không dùng `scope`, `min`, `max`.
+- Với 3–4 môn:
+  - `same_day`: "ba môn học chung một ngày" (cả nhóm có một ngày chung);
+  - `different_day`: "mỗi môn một ngày", "không môn nào học chung ngày";
+  - `before`: ghi các môn theo thứ tự sinh viên muốn học trong ngày.
+- Nhóm môn nói chung không nêu tên ("các môn lý thuyết", "mấy môn chuyên ngành") không dùng `relation`: chép vào `unsupported`.
 - Mức độ ghi bằng `level` như các ràng buộc khác.
 
 ## 3. Chỉ số của `limit`
@@ -668,6 +673,15 @@ Các câu này được giữ nguyên trong `unsupported`, không ép chuyển t
 ```
 - Mỗi cụm viết lại ở dạng khẳng định, bỏ "nên", "hơn".
 
+### E41 — Ba môn cùng một ngày
+> "Em muốn Automat, Cấu trúc dữ liệu và Lập trình Java học chung một ngày"
+
+```json
+{"constraints": [
+  {"relation": "same_day", "courses": ["Automat", "Cấu trúc dữ liệu", "Lập trình Java"]}
+]}
+```
+
 ## 8. Lỗi thường gặp
 
 | Sai | Đúng | Vì sao |
@@ -678,6 +692,7 @@ Các câu này được giữ nguyên trong `unsupported`, không ép chuyển t
 | `{"prefer": {"review": {"phrase": "dạy dễ hiểu"}, "day": "thứ 2"}}` | `{"prefer": {"review": {"phrase": "giảng viên dạy dễ hiểu"}}, "scope": {"day": "thứ 2"}}` | `review` đứng một mình; thứ, buổi, môn vào `scope` |
 | `{"prefer": {"review": {"phrase": "phòng có máy lạnh"}}}` | `"unsupported": ["phòng có máy lạnh"]` | `review` chỉ dành cho giảng viên |
 | `{"relation": "same_day", "courses": ["A", "B"], "scope": {"day": "thứ 2"}}` | bỏ `scope` | `relation` không dùng `scope` |
+| ba ràng buộc `same_day` cho từng cặp của "A, B, C học chung một ngày" | `{"relation": "same_day", "courses": ["A", "B", "C"]}` | từng cặp có ngày chung chưa chắc cả ba có ngày chung |
 | `{"prefer": {"periods": [1,2,3,4,5]}}` cho "thích học sáng" | `{"prefer": {"session": "sáng"}}` | giữ đơn vị sinh viên dùng |
 | `{"prefer": {"start_period": {"min": 4}}}` cho "sau 10 giờ" | `{"prefer": {"start_time": {"min": "10:00"}}}` | không tự đổi giờ sang tiết |
 | `{"avoid": {"day": "thứ 7"}, "max": 0}` | bỏ `max` | `min` / `max` chỉ đi với `limit` |

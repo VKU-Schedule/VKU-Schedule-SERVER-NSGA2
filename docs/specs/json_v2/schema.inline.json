@@ -943,7 +943,7 @@
               "before"
             ],
             "type": "string",
-            "description": "Quan hệ giữa hai môn trong courses. same_day: Hai môn học cùng một ngày. different_day: Hai môn không học cùng ngày. before: Môn thứ nhất học trước môn thứ hai trong cùng một ngày.",
+            "description": "Quan hệ giữa hai môn trong courses. same_day: Các môn có một ngày học chung. different_day: Không có hai môn nào học cùng ngày. before: Trong cùng một ngày, các môn học theo đúng thứ tự trong courses.",
             "title": "Relation"
           },
           "courses": {
@@ -951,10 +951,10 @@
               "minLength": 1,
               "type": "string"
             },
-            "maxItems": 2,
+            "maxItems": 4,
             "minItems": 2,
             "type": "array",
-            "description": "Đúng hai tên môn, chỉ đi với relation. Với before: môn học trước đứng đầu.",
+            "description": "Từ 2 đến 4 tên môn khác nhau, chỉ đi với relation. Với before: các môn theo thứ tự học trong ngày.",
             "title": "Courses"
           },
           "scope": {

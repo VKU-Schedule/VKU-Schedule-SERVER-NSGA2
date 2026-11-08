@@ -79,10 +79,10 @@ uv venv --python 3.12 .venv && uv pip install --python .venv/bin/python -r requi
   - `normalize.py`: surface value → canonical value, course/teacher matching against the selected courses' classes, and `normalize_document()` (course → scope, weights, more-specific-wins `exclude`, contradiction warnings). Also helpers that read class data (`class_day_code`, `class_area`, ...), which Part B's scorer will use.
   - `v1_adapter.py`: v1 `defaults`/`periods` → v2 (design 12.1); `parse_document` calls it automatically.
   - `review` (§17.1): the LLM writes only `review.phrase`; the gateway fills `aspect`/`sentiment` from the SA service and sends per-lecturer counts as `review_stats` in the request. This repo never calls SA, Review or the LLM: it only normalizes, validates and solves. Mapping `review` to lecturers is the solver's job (Part B).
-  - `relation` (§17.2): `same_day` / `different_day` / `before` between exactly two selected courses.
+  - `relation` (§17.2): `same_day` / `different_day` / `before` between 2–4 selected courses (`same_day` = one day shared by all of them).
   - Not done yet (Part B): scoring, solvers, and switching `/api/schedule` to v2.
 - `app/api/preferences_api.py`: `POST /api/preferences/validate` normalizes a v2 (or v1) document against the classes of `courses` (plus optional `review_stats`) and returns `{constraints, unsupported, warnings}` without scheduling.
-- `tests/scheduling/conftest.py`: the sample candidate classes and `REVIEW_STATS`, plus `design_examples()`, which reads the E1–E40 / 12.2 JSON blocks straight from design.md. `examples.json` is generated from those blocks; `test_examples.py` fails if design.md and examples.json drift apart.
+- `tests/scheduling/conftest.py`: the sample candidate classes and `REVIEW_STATS`, plus `design_examples()`, which reads the E1–E41 / 12.2 JSON blocks straight from design.md. `examples.json` is generated from those blocks; `test_examples.py` fails if design.md and examples.json drift apart.
 - `app/demo.py`: an older standalone copy of the constraint logic, run against the fixtures. It is not used by the API, so edits to `constraints_service.py` don't carry over to it.
 - `validation/` and `data/`: offline scripts and datasets (Excel cleaning, VIT5 training-data generation, a Gemini translation script). They are not part of the server or the Docker image.
 - `app/mock/docs/`: API and UI/UX notes for the frontend. `app/mock/mock_*` hold sample responses.

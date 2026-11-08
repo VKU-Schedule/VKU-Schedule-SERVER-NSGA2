@@ -109,9 +109,10 @@ class Constraint(BaseModel):
         description="Quan hệ giữa hai môn trong courses. "
         + " ".join(f"{name}: {text}" for name, text in vocab.RELATIONS.items()),
     )
-    courses: Optional[Annotated[List[CourseName], Field(min_length=vocab.RELATION_COURSE_COUNT,
-                                                         max_length=vocab.RELATION_COURSE_COUNT)]] = Field(
-        None, description="Đúng hai tên môn, chỉ đi với relation. Với before: môn học trước đứng đầu.")
+    courses: Optional[Annotated[List[CourseName], Field(min_length=vocab.RELATION_MIN_COURSES,
+                                                         max_length=vocab.RELATION_MAX_COURSES)]] = Field(
+        None, description=f"Từ {vocab.RELATION_MIN_COURSES} đến {vocab.RELATION_MAX_COURSES} tên môn khác nhau, "
+        "chỉ đi với relation. Với before: các môn theo thứ tự học trong ngày.")
     scope: Optional[Filter] = Field(None, description="Ràng buộc áp dụng cho những lớp nào. Thiếu = mọi lớp.")
     level: Literal[vocab.LEVELS] = Field(vocab.DEFAULT_LEVEL, description="must: bắt buộc; high: rất quan trọng; normal: mặc định.")
 
@@ -271,17 +272,18 @@ def _check_limit(raw: Dict[str, Any]) -> None:
 
 
 def _check_relation(raw: Dict[str, Any]) -> None:
-    """V12 (design.md mục 17.2). Hai môn khác nhau được kiểm tra khi chuẩn hoá (khớp tên môn)."""
+    """V12 (design.md mục 17.2). Các môn khác nhau được kiểm tra khi chuẩn hoá (khớp tên môn)."""
     relation = raw["relation"]
     if relation not in vocab.RELATIONS:
         raise _ConstraintError(f"Quan hệ '{relation}' không có trong từ vựng ({', '.join(vocab.RELATIONS)})")
     courses = raw.get("courses")
     if (
         not isinstance(courses, list)
-        or len(courses) != vocab.RELATION_COURSE_COUNT
+        or not vocab.RELATION_MIN_COURSES <= len(courses) <= vocab.RELATION_MAX_COURSES
         or not all(isinstance(course, str) and course.strip() for course in courses)
     ):
-        raise _ConstraintError(f"'relation' cần 'courses' là list đúng {vocab.RELATION_COURSE_COUNT} tên môn")
+        raise _ConstraintError(
+            f"'relation' cần 'courses' là list {vocab.RELATION_MIN_COURSES}–{vocab.RELATION_MAX_COURSES} tên môn")
     if raw.get("scope") is not None:
         raise _ConstraintError("'relation' không dùng 'scope'; hai môn nằm trong 'courses'")
 

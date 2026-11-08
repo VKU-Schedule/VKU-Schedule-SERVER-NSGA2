@@ -3302,5 +3302,50 @@
         "Ràng buộc 3: 'review': không có số liệu aspect 'ky_nang_giang_day' cho môn Bảo mật và an toàn hệ thống thông tin, Chủ nghĩa xã hội khoa học, Mạng máy tính, Tiếng Anh chuyên ngành 2, Tiếng anh nâng cao 4, Triết học Mac-Lenin"
       ]
     }
+  },
+  {
+    "id": "E41",
+    "title": "Ba môn cùng một ngày (bổ sung)",
+    "input": {
+      "constraints": [
+        {
+          "relation": "same_day",
+          "courses": [
+            "Automat",
+            "Cấu trúc dữ liệu",
+            "Lập trình Java"
+          ]
+        }
+      ]
+    },
+    "expected": {
+      "version": "2.0",
+      "constraints": [
+        {
+          "id": 0,
+          "kind": "relation",
+          "relation": "same_day",
+          "courses": [
+            "Automat và ngôn ngữ hình thức",
+            "Cấu trúc dữ liệu và giải thuật",
+            "Lập trình Java"
+          ],
+          "scope": {},
+          "exclude": [],
+          "level": "normal",
+          "weight": 3,
+          "source": {
+            "relation": "same_day",
+            "courses": [
+              "Automat",
+              "Cấu trúc dữ liệu",
+              "Lập trình Java"
+            ]
+          }
+        }
+      ],
+      "unsupported": [],
+      "warnings": []
+    }
   }
 ]

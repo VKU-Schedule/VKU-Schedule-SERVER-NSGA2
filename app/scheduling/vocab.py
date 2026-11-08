@@ -166,13 +166,14 @@ REVIEW_ALL_ASPECTS = "noi_chung"
 # ---------------------------------------------------------------------------
 
 RELATIONS: Dict[str, str] = {
-    "same_day": "Hai môn học cùng một ngày.",
-    "different_day": "Hai môn không học cùng ngày.",
-    "before": "Môn thứ nhất học trước môn thứ hai trong cùng một ngày.",
+    "same_day": "Các môn có một ngày học chung.",
+    "different_day": "Không có hai môn nào học cùng ngày.",
+    "before": "Trong cùng một ngày, các môn học theo đúng thứ tự trong courses.",
 }
 RELATION_WEIGHT = 3
-RELATION_COURSE_COUNT = 2
-# Hai quan hệ ngược nhau trên cùng cặp môn sinh warning mâu thuẫn
+RELATION_MIN_COURSES = 2
+RELATION_MAX_COURSES = 4
+# Hai quan hệ ngược nhau có chung ít nhất một cặp môn sinh warning mâu thuẫn
 RELATION_OPPOSITES: FrozenSet[FrozenSet[str]] = frozenset({frozenset({"same_day", "different_day"})})
 
 # ---------------------------------------------------------------------------

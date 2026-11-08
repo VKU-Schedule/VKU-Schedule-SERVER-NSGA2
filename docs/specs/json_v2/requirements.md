@@ -265,11 +265,12 @@ TC:
 - Khía cạnh không gắn với giảng viên (`thiet_bi_day_hoc`, `chuong_trinh_hoc`, `de_xuat`) chuyển vào `unsupported` kèm lý do, vì dữ liệu review không có phòng và các khía cạnh này nói về môn học hoặc cơ sở vật chất.
 - Thuật toán (Phần B) quy ràng buộc về giảng viên cụ thể của từng môn dựa trên `review_stats`, rồi chấm như ràng buộc `teacher`.
 
-### R15 — Quan hệ giữa hai môn (`relation`)
+### R15 — Quan hệ giữa các môn (`relation`)
 
 TC:
-- Biểu diễn được ba ý: hai môn học cùng ngày; hai môn không học cùng ngày; môn A học trước môn B trong cùng một ngày.
-- Mỗi ràng buộc chỉ gồm đúng hai môn trong danh sách đã chọn. Sai thì chuyển vào `unsupported`.
+- Biểu diễn được ba ý: các môn học cùng ngày; các môn không học cùng ngày; các môn học theo thứ tự trong cùng một ngày.
+- Mỗi ràng buộc gồm 2–4 môn khác nhau trong danh sách đã chọn. Sai thì chuyển vào `unsupported`.
+- Với 3–4 môn, "cùng ngày" nghĩa là có một ngày chung cho mọi môn (design 17.2).
 - Ngữ nghĩa phạt xác định và tuyến tính hoá được (R5, design 6.8).
 
 ### R16 — Dataset cho module LLM

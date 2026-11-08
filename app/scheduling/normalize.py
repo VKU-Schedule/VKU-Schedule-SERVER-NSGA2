@@ -690,7 +690,7 @@ def _weight(kind: str, level: str, metric: Optional[str], keys: Iterable[str]) -
 
 def _normalize_relation(parsed: ParsedConstraint, context: _ConstraintContext,
                         warnings: List[str]) -> NormalizedConstraint:
-    """design.md mục 17.2: mỗi tên khớp đúng một môn đã chọn, hai môn khác nhau."""
+    """design.md mục 17.2: mỗi tên khớp đúng một môn đã chọn, các môn khác nhau."""
     constraint = parsed.constraint
     courses = []
     for said in constraint.courses:
@@ -702,8 +702,9 @@ def _normalize_relation(parsed: ParsedConstraint, context: _ConstraintContext,
         if len(matches) != 1:
             raise NormalizeError(f"'courses': {_show(said)} khớp nhiều môn, cần đúng một môn")
         courses.append(next(iter(matches)))
-    if courses[0] == courses[1]:
-        raise NormalizeError(f"'courses': hai tên cùng chỉ một môn ({courses[0]})")
+    repeated = sorted({course for course in courses if courses.count(course) > 1})
+    if repeated:
+        raise NormalizeError(f"'courses': nhiều tên cùng chỉ một môn ({', '.join(repeated)})")
     return NormalizedConstraint(
         id=parsed.index,
         kind="relation",
@@ -816,11 +817,12 @@ def _apply_exceptions(constraints: List[NormalizedConstraint], warnings: List[st
                 )
             elif (
                 first.kind == second.kind == "relation"
-                and frozenset(first.courses) == frozenset(second.courses)
+                and len(set(first.courses) & set(second.courses)) >= 2
                 and frozenset({first.relation, second.relation}) in vocab.RELATION_OPPOSITES
             ):
+                shared = ", ".join(course for course in first.courses if course in second.courses)
                 warnings.append(
-                    f"Ràng buộc {first.id} và {second.id} mâu thuẫn: cùng hai môn, một '{first.relation}' "
+                    f"Ràng buộc {first.id} và {second.id} mâu thuẫn: chung các môn {shared}, một '{first.relation}' "
                     f"một '{second.relation}'. Cả hai vẫn được áp dụng"
                 )
 

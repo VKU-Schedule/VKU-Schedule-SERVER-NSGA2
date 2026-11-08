@@ -1,4 +1,4 @@
-"""Golden tests (task T8, T16): mọi ví dụ E1–E40 và tài liệu 12.2 của design.md.
+"""Golden tests (task T8, T16): mọi ví dụ E1–E41 và tài liệu 12.2 của design.md.
 
 examples.json sinh bằng `python tests/scheduling/build_examples.py`.
 """
@@ -12,7 +12,7 @@ BY_ID = {example["id"]: example for example in EXAMPLES}
 
 
 def test_examples_cover_design_doc():
-    expected_ids = ["12.2"] + [f"E{i}" for i in range(1, 41)]
+    expected_ids = ["12.2"] + [f"E{i}" for i in range(1, 42)]
     assert [example["id"] for example in EXAMPLES] == expected_ids
 
 
@@ -68,6 +68,7 @@ def constraint(example_id, index=0):
     ("E38", 0, "courses", ["Cấu trúc dữ liệu và giải thuật", "Lập trình Java"]),
     ("E39", 3, "weight", 8),
     ("E39", 3, "kind", "prefer"),
+    ("E41", 0, "courses", ["Automat và ngôn ngữ hình thức", "Cấu trúc dữ liệu và giải thuật", "Lập trình Java"]),
 ])
 def test_design_notes(example_id, index, key, value):
     assert constraint(example_id, index)[key] == value

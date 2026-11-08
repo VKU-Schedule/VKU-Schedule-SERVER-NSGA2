@@ -3,7 +3,7 @@ import pytest
 
 from app.scheduling.normalize import normalize_document
 from app.scheduling.schema import parse_document, parse_review_stats
-from conftest import AUTOMAT, CANDIDATES, CTDL, JAVA, REVIEW_STATS, SELECTED_COURSES
+from conftest import AUTOMAT, CANDIDATES, CTDL, JAVA, MANG, REVIEW_STATS, SELECTED_COURSES
 
 
 def review(phrase="giảng viên dạy dễ hiểu", aspect="ky_nang_giang_day", sentiment="positive"):
@@ -26,17 +26,18 @@ def run(constraints, review_stats=REVIEW_STATS):
 # --- V12: relation --------------------------------------------------------------------
 
 @pytest.mark.parametrize("relation", ["same_day", "different_day", "before"])
-def test_v12_valid(relation):
-    parsed = parse_document({"constraints": [{"relation": relation, "courses": ["A", "B"], "level": "high"}]})
+@pytest.mark.parametrize("courses", [["A", "B"], ["A", "B", "C"], ["A", "B", "C", "D"]])
+def test_v12_valid(relation, courses):
+    parsed = parse_document({"constraints": [{"relation": relation, "courses": courses, "level": "high"}]})
     assert [c.kind for c in parsed.constraints] == ["relation"]
 
 
 @pytest.mark.parametrize("constraint, reason", [
     ({"relation": "later", "courses": ["A", "B"]}, "Quan hệ 'later' không có trong từ vựng"),
-    ({"relation": "same_day"}, "cần 'courses' là list đúng 2 tên môn"),
-    ({"relation": "same_day", "courses": ["A"]}, "cần 'courses' là list đúng 2 tên môn"),
-    ({"relation": "same_day", "courses": ["A", "B", "C"]}, "cần 'courses' là list đúng 2 tên môn"),
-    ({"relation": "same_day", "courses": ["A", ""]}, "cần 'courses' là list đúng 2 tên môn"),
+    ({"relation": "same_day"}, "cần 'courses' là list 2–4 tên môn"),
+    ({"relation": "same_day", "courses": ["A"]}, "cần 'courses' là list 2–4 tên môn"),
+    ({"relation": "same_day", "courses": ["A", "B", "C", "D", "E"]}, "cần 'courses' là list 2–4 tên môn"),
+    ({"relation": "same_day", "courses": ["A", ""]}, "cần 'courses' là list 2–4 tên môn"),
     ({"relation": "same_day", "courses": ["A", "B"], "scope": {"day": "thứ 2"}}, "'relation' không dùng 'scope'"),
     ({"relation": "same_day", "courses": ["A", "B"], "max": 1}, "chỉ đi với 'limit'"),
     ({"prefer": {"day": "thứ 2"}, "courses": ["A", "B"]}, "'courses' chỉ đi với 'relation'"),
@@ -183,7 +184,8 @@ def test_relation_courses_keep_order_and_weight():
 
 
 @pytest.mark.parametrize("courses, reason", [
-    (["Java", "Lập trình Java"], "hai tên cùng chỉ một môn"),
+    (["Java", "Lập trình Java"], "nhiều tên cùng chỉ một môn (Lập trình Java)"),
+    (["Automat", "Java", "Lập trình Java"], "nhiều tên cùng chỉ một môn (Lập trình Java)"),
     (["Java", "Hoá sinh"], "Môn không có trong danh sách đã chọn"),
 ])
 def test_relation_courses_invalid(courses, reason):
@@ -206,8 +208,25 @@ def test_relation_opposite_pair_warns():
     ])
     assert len(result.constraints) == 3
     assert result.warnings == [
-        "Ràng buộc 0 và 1 mâu thuẫn: cùng hai môn, một 'same_day' một 'different_day'. Cả hai vẫn được áp dụng"
+        f"Ràng buộc 0 và 1 mâu thuẫn: chung các môn {JAVA}, {AUTOMAT}, một 'same_day' một 'different_day'. "
+        "Cả hai vẫn được áp dụng"
     ]
+
+
+def test_relation_with_more_courses_keeps_order():
+    result = run([{"relation": "before", "courses": ["Cấu trúc dữ liệu", "Java", "Automat", "Mạng máy tính"]}])
+    (c,) = result.constraints
+    assert c.courses == (CTDL, JAVA, AUTOMAT, MANG)
+
+
+def test_relation_opposite_sharing_one_pair_warns():
+    result = run([
+        {"relation": "different_day", "courses": ["Java", "Automat", "Mạng máy tính"]},
+        {"relation": "same_day", "courses": ["Automat", "Mạng máy tính"]},
+        {"relation": "same_day", "courses": ["Java", CTDL]},
+    ])
+    assert len(result.warnings) == 1
+    assert result.warnings[0].startswith(f"Ràng buộc 0 và 1 mâu thuẫn: chung các môn {AUTOMAT}, {MANG},")
 
 
 def test_relation_is_never_excluded():
