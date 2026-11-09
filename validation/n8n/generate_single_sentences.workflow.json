@@ -155,6 +155,19 @@
     },
     {
       "parameters": {
+        "jsCode": "// Create Tab chạy với onError = continue: lỗi \"already exists\" (tab đã có) là bình thường.\n// Lỗi khác (hết quota, sai quyền, sai spreadsheetId…) thì dừng ở đây kèm lý do của Google,\n// thay vì để Read Rows báo \"Unable to parse range\" vì tab chưa được tạo.\nconst err = $input.first().json.error;\nif (err) {\n  const msg = typeof err === 'string' ? err : JSON.stringify(err);\n  if (!/already exists/i.test(msg)) {\n    throw new Error(`Không tạo được tab \"${$('Current Type').first().json.sheetName}\": ${msg.slice(0, 500)}`);\n  }\n}\nreturn [{ json: {} }];"
+      },
+      "id": "6a42d736-a990-47b1-9773-50a1245d5e9c",
+      "name": "Check Tab",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1320,
+        0
+      ]
+    },
+    {
+      "parameters": {
         "url": "=https://sheets.googleapis.com/v4/spreadsheets/{{ $('Settings').first().json.spreadsheetId }}/values/{{ encodeURIComponent(\"'\" + $('Current Type').first().json.sheetName + \"'!C:C\") }}",
         "authentication": "predefinedCredentialType",
         "nodeCredentialType": "googleSheetsOAuth2Api",
@@ -165,7 +178,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1320,
+        1540,
         0
       ],
       "executeOnce": true,
@@ -182,7 +195,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1540,
+        1760,
         0
       ]
     },
@@ -274,7 +287,7 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.4,
       "position": [
-        1760,
+        1980,
         0
       ]
     },
@@ -292,7 +305,7 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        2000,
+        2220,
         -200
       ],
       "onError": "continueRegularOutput",
@@ -313,7 +326,7 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        2000,
+        2220,
         20
       ]
     },
@@ -326,7 +339,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2360,
+        2580,
         -200
       ]
     },
@@ -359,7 +372,7 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        2580,
+        2800,
         -200
       ]
     },
@@ -379,7 +392,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        2800,
+        3020,
         -300
       ],
       "retryOnFail": true,
@@ -395,7 +408,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2000,
+        2220,
         220
       ]
     },
@@ -408,7 +421,7 @@
       "type": "n8n-nodes-base.stopAndError",
       "typeVersion": 1,
       "position": [
-        2000,
+        2220,
         420
       ]
     }
@@ -473,7 +486,7 @@
       "main": [
         [
           {
-            "node": "Read Rows",
+            "node": "Check Tab",
             "type": "main",
             "index": 0
           }
@@ -586,6 +599,17 @@
       ]
     },
     "Append Rows": {
+      "main": [
+        [
+          {
+            "node": "Read Rows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Tab": {
       "main": [
         [
           {
