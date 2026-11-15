@@ -1,0 +1,7 @@
+# Benchmark Phần B (research/benchmark), ngoài requirements-dev.txt:
+# pip install -r requirements-dev.txt -r requirements-research.txt
+pymongo==4.12.0
+python-dotenv==1.1.0
+pandas==2.2.3
+scipy>=1.13
+matplotlib>=3.9

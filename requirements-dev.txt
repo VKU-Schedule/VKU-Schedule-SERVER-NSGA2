@@ -3,3 +3,5 @@
 pydantic>=2,<3
 Flask==3.1.0  # test endpoint qua Flask test client
 pytest>=8
+deap==1.4.2   # solver nsga2_legacy (app/scheduling/solvers)
+ortools==9.15.6755  # solver cpsat
