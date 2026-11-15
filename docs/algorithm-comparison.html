@@ -1,0 +1,524 @@
+<title>Chọn thuật toán xếp lịch VKU</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600&family=Lexend:wght@500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Bố cục: một cột đọc 1080px; mở đầu bằng kết luận, rồi bằng chứng (bảng, biểu đồ), cuối là case study dạng thời khoá biểu tuần */
+:root {
+  --bg: #f5f7fa;
+  --surface: #ffffff;
+  --sunk: #eaeef4;
+  --ink: #16202e;
+  --muted: #5a6779;
+  --rule: #d6dde7;
+  --accent: #0b7a75;        /* CP-SAT: thuật toán được chọn */
+  --accent-soft: #d5efed;
+  --alt: #b86e00;           /* NSGA-II cải tiến: phương án phụ */
+  --alt-soft: #f7e7cc;
+  --bad: #c2412d;           /* NSGA-II gốc */
+  --bad-soft: #f7dcd6;
+  --s-bnb: #5b6fa8;
+  --s-sa: #8a6fb0;
+  --s-ga: #6c8d4f;
+  --grid: #e3e8ef;
+  --c1: #cfe3f7; --c2: #d9ecd2; --c3: #f4dcc2; --c4: #e6d8f2; --c5: #f6d4dc; --c6: #d2ece9; --c7: #ece6c8;
+  --font-display: "Lexend", "Be Vietnam Pro", system-ui, sans-serif;
+  --font-body: "Be Vietnam Pro", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f141b; --surface: #161d27; --sunk: #1d2633; --ink: #e6ebf2; --muted: #9aa7b8; --rule: #2a3444;
+    --accent: #3cc2b9; --accent-soft: #123b39; --alt: #f0a43a; --alt-soft: #3d2c10; --bad: #f07a63; --bad-soft: #3d1d17;
+    --s-bnb: #8da0d8; --s-sa: #b49ad8; --s-ga: #9cc27a; --grid: #222c3a;
+    --c1: #1e3550; --c2: #22381f; --c3: #44301b; --c4: #33264a; --c5: #472330; --c6: #163a37; --c7: #3a3519;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f141b; --surface: #161d27; --sunk: #1d2633; --ink: #e6ebf2; --muted: #9aa7b8; --rule: #2a3444;
+  --accent: #3cc2b9; --accent-soft: #123b39; --alt: #f0a43a; --alt-soft: #3d2c10; --bad: #f07a63; --bad-soft: #3d1d17;
+  --s-bnb: #8da0d8; --s-sa: #b49ad8; --s-ga: #9cc27a; --grid: #222c3a;
+  --c1: #1e3550; --c2: #22381f; --c3: #44301b; --c4: #33264a; --c5: #472330; --c6: #163a37; --c7: #3a3519;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 15px; line-height: 1.6; }
+.wrap { max-width: 1080px; margin: 0 auto; padding-block: 40px 72px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: flex; flex-direction: column; gap: 56px; }
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; margin: 0; line-height: 1.2; }
+h1 { font-size: clamp(28px, 4.6vw, 44px); font-weight: 700; letter-spacing: -0.01em; }
+h2 { font-size: 24px; font-weight: 600; }
+h3 { font-size: 17px; font-weight: 600; }
+p { margin: 0; max-width: 68ch; }
+.eyebrow { font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-weight: 600; }
+.num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+section { display: flex; flex-direction: column; gap: 20px; min-width: 0; }
+.lede { color: var(--muted); font-size: 16px; }
+a { color: var(--accent); }
+code { font-family: var(--font-mono); font-size: 0.88em; background: var(--sunk); padding: 1px 5px; border-radius: 4px; }
+
+/* Kết luận */
+.hero { display: flex; flex-direction: column; gap: 18px; }
+.verdict { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 28px; background: var(--surface); border: 1px solid var(--rule); border-radius: 14px; padding: 28px; }
+.verdict-name { display: flex; flex-direction: column; gap: 10px; }
+.winner { font-family: var(--font-display); font-size: clamp(40px, 7vw, 64px); font-weight: 700; color: var(--accent); line-height: 1; letter-spacing: -0.02em; }
+.winner small { display: block; font-size: 15px; font-weight: 500; color: var(--muted); letter-spacing: 0; margin-top: 8px; font-family: var(--font-body); }
+.stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; align-content: center; }
+.stat { background: var(--sunk); border-radius: 10px; padding: 14px 16px; display: flex; flex-direction: column; gap: 2px; }
+.stat b { font-family: var(--font-mono); font-size: 24px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.stat span { font-size: 13px; color: var(--muted); line-height: 1.4; }
+.reasons { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; }
+.reason { border-top: 2px solid var(--rule); padding-top: 12px; display: flex; flex-direction: column; gap: 6px; }
+.reason h3 { font-size: 15px; }
+.reason p { font-size: 14px; color: var(--muted); }
+.reason.key { border-top-color: var(--accent); }
+.reason.warn { border-top-color: var(--bad); }
+.reason.alt { border-top-color: var(--alt); }
+
+/* Bảng */
+.tabs { display: flex; gap: 6px; flex-wrap: wrap; }
+.tab { font: inherit; font-size: 14px; border: 1px solid var(--rule); background: var(--surface); color: var(--ink); border-radius: 999px; padding: 6px 14px; cursor: pointer; }
+.tab[aria-selected="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.tab:focus-visible, .legend button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.scroll { overflow-x: auto; border: 1px solid var(--rule); border-radius: 12px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; min-width: 760px; font-size: 14px; }
+th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--rule); vertical-align: middle; }
+th { font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); font-weight: 600; background: var(--sunk); }
+tr:last-child td { border-bottom: 0; }
+td.n { font-family: var(--font-mono); font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
+th.n { text-align: right; }
+tr.pick td { background: var(--accent-soft); }
+.solver { display: flex; align-items: center; gap: 8px; font-weight: 600; white-space: nowrap; }
+.dot { width: 10px; height: 10px; border-radius: 50%; flex: none; }
+.pill { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; padding: 2px 8px; border-radius: 999px; }
+.pill.pick { background: var(--accent); color: var(--surface); }
+.pill.alt { background: var(--alt-soft); color: var(--alt); }
+.pill.old { background: var(--bad-soft); color: var(--bad); }
+.bar { display: flex; align-items: center; gap: 8px; justify-content: flex-end; }
+.bar i { display: block; height: 6px; border-radius: 3px; background: var(--muted); opacity: 0.55; }
+.bar.good i { background: var(--accent); opacity: 1; }
+.bar.bad i { background: var(--bad); opacity: 1; }
+.note { font-size: 13px; color: var(--muted); max-width: 80ch; }
+
+/* Biểu đồ */
+.charts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+.card { background: var(--surface); border: 1px solid var(--rule); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.card.wide { grid-column: 1 / -1; }
+.card p { font-size: 14px; color: var(--muted); }
+svg { display: block; width: 100%; height: auto; overflow: visible; }
+svg text { fill: var(--muted); font-family: var(--font-body); font-size: 11px; }
+svg .axis { stroke: var(--rule); }
+svg .gridline { stroke: var(--grid); }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 13px; }
+.legend button { font: inherit; background: none; border: 0; padding: 2px 0; color: var(--ink); display: flex; align-items: center; gap: 6px; cursor: pointer; }
+.legend button[aria-pressed="false"] { opacity: 0.35; }
+
+/* Thời khoá biểu */
+.tt-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+.tt { display: grid; grid-template-columns: 34px repeat(6, minmax(0, 1fr)); grid-template-rows: 26px repeat(10, 34px); gap: 2px; font-size: 11px; }
+.tt .h { font-weight: 600; color: var(--muted); text-align: center; align-self: end; padding-bottom: 4px; }
+.tt .p { color: var(--muted); font-family: var(--font-mono); text-align: right; padding-right: 6px; align-self: center; }
+.tt .cell { background: var(--sunk); border-radius: 3px; }
+.tt .lunch { border-top: 2px dashed var(--rule); }
+.tt .cls { border-radius: 6px; padding: 4px 6px; line-height: 1.25; overflow: hidden; display: flex; flex-direction: column; gap: 1px; color: var(--ink); border: 1px solid color-mix(in srgb, var(--ink) 12%, transparent); }
+.tt .cls b { font-weight: 600; font-size: 11px; }
+.tt .cls span { color: var(--muted); font-size: 10px; }
+.tt .cls.flag { outline: 2px solid var(--alt); outline-offset: -2px; }
+.tt-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { font-family: var(--font-mono); font-size: 12px; padding: 2px 8px; border-radius: 6px; background: var(--sunk); }
+.chip.best { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+.chip.worse { background: var(--bad-soft); color: var(--bad); }
+.pens { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 8px 16px; align-items: center; font-size: 14px; }
+.pens > * { min-width: 0; }
+@media (max-width: 520px) { .pens { grid-template-columns: minmax(0, 1fr); gap: 4px; } .pens .chips { margin-bottom: 8px; } }
+.prompt { border-left: 3px solid var(--accent); padding: 4px 0 4px 16px; font-size: 15px; max-width: 75ch; color: var(--ink); }
+.split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; }
+ul.plain { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; max-width: 75ch; }
+.foot { font-size: 13px; color: var(--muted); border-top: 1px solid var(--rule); padding-top: 16px; display: flex; flex-direction: column; gap: 6px; }
+
+@media (max-width: 760px) {
+  .verdict, .charts, .tt-pair, .split { grid-template-columns: minmax(0, 1fr); }
+  .verdict { padding: 20px; }
+  .tt { grid-template-rows: 24px repeat(10, 30px); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .legend button, .tab { transition: opacity .15s, background .15s; }
+}
+</style>
+<div class="wrap">
+
+<header class="hero">
+  <div class="eyebrow">VKU Smart Scheduler · Phần B · đồ án tốt nghiệp</div>
+  <h1>Thuật toán nào xếp thời khoá biểu tốt nhất trên JSON v2?</h1>
+  <p class="lede">So sánh 6 thuật toán trên cùng một hàm chấm, chạy với lớp học thật trong MongoDB (1.638 lớp, 315 môn): 58 instance, 11.716 lần chạy, kiểm định Friedman và Wilcoxon–Holm.</p>
+
+  <div class="verdict">
+    <div class="verdict-name">
+      <div class="eyebrow">Thuật toán được chọn</div>
+      <div class="winner">CP-SAT<small>Google OR-Tools · mặc định của <code>/api/v2/schedule</code></small></div>
+      <p class="lede">Bài toán thật đủ nhỏ để giải chính xác: CP-SAT cho 5 lịch tối ưu đã chứng minh, nhanh hơn mọi metaheuristic và không có ca chậm bất thường như B&amp;B.</p>
+    </div>
+    <div class="stats">
+      <div class="stat"><b>54/54</b><span>instance thật giải tối ưu, có chứng minh</span></div>
+      <div class="stat"><b>282 ms</b><span>thời gian tệ nhất trên dữ liệu thật (trung vị 17 ms)</span></div>
+      <div class="stat"><b>100%</b><span>lần chạy trả đủ 5 lịch khác nhau</span></div>
+      <div class="stat"><b>4/4</b><span>instance tổng hợp tới 10²⁵ tổ hợp đạt lịch tốt nhất đã biết</span></div>
+    </div>
+  </div>
+
+  <div class="reasons">
+    <div class="reason key"><h3>Bài toán thật nhỏ</h3><p>Không gian tìm kiếm của dữ liệu MongoDB chỉ từ 10⁰·⁶ đến 10⁷·³ tổ hợp, nên solver chính xác vừa đúng vừa nhanh nhất (Friedman thời gian p = 3,9·10⁻⁴³).</p></div>
+    <div class="reason"><h3>Metaheuristic không tốt hơn</h3><p>SA, GA, NSGA-II cải tiến đạt tối ưu ở 98–100% lần chạy; không khác biệt có ý nghĩa so với CP-SAT về chất lượng, nhưng chậm hơn 5–30 lần.</p></div>
+    <div class="reason warn"><h3>NSGA-II cũ kém nhất</h3><p>Chỉ 61,7% lần chạy trả đủ 5 lịch; trên instance tổng hợp chỉ 22,5% tìm được lịch không trùng.</p></div>
+    <div class="reason alt"><h3>Phương án phụ: NSGA-II cải tiến</h3><p>Luôn đạt lịch tốt nhất và cho 5 lịch đa dạng hơn (các kiểu đánh đổi khác nhau), đổi lại chậm nhất, khoảng 0,5–1 giây.</p></div>
+  </div>
+</header>
+
+<section id="overview">
+  <div class="eyebrow">Kết quả tổng hợp</div>
+  <h2>6 thuật toán trên cùng một hàm chấm</h2>
+  <p>B&amp;B và CP-SAT chạy một lần (tất định, giới hạn 60 giây). Metaheuristic dùng ngân sách 5.000 lần đánh giá × 30 seed. "Đạt tối ưu" so với top-5 chính xác của B&amp;B / CP-SAT.</p>
+  <div class="tabs" role="tablist" aria-label="Nhóm instance">
+    <button class="tab" role="tab" id="tab-real" aria-selected="true" data-set="real">54 instance thật</button>
+    <button class="tab" role="tab" id="tab-syn" aria-selected="false" data-set="syn">4 instance tổng hợp lớn</button>
+  </div>
+  <div class="scroll"><table id="summary"></table></div>
+  <p class="note" id="summary-note"></p>
+</section>
+
+<section id="evidence">
+  <div class="eyebrow">Bằng chứng</div>
+  <h2>Thời gian, độ ổn định và số lịch trả về</h2>
+  <div class="charts">
+    <div class="card wide">
+      <h3>Thời gian chạy theo kích thước không gian tìm kiếm</h3>
+      <p>Mỗi điểm là một instance thật (trung vị qua seed). Trục dọc theo thang log. B&amp;B có hai điểm vọt lên 16–22 giây ở bộ 7 môn nhiều lớp nhất; CP-SAT nằm dưới 300 ms ở mọi instance.</p>
+      <div class="legend" id="scatter-legend"></div>
+      <div id="scatter"></div>
+    </div>
+    <div class="card">
+      <h3>NSGA-II gốc thường trả thiếu lịch</h3>
+      <p>Số lịch trả về trong 1.620 lần chạy trên instance thật. Với một mục tiêu, front đầu chỉ chứa các cá thể hoà điểm tốt nhất.</p>
+      <div id="legacy"></div>
+    </div>
+    <div class="card">
+      <h3>Thời gian tệ nhất theo số môn</h3>
+      <p>Thời gian lớn nhất (ms) trên instance thật, theo số môn n.</p>
+      <div class="scroll" style="border:0"><table id="tmax" style="min-width:520px"></table></div>
+    </div>
+    <div class="card">
+      <h3>Tăng ngân sách: tỉ lệ đạt tối ưu</h3>
+      <p>Số lần đánh giá 1.500 / 5.000 / 20.000, mọi instance. NSGA-II cải tiến đạt 100% ngay từ 1.500 nhờ toán tử sửa trùng lịch.</p>
+      <div class="legend" id="conv-legend"></div>
+      <div id="conv-hit"></div>
+    </div>
+    <div class="card">
+      <h3>Tăng ngân sách: gap_mean</h3>
+      <p>P trung bình của 5 lịch trừ top-5 chính xác. NSGA-II cải tiến đứng yên ở 0,22: cái giá của việc chọn 5 lịch đại diện trên mặt Pareto thay vì 5 lịch phạt thấp nhất.</p>
+      <div id="conv-gap"></div>
+    </div>
+  </div>
+</section>
+
+<section id="stats">
+  <div class="eyebrow">Kiểm định thống kê</div>
+  <h2>Hạng trung bình Friedman</h2>
+  <p>Hạng 1 là tốt nhất. Chất lượng: χ² = 22,16, p = 4,9·10⁻⁴ (54 instance thật), nhưng Wilcoxon–Holm không thấy cặp nào khác nhau có ý nghĩa; trên cả 58 instance chỉ NSGA-II gốc thua B&amp;B và CP-SAT (p (Holm) = 0,032). Thời gian: χ² = 208,7, p = 3,9·10⁻⁴³, mọi cặp khác nhau có ý nghĩa.</p>
+  <div class="charts">
+    <div class="card"><h3>Chất lượng (gap_mean)</h3><div id="rank-quality"></div></div>
+    <div class="card"><h3>Thời gian</h3><div id="rank-time"></div></div>
+  </div>
+</section>
+
+<section id="case">
+  <div class="eyebrow">Case study trên dữ liệu thật</div>
+  <h2>Sinh viên IT năm 2, 7 môn, 1,9·10⁷ tổ hợp</h2>
+  <blockquote class="prompt">Em muốn học Cơ sở dữ liệu với cô Mai Nga, tránh thầy Nguyễn Văn Lợi. Em thích học buổi sáng, riêng thứ 5 thì học chiều. Tuyệt đối không học thứ 7. Mỗi ngày tối đa 2 môn, lên trường tối đa 4 ngày, không học quá 4 tiết liền. Lập trình hướng đối tượng em muốn học lớp tiếng Việt. Cơ sở dữ liệu và Lập trình hướng đối tượng không học chung một ngày. Em muốn học với giảng viên dạy dễ hiểu. Em muốn học cùng lớp với bạn Nam.</blockquote>
+  <p>11 ràng buộc JSON v2; "học cùng lớp với bạn Nam" vào <code>unsupported</code>. Hai ý "cô Mai Nga" và "giảng viên dạy dễ hiểu" kéo về hai giảng viên khác nhau của Cơ sở dữ liệu, nên lịch tốt nhất có P = 8 và có hai kiểu hoà điểm.</p>
+  <div class="split">
+    <div class="card">
+      <h3>Phạt P của 5 lịch mỗi thuật toán</h3>
+      <div class="pens" id="casepen"></div>
+    </div>
+    <div class="card">
+      <h3>Đọc kết quả</h3>
+      <ul class="plain">
+        <li>CP-SAT, B&amp;B, SA cho 5 lịch P = 8, đều chọn thầy Hồ Văn Phi (dạy dễ hiểu nhất theo số liệu review).</li>
+        <li>NSGA-II cải tiến cho thêm một lịch P = 8 học đúng cô Mai Nga: cùng mức phạt, khác kiểu đánh đổi.</li>
+        <li>NSGA-II gốc dừng ở P = 14 với 2 lịch.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="tt-pair">
+    <div class="card">
+      <div class="tt-head"><h3>CP-SAT · lịch #1</h3><span class="pill pick">P = 8</span></div>
+      <div class="tt" id="tt-a"></div>
+    </div>
+    <div class="card">
+      <div class="tt-head"><h3>NSGA-II cải tiến · lịch có cô Mai Nga</h3><span class="pill alt">P = 8</span></div>
+      <div class="tt" id="tt-b"></div>
+    </div>
+  </div>
+  <p class="note">Khung viền cam: lớp khác với lịch của CP-SAT. Đường gạch giữa tiết 5 và 6 là giờ nghỉ trưa.</p>
+</section>
+
+<section id="limits">
+  <div class="eyebrow">Hạn chế và việc tiếp theo</div>
+  <h2>Cần biết trước khi dùng kết quả</h2>
+  <ul class="plain">
+    <li><b>Nhóm lớp học nhiều buổi mỗi tuần</b> (34/965 nhóm, ví dụ Cơ sở dữ liệu nhóm 1 học thứ 2 tiết 1–3 và 6–9) đang được coi là các lớp riêng, giống v1. Kết luận so sánh không đổi vì mọi thuật toán dùng chung mô hình, nhưng lịch thật cần gộp các buổi của một nhóm.</li>
+    <li><b><code>review_stats</code> là số liệu giả</b>, vì repo không có dữ liệu Review service; chỉ ảnh hưởng ràng buộc <code>review</code>.</li>
+    <li><b>Ràng buộc do script sinh</b> từ 37 loại nguyên tử, không qua LLM: nhãn chắc chắn đúng, nhưng phân bố có thể khác yêu cầu thật.</li>
+    <li><b>Thời gian đo khi 7 tiến trình chạy song song</b>; CP-SAT chạy 1 luồng. API dùng 4 luồng nên nhanh hơn số liệu ở đây.</li>
+    <li>Chỉ <code>synthetic_n15_c50</code> (10²⁵ tổ hợp) không có chuẩn tối ưu đã chứng minh; CP-SAT hết 60 giây khi mới có 1 lịch.</li>
+  </ul>
+</section>
+
+<footer class="foot">
+  <div>Nguồn số liệu: <code>research/benchmark/results/</code> (summary.md, metrics.csv, case_study.md). Báo cáo dạng văn bản: <code>docs/algorithm-comparison.md</code>.</div>
+  <div>Dữ liệu: MongoDB <code>university_db.ly_courses</code>, đọc ngày 15/11/2026. Mọi solver tất định theo seed.</div>
+</footer>
+</div>
+<script>
+const DATA = {"real":{"bnb":{"runs":54,"feasible":100.0,"hit":100.0,"full":100.0,"gap":0.0,"div":0.349,"hv":0.43,"med":1.095,"p95":329.105,"max":22446.98},"cpsat":{"runs":54,"feasible":100.0,"hit":100.0,"full":100.0,"gap":0.015,"div":0.399,"hv":0.43,"med":17.01,"p95":86.306,"max":282.1},"sa":{"runs":1620,"feasible":99.691,"hit":98.025,"full":100.0,"gap":0.046,"div":0.359,"hv":0.426,"med":322.745,"p95":596.217,"max":2889.12},"ga":{"runs":1620,"feasible":100.0,"hit":98.457,"full":100.0,"gap":0.05,"div":0.362,"hv":0.428,"med":88.375,"p95":184.648,"max":1001.83},"nsga2_legacy":{"runs":1620,"feasible":99.383,"hit":97.469,"full":61.728,"gap":0.278,"div":0.287,"hv":0.426,"med":224.34,"p95":367.755,"max":2219.88},"nsga2":{"runs":1620,"feasible":100.0,"hit":100.0,"full":100.0,"gap":0.182,"div":0.395,"hv":0.436,"med":532.095,"p95":965.009,"max":1512.68}},"syn":{"bnb":{"runs":4,"feasible":100.0,"hit":25.0,"full":50.0,"gap":1.85,"div":0.067,"hv":0.381,"med":60008.065,"p95":60069.072,"max":60079.74},"cpsat":{"runs":4,"feasible":100.0,"hit":100.0,"full":100.0,"gap":0.0,"div":0.464,"hv":0.481,"med":9030.78,"p95":53666.946,"max":60006.62},"sa":{"runs":120,"feasible":100.0,"hit":76.667,"full":100.0,"gap":0.847,"div":0.307,"hv":0.467,"med":263.94,"p95":579.339,"max":652.3},"ga":{"runs":120,"feasible":96.667,"hit":23.333,"full":100.0,"gap":3.452,"div":0.244,"hv":0.386,"med":256.515,"p95":437.077,"max":528.23},"nsga2_legacy":{"runs":120,"feasible":22.5,"hit":0.0,"full":1.667,"gap":6.17,"div":0.03,"hv":0.054,"med":423.5,"p95":643.77,"max":945.45},"nsga2":{"runs":120,"feasible":100.0,"hit":100.0,"full":100.0,"gap":0.795,"div":0.537,"hv":0.505,"med":978.92,"p95":1300.203,"max":1512.4}},"scatter":{"bnb":[[2.51,20.0],[2.51,0.09],[2.51,0.2],[3.71,0.46],[3.71,0.09],[3.71,20.43],[1.51,1.49],[1.51,0.13],[1.51,0.15],[0.6,0.35],[0.6,0.13],[0.6,0.22],[3.18,147.63],[3.18,0.1],[3.18,0.17],[4.41,1.16],[4.41,1.41],[4.41,4.88],[2.46,5.54],[2.46,3.3],[2.46,11.52],[1.08,0.32],[1.08,0.51],[1.08,0.37],[4.16,1.46],[4.16,36.53],[4.16,0.23],[7.04,22446.98],[7.04,0.45],[7.04,16633.39],[3.64,0.65],[3.64,0.28],[3.64,0.23],[1.81,1.35],[1.81,0.55],[1.81,1.66],[5.21,91.67],[5.21,0.39],[5.21,54.18],[5.89,0.97],[5.89,6.66],[5.89,0.73],[4.81,3.08],[4.81,0.28],[4.81,666.13],[2.42,1.29],[2.42,0.68],[2.42,1.58]],"cpsat":[[2.51,35.83],[2.51,6.85],[2.51,5.47],[3.71,32.24],[3.71,8.57],[3.71,20.23],[1.51,15.74],[1.51,11.24],[1.51,8.02],[0.6,7.08],[0.6,2.86],[0.6,5.55],[3.18,282.1],[3.18,3.62],[3.18,17.91],[4.41,41.13],[4.41,27.0],[4.41,35.23],[2.46,77.85],[2.46,18.56],[2.46,37.82],[1.08,25.74],[1.08,7.19],[1.08,7.82],[4.16,16.48],[4.16,17.54],[4.16,9.51],[7.04,70.2],[7.04,16.48],[7.04,56.23],[3.64,25.15],[3.64,4.91],[3.64,14.16],[1.81,6.44],[1.81,10.32],[1.81,11.79],[5.21,25.1],[5.21,8.3],[5.21,42.53],[5.89,14.8],[5.89,86.95],[5.89,63.33],[4.81,14.28],[4.81,3.51],[4.81,39.72],[2.42,17.96],[2.42,8.1],[2.42,27.47]],"sa":[[2.51,441.4],[2.51,510.55],[2.51,594.76],[3.71,671.97],[3.71,301.85],[3.71,352.16],[1.51,675.38],[1.51,503.05],[1.51,490.72],[0.6,258.88],[0.6,364.51],[0.6,317.67],[3.18,447.88],[3.18,383.97],[3.18,340.05],[4.41,556.16],[4.41,165.01],[4.41,145.7],[2.46,339.69],[2.46,365.12],[2.46,299.36],[1.08,286.2],[1.08,263.07],[1.08,277.12],[4.16,351.11],[4.16,222.59],[4.16,262.38],[7.04,138.75],[7.04,69.39],[7.04,106.18],[3.64,314.18],[3.64,312.57],[3.64,320.89],[1.81,300.73],[1.81,284.4],[1.81,296.3],[5.21,377.27],[5.21,335.16],[5.21,364.44],[5.89,172.57],[5.89,128.31],[5.89,282.29],[4.81,362.34],[4.81,72.51],[4.81,359.43],[2.42,349.08],[2.42,355.96],[2.42,369.5]],"ga":[[2.51,93.73],[2.51,73.15],[2.51,289.61],[3.71,128.85],[3.71,92.38],[3.71,215.39],[1.51,68.0],[1.51,56.84],[1.51,48.67],[0.6,49.36],[0.6,71.25],[0.6,59.33],[3.18,98.04],[3.18,104.49],[3.18,69.47],[4.41,166.06],[4.41,166.41],[4.41,158.25],[2.46,78.38],[2.46,61.55],[2.46,61.87],[1.08,54.47],[1.08,53.65],[1.08,53.65],[4.16,103.09],[4.16,106.01],[4.16,98.77],[7.04,153.59],[7.04,81.45],[7.04,112.16],[3.64,74.29],[3.64,68.31],[3.64,74.58],[1.81,57.66],[1.81,57.81],[1.81,59.8],[5.21,139.95],[5.21,90.25],[5.21,115.75],[5.89,148.68],[5.89,148.98],[5.89,147.01],[4.81,116.7],[4.81,110.06],[4.81,126.44],[2.42,66.66],[2.42,66.58],[2.42,68.65]],"nsga2_legacy":[[2.51,270.71],[2.51,220.96],[2.51,225.79],[3.71,261.97],[3.71,201.39],[3.71,269.17],[1.51,250.2],[1.51,134.12],[1.51,247.69],[0.6,244.72],[0.6,178.24],[0.6,265.22],[3.18,266.86],[3.18,196.19],[3.18,166.51],[4.41,441.76],[4.41,281.28],[4.41,212.45],[2.46,371.09],[2.46,171.5],[2.46,226.57],[1.08,262.09],[1.08,172.41],[1.08,181.5],[4.16,245.51],[4.16,196.52],[4.16,193.78],[7.04,246.51],[7.04,162.12],[7.04,189.69],[3.64,196.2],[3.64,156.23],[3.64,171.88],[1.81,239.64],[1.81,208.37],[1.81,223.07],[5.21,256.69],[5.21,172.09],[5.21,215.17],[5.89,243.14],[5.89,221.47],[5.89,246.35],[4.81,254.62],[4.81,172.1],[4.81,250.49],[2.42,258.63],[2.42,282.29],[2.42,299.89]],"nsga2":[[2.51,564.24],[2.51,932.33],[2.51,705.1],[3.71,1139.45],[3.71,919.95],[3.71,983.01],[1.51,178.42],[1.51,263.92],[1.51,261.12],[0.6,79.78],[0.6,89.41],[0.6,91.73],[3.18,162.16],[3.18,896.67],[3.18,563.77],[4.41,805.11],[4.41,922.1],[4.41,862.54],[2.46,259.46],[2.46,558.64],[2.46,129.76],[1.08,80.51],[1.08,82.81],[1.08,84.7],[4.16,521.14],[4.16,777.94],[4.16,733.65],[7.04,709.81],[7.04,578.79],[7.04,816.6],[3.64,230.93],[3.64,439.77],[3.64,625.41],[1.81,324.48],[1.81,330.5],[1.81,339.48],[5.21,667.66],[5.21,606.34],[5.21,502.26],[5.89,734.81],[5.89,773.0],[5.89,603.92],[4.81,452.29],[4.81,814.58],[4.81,487.25],[2.42,158.65],[2.42,172.19],[2.42,173.77]]},"conv":{"sa":[[1500,93.276,0.246,85.42],[5000,96.552,0.101,319.575],[20000,97.931,0.054,1528.77]],"ga":[[1500,89.483,0.698,28.755],[5000,93.276,0.278,96.77],[20000,96.034,0.125,345.11]],"nsga2_legacy":[[1500,89.483,0.292,63.245],[5000,90.747,0.376,231.13],[20000,92.414,0.41,1069.335]],"nsga2":[[1500,100.0,0.223,175.935],[5000,100.0,0.224,561.21],[20000,100.0,0.232,2517.535]]},"legacy":{"1":176,"2":332,"3":97,"4":123,"5":892},"tmax":{"3":{"bnb":20.43,"cpsat":35.83,"sa":2889.12,"ga":1001.83,"nsga2_legacy":2219.88,"nsga2":1427.62},"5":{"bnb":147.63,"cpsat":282.1,"sa":655.15,"ga":251.15,"nsga2_legacy":662.7,"nsga2":1512.68},"7":{"bnb":22446.98,"cpsat":70.2,"sa":369.0,"ga":207.91,"nsga2_legacy":300.78,"nsga2":884.59},"9":{"bnb":666.13,"cpsat":86.95,"sa":1150.81,"ga":187.07,"nsga2_legacy":339.18,"nsga2":859.34}},"caseA":{"cpsat1":{"penalty":8,"classes":[{"course":"Cơ sở dữ liệu","group":"1","day":"T2","periods":[1,2,3],"teacher":"TS.Hồ Văn Phi"},{"course":"Lập trình hướng đối tượng","group":"6","day":"T3","periods":[3,4],"teacher":"ThS.Lê Đình  Nguyên"},{"course":"Kiến trúc máy tính","group":"10","day":"T3","periods":[1,2],"teacher":"ThS.Trần Thu Thủy"},{"course":"Nguyên lý hệ điều hành","group":"4","day":"T4","periods":[6,7],"teacher":"ThS.Trần Thu Thủy"},{"course":"Phân tích và thiết kế giải thuật","group":"6","day":"T6","periods":[6,7,8],"teacher":"ThS.Phạm Tuấn  Anh"},{"course":"Triết học Mác - Lênin","group":"9","day":"T6","periods":[1,2,3,4],"teacher":"ThS.Trần Văn Thái"},{"course":"Tiếng Anh nâng cao 2","group":"7","day":"T4","periods":[3,4],"teacher":"ThS.Phạm Trần Mộc Miêng"}]},"nsga2_maiNga":{"penalty":8,"classes":[{"course":"Cơ sở dữ liệu","group":"5","day":"T2","periods":[1,2,3,4],"teacher":"ThS.Dương Thị Mai Nga"},{"course":"Lập trình hướng đối tượng","group":"6","day":"T3","periods":[3,4],"teacher":"ThS.Lê Đình  Nguyên"},{"course":"Kiến trúc máy tính","group":"10","day":"T3","periods":[1,2],"teacher":"ThS.Trần Thu Thủy"},{"course":"Nguyên lý hệ điều hành","group":"7","day":"T4","periods":[8,9],"teacher":"ThS.Trần Thu Thủy"},{"course":"Phân tích và thiết kế giải thuật","group":"6","day":"T6","periods":[6,7,8],"teacher":"ThS.Phạm Tuấn  Anh"},{"course":"Triết học Mác - Lênin","group":"9","day":"T6","periods":[1,2,3,4],"teacher":"ThS.Trần Văn Thái"},{"course":"Tiếng Anh nâng cao 2","group":"8","day":"T4","periods":[1,2],"teacher":"ThS.Lê Thị Kim Tuyến"}]}},"casepen":{"bnb":[8,8,8,8,8],"cpsat":[8,8,8,8,8],"sa":[8,8,8,8,8],"ga":[8,8,8,8,9],"nsga2_legacy":[14,14],"nsga2":[8,8,14,14,14]}}
+;
+const ORDER = ["bnb", "cpsat", "sa", "ga", "nsga2_legacy", "nsga2"];
+const LABEL = { bnb: "B&B", cpsat: "CP-SAT", sa: "SA", ga: "GA", nsga2_legacy: "NSGA-II gốc", nsga2: "NSGA-II cải tiến" };
+const COLOR = { bnb: "var(--s-bnb)", cpsat: "var(--accent)", sa: "var(--s-sa)", ga: "var(--s-ga)", nsga2_legacy: "var(--bad)", nsga2: "var(--alt)" };
+const TAG = { cpsat: '<span class="pill pick">chọn</span>', nsga2: '<span class="pill alt">phụ</span>', nsga2_legacy: '<span class="pill old">hệ thống cũ</span>' };
+const NS = "http://www.w3.org/2000/svg";
+const fmt = (v, d = 1) => v.toLocaleString("vi-VN", { minimumFractionDigits: d, maximumFractionDigits: d });
+const ms = v => v >= 1000 ? fmt(v / 1000, 1) + " s" : fmt(v, v < 10 ? 1 : 0) + " ms";
+const solverCell = s => `<div class="solver"><span class="dot" style="background:${COLOR[s]}"></span>${LABEL[s]} ${TAG[s] || ""}</div>`;
+
+function el(tag, attrs = {}, parent) {
+  const node = document.createElementNS(NS, tag);
+  for (const [k, v] of Object.entries(attrs)) node.setAttribute(k, v);
+  if (parent) parent.appendChild(node);
+  return node;
+}
+function text(parent, x, y, str, attrs = {}) {
+  const t = el("text", { x, y, ...attrs }, parent);
+  t.textContent = str;
+  return t;
+}
+
+// ---------- Bảng tổng hợp ----------
+function bar(value, max, cls) {
+  const w = Math.max(2, Math.round(60 * value / max));
+  return `<div class="bar ${cls || ""}"><span>${fmt(value, 1)}</span><i style="width:${w}px"></i></div>`;
+}
+function renderSummary(set) {
+  const rows = DATA[set];
+  const head = `<thead><tr><th>Thuật toán</th><th class="n">Lần chạy</th><th class="n">Đạt tối ưu %</th><th class="n">Đủ 5 lịch %</th><th class="n">gap_mean</th><th class="n">Đa dạng</th><th class="n">Trung vị</th><th class="n">p95</th><th class="n">Tệ nhất</th></tr></thead>`;
+  const body = ORDER.map(s => {
+    const r = rows[s];
+    return `<tr class="${s === "cpsat" ? "pick" : ""}"><td>${solverCell(s)}</td>
+      <td class="n">${r.runs.toLocaleString("vi-VN")}</td>
+      <td class="n">${bar(r.hit, 100, r.hit >= 99.9 ? "good" : r.hit < 50 ? "bad" : "")}</td>
+      <td class="n">${bar(r.full, 100, r.full >= 99.9 ? "good" : r.full < 80 ? "bad" : "")}</td>
+      <td class="n">${fmt(r.gap, 2)}</td>
+      <td class="n">${fmt(r.div, 2)}</td>
+      <td class="n">${ms(r.med)}</td><td class="n">${ms(r.p95)}</td><td class="n">${ms(r.max)}</td></tr>`;
+  }).join("");
+  document.getElementById("summary").innerHTML = head + "<tbody>" + body + "</tbody>";
+  document.getElementById("summary-note").textContent = set === "real"
+    ? "gap_mean của CP-SAT khác 0 vì khi nhiều lịch hoà điểm, B&B và CP-SAT chọn lịch hạng 1 khác nhau; cả hai đều đúng định nghĩa top-5 đa dạng. Đa dạng = khoảng cách Hamming trung bình giữa các cặp lịch, chia cho số môn."
+    : "Ở synthetic_n15_c50 CP-SAT hết 60 giây khi mới có 1 lịch (bằng lịch tốt nhất đã biết). Đây là vùng duy nhất metaheuristic có lợi rõ: SA và NSGA-II cải tiến tìm 5 lịch trong khoảng 1 giây.";
+}
+document.querySelectorAll(".tab").forEach(tab => tab.addEventListener("click", () => {
+  document.querySelectorAll(".tab").forEach(t => t.setAttribute("aria-selected", String(t === tab)));
+  renderSummary(tab.dataset.set);
+}));
+renderSummary("real");
+
+// ---------- Legend có bật/tắt ----------
+function legend(id, solvers, onToggle) {
+  const box = document.getElementById(id);
+  const active = new Set(solvers);
+  for (const s of solvers) {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.setAttribute("aria-pressed", "true");
+    b.innerHTML = `<span class="dot" style="background:${COLOR[s]}"></span>${LABEL[s]}`;
+    b.addEventListener("click", () => {
+      if (active.has(s)) active.delete(s); else active.add(s);
+      b.setAttribute("aria-pressed", String(active.has(s)));
+      onToggle(active);
+    });
+    box.appendChild(b);
+  }
+  return active;
+}
+
+// ---------- Scatter: thời gian theo kích thước không gian ----------
+function renderScatter(active) {
+  const box = document.getElementById("scatter");
+  box.innerHTML = "";
+  const W = 900, H = 360, L = 56, R = 16, T = 12, B = 40;
+  const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": "Thời gian chạy theo kích thước không gian tìm kiếm" }, box);
+  const xMin = 0, xMax = 7.5, yMin = -1.5, yMax = 4.6;
+  const sx = v => L + (v - xMin) / (xMax - xMin) * (W - L - R);
+  const sy = v => T + (1 - (v - yMin) / (yMax - yMin)) * (H - T - B);
+  for (let k = -1; k <= 4; k++) {
+    el("line", { x1: L, x2: W - R, y1: sy(k), y2: sy(k), class: "gridline" }, svg);
+    text(svg, L - 8, sy(k) + 4, k < 3 ? `${Math.pow(10, k)} ms`.replace("0.1", "0,1") : `${Math.pow(10, k - 3)} s`, { "text-anchor": "end" });
+  }
+  for (let k = 0; k <= 7; k++) {
+    el("line", { x1: sx(k), x2: sx(k), y1: H - B, y2: H - B + 5, class: "axis" }, svg);
+    const t = text(svg, sx(k), H - B + 18, "10", { "text-anchor": "middle" });
+    const sup = el("tspan", { dy: -5, "font-size": 9 }, t); sup.textContent = String(k);
+  }
+  el("line", { x1: L, x2: W - R, y1: H - B, y2: H - B, class: "axis" }, svg);
+  text(svg, (L + W - R) / 2, H - 4, "kích thước không gian tìm kiếm (số tổ hợp lớp)", { "text-anchor": "middle" });
+  for (const s of ORDER) {
+    if (!active.has(s)) continue;
+    const g = el("g", {}, svg);
+    for (const [x, y] of DATA.scatter[s]) {
+      const c = el("circle", { cx: sx(x), cy: sy(Math.log10(y)), r: s === "cpsat" ? 4.5 : 3.5, fill: COLOR[s], "fill-opacity": s === "cpsat" ? 0.95 : 0.6 }, g);
+      const tt = el("title", {}, c); tt.textContent = `${LABEL[s]}: ${ms(y)}, 10^${x}`;
+    }
+  }
+}
+const scatterActive = legend("scatter-legend", ORDER, a => renderScatter(a));
+renderScatter(scatterActive);
+
+// ---------- Bar: số lịch NSGA-II gốc trả về ----------
+(function renderLegacy() {
+  const box = document.getElementById("legacy");
+  const W = 420, H = 220, L = 40, R = 10, T = 16, B = 34;
+  const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": "Phân bố số lịch NSGA-II gốc trả về" }, box);
+  const keys = ["1", "2", "3", "4", "5"];
+  const max = 900;
+  const bw = (W - L - R) / keys.length;
+  const sy = v => T + (1 - v / max) * (H - T - B);
+  for (const v of [0, 300, 600, 900]) {
+    el("line", { x1: L, x2: W - R, y1: sy(v), y2: sy(v), class: "gridline" }, svg);
+    text(svg, L - 6, sy(v) + 4, String(v), { "text-anchor": "end" });
+  }
+  keys.forEach((k, i) => {
+    const v = DATA.legacy[k];
+    const x = L + i * bw + bw * 0.18, w = bw * 0.64;
+    el("rect", { x, y: sy(v), width: w, height: sy(0) - sy(v), rx: 3, fill: k === "5" ? "var(--muted)" : "var(--bad)", "fill-opacity": k === "5" ? 0.45 : 0.9 }, svg);
+    text(svg, x + w / 2, sy(v) - 5, v.toLocaleString("vi-VN"), { "text-anchor": "middle", style: "fill:var(--ink);font-weight:600" });
+    text(svg, x + w / 2, H - B + 16, `${k} lịch`, { "text-anchor": "middle" });
+  });
+})();
+
+// ---------- Bảng thời gian tệ nhất theo n ----------
+(function renderTmax() {
+  const head = `<thead><tr><th class="n">n</th>${ORDER.map(s => `<th class="n">${LABEL[s]}</th>`).join("")}</tr></thead>`;
+  const body = Object.entries(DATA.tmax).map(([n, row]) => `<tr><td class="n">${n}</td>${ORDER.map(s => {
+    const v = row[s];
+    const style = v > 5000 ? "color:var(--bad);font-weight:600" : s === "cpsat" ? "color:var(--accent);font-weight:600" : "";
+    return `<td class="n" style="${style}">${ms(v)}</td>`;
+  }).join("")}</tr>`).join("");
+  document.getElementById("tmax").innerHTML = head + "<tbody>" + body + "</tbody>";
+})();
+
+// ---------- Đường hội tụ theo ngân sách ----------
+const META = ["sa", "ga", "nsga2_legacy", "nsga2"];
+function lineChart(id, idx, yMin, yMax, ticks, fmtTick, label, active) {
+  const box = document.getElementById(id);
+  box.innerHTML = "";
+  const W = 420, H = 230, L = 44, R = 14, T = 14, B = 36;
+  const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": label }, box);
+  const xs = [1500, 5000, 20000];
+  const sx = b => L + xs.indexOf(b) / (xs.length - 1) * (W - L - R);
+  const sy = v => T + (1 - (v - yMin) / (yMax - yMin)) * (H - T - B);
+  for (const t of ticks) {
+    el("line", { x1: L, x2: W - R, y1: sy(t), y2: sy(t), class: "gridline" }, svg);
+    text(svg, L - 6, sy(t) + 4, fmtTick(t), { "text-anchor": "end" });
+  }
+  xs.forEach(b => text(svg, sx(b), H - B + 18, b.toLocaleString("vi-VN"), { "text-anchor": "middle" }));
+  text(svg, (L + W - R) / 2, H - 3, "ngân sách (số lần đánh giá)", { "text-anchor": "middle" });
+  for (const s of META) {
+    if (!active.has(s)) continue;
+    const pts = DATA.conv[s].map(r => [sx(r[0]), sy(r[idx])]);
+    el("polyline", { points: pts.map(p => p.join(",")).join(" "), fill: "none", stroke: COLOR[s], "stroke-width": s === "nsga2" ? 2.5 : 2 }, svg);
+    pts.forEach((p, i) => {
+      const c = el("circle", { cx: p[0], cy: p[1], r: 3.5, fill: COLOR[s] }, svg);
+      const t = el("title", {}, c); t.textContent = `${LABEL[s]}, ${xs[i]}: ${fmt(DATA.conv[s][i][idx], idx === 1 ? 1 : 2)}`;
+    });
+  }
+}
+function renderConv(active) {
+  lineChart("conv-hit", 1, 85, 100, [85, 90, 95, 100], t => t + "%", "Tỉ lệ đạt tối ưu theo ngân sách", active);
+  lineChart("conv-gap", 2, 0, 0.8, [0, 0.2, 0.4, 0.6, 0.8], t => fmt(t, 1), "gap_mean theo ngân sách", active);
+}
+const convActive = legend("conv-legend", META, a => renderConv(a));
+renderConv(convActive);
+
+// ---------- Hạng Friedman ----------
+function rankChart(id, ranks) {
+  const box = document.getElementById(id);
+  const W = 420, H = 34 * ORDER.length + 30, L = 130, R = 20, T = 6;
+  const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": "Hạng trung bình Friedman" }, box);
+  const sx = v => L + (v - 1) / 5 * (W - L - R);
+  for (let k = 1; k <= 6; k++) {
+    el("line", { x1: sx(k), x2: sx(k), y1: T, y2: H - 24, class: "gridline" }, svg);
+    text(svg, sx(k), H - 8, String(k), { "text-anchor": "middle" });
+  }
+  const sorted = [...ORDER].sort((a, b) => ranks[a] - ranks[b]);
+  sorted.forEach((s, i) => {
+    const y = T + 16 + i * 34;
+    text(svg, L - 10, y + 4, LABEL[s], { "text-anchor": "end", style: "fill:var(--ink)" });
+    el("line", { x1: sx(1), x2: sx(ranks[s]), y1: y, y2: y, stroke: COLOR[s], "stroke-width": 2, "stroke-opacity": 0.5 }, svg);
+    el("circle", { cx: sx(ranks[s]), cy: y, r: 6, fill: COLOR[s] }, svg);
+    text(svg, sx(ranks[s]) + 10, y + 4, fmt(ranks[s], 2));
+  });
+}
+rankChart("rank-quality", { bnb: 3.30, cpsat: 3.33, sa: 3.38, ga: 3.35, nsga2_legacy: 3.97, nsga2: 3.67 });
+rankChart("rank-time", { bnb: 1.37, cpsat: 1.93, sa: 4.94, ga: 3.06, nsga2_legacy: 4.31, nsga2: 5.39 });
+
+// ---------- Case study: phạt và thời khoá biểu ----------
+(function renderCasePen() {
+  const best = 8;
+  document.getElementById("casepen").innerHTML = ORDER.map(s => {
+    const pens = DATA.casepen[s];
+    const chips = pens.map(p => `<span class="chip ${p === best ? "best" : "worse"}">${p}</span>`).join("");
+    const missing = 5 - pens.length;
+    const extra = missing ? `<span class="chip" style="opacity:.6">thiếu ${missing} lịch</span>` : "";
+    return `${solverCell(s)}<div class="chips">${chips}${extra}</div>`;
+  }).join("");
+})();
+
+const DAYS = ["T2", "T3", "T4", "T5", "T6", "T7"];
+const DAY_LABEL = { T2: "Thứ 2", T3: "Thứ 3", T4: "Thứ 4", T5: "Thứ 5", T6: "Thứ 6", T7: "Thứ 7" };
+const COURSE_COLOR = {};
+DATA.caseA.cpsat1.classes.forEach((c, i) => { COURSE_COLOR[c.course] = `var(--c${i + 1})`; });
+const short = name => name.replace(/^((PGS|GS|TS|ThS)\.)+/, "").replace(/\s+/g, " ");
+
+function timetable(id, schedule, compare) {
+  const box = document.getElementById(id);
+  const add = (cls, row, col, html, style = "") => {
+    const d = document.createElement("div");
+    d.className = cls;
+    d.style.cssText = `grid-row:${row};grid-column:${col};${style}`;
+    d.innerHTML = html;
+    box.appendChild(d);
+    return d;
+  };
+  add("h", 1, 1, "");
+  DAYS.forEach((d, i) => add("h", 1, i + 2, DAY_LABEL[d]));
+  for (let p = 1; p <= 10; p++) {
+    add("p", p + 1, 1, String(p));
+    DAYS.forEach((d, i) => add("cell" + (p === 6 ? " lunch" : ""), p + 1, i + 2, ""));
+  }
+  const before = new Map((compare || []).map(c => [c.course, c.group]));
+  for (const c of schedule.classes) {
+    if (!c.day || !c.periods.length) continue;
+    const col = DAYS.indexOf(c.day) + 2;
+    const start = Math.min(...c.periods), end = Math.max(...c.periods);
+    const changed = compare && before.get(c.course) !== c.group;
+    const node = add("cls" + (changed ? " flag" : ""), `${start + 1} / ${end + 2}`, col,
+      `<b>${c.course}</b><span>nhóm ${c.group} · ${short(c.teacher || "?")}</span>`,
+      `background:${COURSE_COLOR[c.course]}`);
+    node.title = `${c.course}, nhóm ${c.group}, ${DAY_LABEL[c.day]} tiết ${start}–${end}, ${c.teacher}`;
+  }
+}
+timetable("tt-a", DATA.caseA.cpsat1);
+timetable("tt-b", DATA.caseA.nsga2_maiNga, DATA.caseA.cpsat1.classes);
+</script>
