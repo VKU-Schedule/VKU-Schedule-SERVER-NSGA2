@@ -13,12 +13,12 @@ Code comments, docstrings, log output and data (course names, days like "Thứ S
 This repo is being redesigned for a graduation thesis. **Read `docs/specs/README.md` before starting any work.** It holds the decisions already made, the status of each part, and the full plan:
 - **Part A:** JSON Structure v2 for constraints. Spec in `docs/specs/json_v2/`; branch `feature/new_json_structure`. Implemented in `app/scheduling/` (T1–T11 done); waiting for review (T12).
 - **Part A2:** `review` attribute and `relation` constraint kind (design.md §17, tasks stage 7). Validation, normalization and the 5 new n8n dataset types are done (T13–T18); scoring belongs to Part B.
-- **Part B:** algorithm comparison. Planned in README section 7; gets its own branch after Part A is approved.
+- **Part B:** algorithm comparison. Spec in `docs/specs/algorithms/` (approved plan: `plan.md`); branch `feature/algorithm-comparison`. Scoring engine and 6 solvers in `app/scheduling/`, benchmark in `research/benchmark/`, report in `docs/algorithm-comparison.md`, API in `app/api/v2/`.
 
 The rules:
 - Each part follows `requirements.md` → `design.md` → `tasks.md`. Don't write code for a part until its spec is approved.
 - Commit each finished piece with Conventional Commits, e.g. `docs(specs): …`, `feat(scheduling): …`.
-- The "Architecture" section below documents the old (v1) preference JSON and will be replaced in Part B. `app/scheduling/` is the v2 code.
+- `/api/schedule` and `/api/reschedule` still run the v1 optimizer (`app/service/constraints_service.py`); `/api/v2/schedule` and `/api/v2/reschedule` run the v2 solvers. v1 stays until the frontend moves to v2.
 
 ## Commands
 
@@ -38,11 +38,21 @@ uv venv --python 3.12 .venv && uv pip install --python .venv/bin/python -r requi
 .venv/bin/python -m pytest tests/scheduling/test_examples.py  # golden tests only
 .venv/bin/python -m app.scheduling.schema --export docs/specs/json_v2/   # re-export schema.json + schema.inline.json
 .venv/bin/python tests/scheduling/build_examples.py           # regenerate examples.json from design.md, then review git diff
+
+# Part B benchmark (research/benchmark) — also needs requirements-research.txt; export needs MONGO_URI
+uv pip install --python .venv/bin/python -r requirements-research.txt
+.venv/bin/python -m research.benchmark.export_classes          # Mongo ly_courses (read-only) -> data/classes.json
+.venv/bin/python -m research.benchmark.generate_instances      # -> instances/*.json (seed 2026; deletes old instances first)
+.venv/bin/python -m research.benchmark.case_study --write-instances   # -> instances/case_*.json (run after generate_instances)
+.venv/bin/python -m research.benchmark.run_benchmark           # all solvers × instances × seeds -> results/runs.csv (~1 h on 8 cores)
+.venv/bin/python -m research.benchmark.run_benchmark --quick --out research/benchmark/results/quick.csv   # 1 seed smoke run
+.venv/bin/python -m research.benchmark.analyze                 # reads results/runs*.csv -> summary.md, metrics.csv, *.png
+.venv/bin/python -m research.benchmark.case_study              # -> results/case_study.md
 ```
 
 - The root `requirements.txt` is an older pip freeze (torch/CUDA). Use `app/requirements.txt`.
 - Port mismatch: `app/main.py` binds 5001, but the Dockerfile and compose file expose 8001. As written, the container won't answer on 8001 until the two agree.
-- Tests exist only for `app/scheduling/` and the validate endpoint (`tests/scheduling/`). No linter or formatter is configured.
+- Tests exist only for `app/scheduling/`, the validate endpoint and the v2 schedule endpoints (`tests/scheduling/`). No linter or formatter is configured.
 - `app/constant/constant_input_test.py` imports `sympy`, so tests must not import it (sympy is not in `requirements-dev.txt`).
 - `database/embedding/embedding_data.py` re-imports `data/input/Final_Dataset.xlsx` into Mongo. It **wipes `ly_courses` first** (`delete_many({})`), uses a relative path to the xlsx (run it from `database/embedding/`), and needs the repo root on `PYTHONPATH`.
 
@@ -80,9 +90,15 @@ uv venv --python 3.12 .venv && uv pip install --python .venv/bin/python -r requi
   - `v1_adapter.py`: v1 `defaults`/`periods` → v2 (design 12.1); `parse_document` calls it automatically.
   - `review` (§17.1): the LLM writes only `review.phrase`; the gateway fills `aspect`/`sentiment` from the SA service and sends per-lecturer counts as `review_stats` in the request. This repo never calls SA, Review or the LLM: it only normalizes, validates and solves. Mapping `review` to lecturers is the solver's job (Part B).
   - `relation` (§17.2): `same_day` / `different_day` / `before` between 2–4 selected courses (`same_day` = one day shared by all of them).
-  - Not done yet (Part B): scoring, solvers, and switching `/api/schedule` to v2.
+  - `model.py` (Part B): `ClassView` (one class with every normalized value precomputed, plus a (day, period) bitmask), `Problem` (courses × candidate classes; exact duplicate rows are merged; `pinned` courses keep one class), `build_problem()`.
+  - `constraints.py` (Part B): the shared scorer. `Evaluator(problem, document)` compiles prefer/avoid into per-class 0/1 coefficients (unary), resolves `review` to `teacher` via `review_stats`, and evaluates `limit`/`relation` on the whole schedule. `evaluate(x) -> Score(conflicts, hard, soft, objectives)`; order is lexicographic (conflicts, H, P), scalar `10⁷·conflicts + 10⁵·H + P`. `explain(x)` gives per-constraint violations.
+  - `topk.py`: greedy diverse top-k (schedules differ in ≥ d courses, d = 2 when ≥ 3 free courses).
+  - `solvers/`: `bnb`, `cpsat` (exact, iterative diverse top-k), `sa`, `ga`, `nsga2_legacy` (faithful DEAP port of the v1 GA with the v2 scorer), `nsga2` (3 objectives, Deb feasibility rules, conflict repair). `SOLVERS[name](evaluator, k, budget, seed, time_limit)`. Metaheuristics don't re-evaluate a schedule they have already seen.
+  - Data quirk: a class group that meets twice a week is stored as two rows; like v1, each row is treated as a separate class.
+- `app/api/v2/schedule_api.py`: `POST /api/v2/schedule` and `/api/v2/reschedule` (body: `courses`, `preferences`, optional `review_stats`, `k`, `algorithm`, `time_limit`, `budget`, and `pinned` for reschedule). Default algorithm is `DEFAULT_ALGORITHM`, chosen in `docs/algorithm-comparison.md`. Response follows json_v2/design.md §10.
 - `app/api/preferences_api.py`: `POST /api/preferences/validate` normalizes a v2 (or v1) document against the classes of `courses` (plus optional `review_stats`) and returns `{constraints, unsupported, warnings}` without scheduling.
 - `tests/scheduling/conftest.py`: the sample candidate classes and `REVIEW_STATS`, plus `design_examples()`, which reads the E1–E41 / 12.2 JSON blocks straight from design.md. `examples.json` is generated from those blocks; `test_examples.py` fails if design.md and examples.json drift apart.
+- `research/benchmark/`: Part B experiments, not shipped in Docker. `data/classes.json` is a read-only export of Mongo `ly_courses`; instances are self-contained JSON (classes + v2 document + synthetic `review_stats` + `pinned`). `results/` holds `runs*.csv`, `metrics.csv`, `summary.md`, `case_study.md`, charts.
 - `app/demo.py`: an older standalone copy of the constraint logic, run against the fixtures. It is not used by the API, so edits to `constraints_service.py` don't carry over to it.
 - `validation/` and `data/`: offline scripts and datasets (Excel cleaning, VIT5 training-data generation, a Gemini translation script). They are not part of the server or the Docker image.
 - `app/mock/docs/`: API and UI/UX notes for the frontend. `app/mock/mock_*` hold sample responses.

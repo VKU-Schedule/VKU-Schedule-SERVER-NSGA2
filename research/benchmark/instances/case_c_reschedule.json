@@ -6,7 +6,7 @@
  "density": null,
  "field": "IT",
  "space": 19169280,
- "prompt": "Xếp lại lịch của case A: đã đăng ký được Cơ sở dữ liệu nhóm 5, Triết học Mác - Lênin nhóm 1, Tiếng Anh nâng cao 2 nhóm 8",
+ "prompt": "Xếp lại lịch của case A: đã đăng ký được Lập trình hướng đối tượng nhóm 6, Triết học Mác - Lênin nhóm 9, Tiếng Anh nâng cao 2 nhóm 7",
  "courses": {
   "Cơ sở dữ liệu": [
    {
@@ -2276,8 +2276,8 @@
   }
  ],
  "pinned": {
-  "Cơ sở dữ liệu": "5",
-  "Triết học Mác - Lênin": "1",
-  "Tiếng Anh nâng cao 2": "8"
+  "Lập trình hướng đối tượng": "6",
+  "Triết học Mác - Lênin": "9",
+  "Tiếng Anh nâng cao 2": "7"
  }
 }

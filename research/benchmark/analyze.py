@@ -44,7 +44,7 @@ def reference_table(runs):
         best_hard = pool.best_hard.min()
         pool = pool[pool.best_hard == best_hard]
         # top-5 chuẩn: lời giải chính xác đã chứng minh có trung bình nhỏ nhất (hai solver có thể chọn khác nhau khi hoà)
-        pool = pool.assign(_mean=pool.apply(lambda r: np.mean(json.loads(r.penalties)), axis=1))
+        pool = pool.assign(_mean=[float(np.mean(json.loads(cell))) for cell in pool.penalties])
         best = pool.sort_values(["best_p", "_mean"]).iloc[0]
         penalties = sorted(p for p, h in zip(json.loads(best.penalties), json.loads(best.hards)) if h == best_hard)
         data, _, problem = load(instance)
@@ -128,7 +128,9 @@ def stability_table(m):
 
 
 def friedman(m, value, lower_better=True):
-    per = main_rows(m).groupby(["instance", "solver"])[value].median().unstack()
+    rows = main_rows(m)
+    rows = rows.assign(**{value: rows[value].fillna(1e9)})   # không khả thi: xếp cuối
+    per = rows.groupby(["instance", "solver"])[value].median().unstack()
     per = per[[s for s in ORDER if s in per.columns]].dropna()
     if lower_better is False:
         per = -per

@@ -61,7 +61,7 @@ CASES = {
     },
 }
 # reschedule: case A, đã đăng ký được 3 môn, xếp lại các môn còn lại
-RESCHEDULE = ("case_c_reschedule", "case_a_year2", {CSDL: "5", TRIET: "1", TANC2: "8"})
+RESCHEDULE = ("case_c_reschedule", "case_a_year2", {OOP: "6", TRIET: "9", TANC2: "7"})
 
 
 def write_instances():

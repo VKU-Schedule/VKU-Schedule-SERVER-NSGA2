@@ -67,7 +67,7 @@ Nghiên cứu cần cho ra hai kết quả:
 |---|---|---|---|---|
 | A | JSON Structure v2 | `feature/new_json_structure` | [`json_v2/`](json_v2/) | Code xong T1–T11 (`app/scheduling/`, 432 tests); chờ duyệt kết quả (T12) |
 | A2 | Mở rộng: `review`, `relation` | `feature/new_json_structure` | [`json_v2/`](json_v2/) (requirements mục 10, design mục 17, tasks Giai đoạn 7) | Xong T13–T18 (validate, chuẩn hoá, dataset n8n 38 type); quy `review` về giảng viên và chấm phạt làm ở Phần B |
-| B | Thuật toán và so sánh | chưa tạo | `algorithms/` (chưa tạo) | Chưa bắt đầu; kế hoạch ở mục 7 |
+| B | Thuật toán và so sánh | `feature/algorithm-comparison` | [`algorithms/`](algorithms/) | Xong B1–B12: hàm chấm, 6 solver, benchmark trên dữ liệu Mongo, report [`docs/algorithm-comparison.md`](../algorithm-comparison.md), API `/api/v2/schedule`, `/api/v2/reschedule`; chờ duyệt |
 
 ## 6. Phần A — JSON Structure v2 (tóm tắt)
 
@@ -85,9 +85,9 @@ Nghiên cứu cần cho ra hai kết quả:
 - **Ranh giới với Phần B:** Phần A định nghĩa ngữ nghĩa phạt của từng ràng buộc. Phần B hiện thực hàm chấm và các thuật toán dựa trên ngữ nghĩa đó.
 - **Chi tiết:** [`json_v2/requirements.md`](json_v2/requirements.md), [`json_v2/design.md`](json_v2/design.md), [`json_v2/tasks.md`](json_v2/tasks.md).
 
-## 7. Phần B — Thuật toán và so sánh (kế hoạch)
+## 7. Phần B — Thuật toán và so sánh (kế hoạch ban đầu)
 
-> Khi bắt đầu Phần B: tạo branch mới, rồi tách mục này thành `docs/specs/algorithms/requirements.md`, `design.md`, `tasks.md`.
+> Đã tách thành [`algorithms/requirements.md`](algorithms/requirements.md), [`design.md`](algorithms/design.md), [`tasks.md`](algorithms/tasks.md) và kế hoạch đã duyệt [`plan.md`](algorithms/plan.md). Mục này giữ lại kế hoạch ban đầu; chỗ khác nhau so với bản hiện thực: chỉ so sánh 6 thuật toán (B&B, CP-SAT, SA, GA, NSGA-II gốc, NSGA-II cải tiến; không có MOEA/D), API mới đặt ở `/api/v2/...` và chưa gỡ code v1.
 
 ### 7.1 Bài toán
 
