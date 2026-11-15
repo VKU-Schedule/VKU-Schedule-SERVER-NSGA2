@@ -1,0 +1,885 @@
+{
+ "id": "real_n5_large_light",
+ "kind": "real",
+ "n": 5,
+ "tier": "large",
+ "density": "light",
+ "field": "AD",
+ "space": 1500,
+ "courses": {
+  "Đồ án chuyên ngành 2 -4": [
+   {
+    "course_name": "Đồ án chuyên ngành 2 -4",
+    "sub_topic": null,
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Lê Đình  Nguyên",
+    "day": "Thứ Năm",
+    "periods": [
+     2,
+     3
+    ],
+    "area": "K",
+    "room": "D1.302 (P. Seminar Khoa KTMT)",
+    "class_size": null
+   },
+   {
+    "course_name": "Đồ án chuyên ngành 2 -4",
+    "sub_topic": null,
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Phạm Tuấn  Anh",
+    "day": "Thứ Năm",
+    "periods": [
+     8,
+     9
+    ],
+    "area": "K",
+    "room": "D1.302 (P. Seminar Khoa KTMT)",
+    "class_size": null
+   },
+   {
+    "course_name": "Đồ án chuyên ngành 2 -4",
+    "sub_topic": null,
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": "DA",
+    "teacher": "ThS.Trần Thị Thúy Ngọc",
+    "day": "Thứ Tư",
+    "periods": [
+     3,
+     4
+    ],
+    "area": "K",
+    "room": "D1.302 (P. Seminar Khoa KTMT)",
+    "class_size": null
+   },
+   {
+    "course_name": "Đồ án chuyên ngành 2 -4",
+    "sub_topic": null,
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": "AD",
+    "teacher": "TS.Đặng Đại  Thọ",
+    "day": "Thứ _",
+    "periods": [],
+    "area": "Khác",
+    "room": "_",
+    "class_size": null
+   },
+   {
+    "course_name": "Đồ án chuyên ngành 2 -4",
+    "sub_topic": null,
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": "MC",
+    "teacher": "ThS.Phan Đăng Thiếu Hiệp",
+    "day": "Thứ _",
+    "periods": [],
+    "area": "Khác",
+    "room": "_",
+    "class_size": null
+   }
+  ],
+  "Đồ án chuyên ngành 2 -6": [
+   {
+    "course_name": "Đồ án chuyên ngành 2 -6",
+    "sub_topic": null,
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": "AD",
+    "teacher": "TS.Lê Thị Thu Nga",
+    "day": "Thứ Tư",
+    "periods": [
+     3,
+     4
+    ],
+    "area": "K",
+    "room": "D1.302 (P. Seminar Khoa KTMT)",
+    "class_size": null
+   },
+   {
+    "course_name": "Đồ án chuyên ngành 2 -6",
+    "sub_topic": null,
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "TS.Lê Tân",
+    "day": "Thứ Tư",
+    "periods": [
+     3,
+     4
+    ],
+    "area": "V",
+    "room": "A312",
+    "class_size": null
+   },
+   {
+    "course_name": "Đồ án chuyên ngành 2 -6",
+    "sub_topic": null,
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": "MC",
+    "teacher": "ThS.Trần Thị Thúy Ngọc",
+    "day": "Thứ Tư",
+    "periods": [
+     3,
+     4
+    ],
+    "area": "K",
+    "room": "D1.302 (P. Seminar Khoa KTMT)",
+    "class_size": null
+   },
+   {
+    "course_name": "Đồ án chuyên ngành 2 -6",
+    "sub_topic": null,
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Nguyễn Đỗ Công Pháp",
+    "day": "Thứ Tư",
+    "periods": [
+     6,
+     7
+    ],
+    "area": "V",
+    "room": "A212",
+    "class_size": null
+   }
+  ],
+  "Đồ án chuyên ngành 2 -3": [
+   {
+    "course_name": "Đồ án chuyên ngành 2 -3",
+    "sub_topic": null,
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": "MC",
+    "teacher": "ThS.Nguyễn Trọng Công Thành",
+    "day": "Thứ Ba",
+    "periods": [
+     1,
+     2,
+     3,
+     4
+    ],
+    "area": "Khác",
+    "room": "D1.203 (Phòng Seminar)",
+    "class_size": null
+   },
+   {
+    "course_name": "Đồ án chuyên ngành 2 -3",
+    "sub_topic": null,
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Nguyễn Anh Tuấn",
+    "day": "Thứ Hai",
+    "periods": [
+     1,
+     2,
+     3,
+     4
+    ],
+    "area": "V",
+    "room": "A314",
+    "class_size": null
+   },
+   {
+    "course_name": "Đồ án chuyên ngành 2 -3",
+    "sub_topic": null,
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Hà Thị Minh Phương",
+    "day": "Thứ Sáu",
+    "periods": [
+     8,
+     9
+    ],
+    "area": "K",
+    "room": "A104",
+    "class_size": null
+   },
+   {
+    "course_name": "Đồ án chuyên ngành 2 -3",
+    "sub_topic": null,
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": "AD",
+    "teacher": "ThS.Nguyễn Đỗ Công Pháp",
+    "day": "Thứ Tư",
+    "periods": [
+     6,
+     7
+    ],
+    "area": "V",
+    "room": "A212",
+    "class_size": null
+   },
+   {
+    "course_name": "Đồ án chuyên ngành 2 -3",
+    "sub_topic": null,
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": "DA",
+    "teacher": "ThS.Trần Thị Hạ Quyên",
+    "day": "Thứ _",
+    "periods": [],
+    "area": "Khác",
+    "room": "_",
+    "class_size": null
+   }
+  ],
+  "Đồ án chuyên ngành 2 -9": [
+   {
+    "course_name": "Đồ án chuyên ngành 2 -9",
+    "sub_topic": null,
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "TS.Nguyễn Sĩ Thìn",
+    "day": "Thứ Bảy",
+    "periods": [
+     1,
+     2
+    ],
+    "area": "K",
+    "room": "A204",
+    "class_size": null
+   },
+   {
+    "course_name": "Đồ án chuyên ngành 2 -9",
+    "sub_topic": null,
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "TS.Hồ Văn Phi",
+    "day": "Thứ Hai",
+    "periods": [
+     2,
+     3
+    ],
+    "area": "V",
+    "room": "A312",
+    "class_size": null
+   },
+   {
+    "course_name": "Đồ án chuyên ngành 2 -9",
+    "sub_topic": null,
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": "AD",
+    "teacher": "TS.Nguyễn Quang Vũ",
+    "day": "Thứ Hai",
+    "periods": [
+     6,
+     7,
+     8
+    ],
+    "area": "V",
+    "room": "A103 (P. Đào tạo)",
+    "class_size": null
+   }
+  ],
+  "Đồ án chuyên ngành 2 -1": [
+   {
+    "course_name": "Đồ án chuyên ngành 2 -1",
+    "sub_topic": null,
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": "DA",
+    "teacher": "ThS.Nguyễn Trọng Công Thành",
+    "day": "Thứ Ba",
+    "periods": [
+     2,
+     3
+    ],
+    "area": "K",
+    "room": "A104",
+    "class_size": null
+   },
+   {
+    "course_name": "Đồ án chuyên ngành 2 -1",
+    "sub_topic": null,
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Lê Đình  Nguyên",
+    "day": "Thứ Năm",
+    "periods": [
+     2,
+     3
+    ],
+    "area": "K",
+    "room": "D1.302 (P. Seminar Khoa KTMT)",
+    "class_size": null
+   },
+   {
+    "course_name": "Đồ án chuyên ngành 2 -1",
+    "sub_topic": null,
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": "MC",
+    "teacher": "ThS.Đặng Đại Việt",
+    "day": "Thứ Năm",
+    "periods": [
+     6,
+     7
+    ],
+    "area": "K",
+    "room": "D1.302 (P. Seminar Khoa KTMT)",
+    "class_size": null
+   },
+   {
+    "course_name": "Đồ án chuyên ngành 2 -1",
+    "sub_topic": null,
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "PGS.TS.Huỳnh Công  Pháp",
+    "day": "Thứ _",
+    "periods": [],
+    "area": "Khác",
+    "room": "_",
+    "class_size": null
+   },
+   {
+    "course_name": "Đồ án chuyên ngành 2 -1",
+    "sub_topic": null,
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": "AD",
+    "teacher": "PGS.TS.Nguyễn Thanh Bình",
+    "day": "Thứ _",
+    "periods": [],
+    "area": "Khác",
+    "room": "_",
+    "class_size": null
+   }
+  ]
+ },
+ "preferences": {
+  "version": "2.0",
+  "constraints": [
+   {
+    "prefer": {
+     "end_period": {
+      "max": 6
+     }
+    },
+    "scope": {
+     "day": "thứ 7"
+    }
+   }
+  ]
+ },
+ "review_stats": [
+  {
+   "subject": "Đồ án chuyên ngành 2 -4",
+   "lecturer": "Đại Thọ",
+   "aspect": "ky_nang_giang_day",
+   "positive": 16,
+   "negative": 0,
+   "total": 17
+  },
+  {
+   "subject": "Đồ án chuyên ngành 2 -4",
+   "lecturer": "Đại Thọ",
+   "aspect": "cham_diem",
+   "positive": 2,
+   "negative": 1,
+   "total": 7
+  },
+  {
+   "subject": "Đồ án chuyên ngành 2 -4",
+   "lecturer": "Đình Nguyên",
+   "aspect": "ky_nang_giang_day",
+   "positive": 2,
+   "negative": 1,
+   "total": 4
+  },
+  {
+   "subject": "Đồ án chuyên ngành 2 -4",
+   "lecturer": "Đình Nguyên",
+   "aspect": "cham_diem",
+   "positive": 5,
+   "negative": 2,
+   "total": 9
+  },
+  {
+   "subject": "Đồ án chuyên ngành 2 -4",
+   "lecturer": "Đình Nguyên",
+   "aspect": "bai_tap",
+   "positive": 4,
+   "negative": 0,
+   "total": 4
+  },
+  {
+   "subject": "Đồ án chuyên ngành 2 -4",
+   "lecturer": "Đình Nguyên",
+   "aspect": "kien_thuc",
+   "positive": 1,
+   "negative": 6,
+   "total": 16
+  },
+  {
+   "subject": "Đồ án chuyên ngành 2 -4",
+   "lecturer": "Thiếu Hiệp",
+   "aspect": "ky_nang_giang_day",
+   "positive": 3,
+   "negative": 9,
+   "total": 13
+  },
+  {
+   "subject": "Đồ án chuyên ngành 2 -4",
+   "lecturer": "Thiếu Hiệp",
+   "aspect": "bai_tap",
+   "positive": 16,
+   "negative": 2,
+   "total": 19
+  },
+  {
+   "subject": "Đồ án chuyên ngành 2 -4",
+   "lecturer": "Tuấn Anh",
+   "aspect": "ky_nang_giang_day",
+   "positive": 0,
+   "negative": 20,
+   "total": 20
+  },
+  {
+   "subject": "Đồ án chuyên ngành 2 -4",
+   "lecturer": "Tuấn Anh",
+   "aspect": "hanh_vi",
+   "positive": 6,
+   "negative": 4,
+   "total": 10
+  },
+  {
+   "subject": "Đồ án chuyên ngành 2 -4",
+   "lecturer": "Tuấn Anh",
+   "aspect": "bai_tap",
+   "positive": 11,
+   "negative": 0,
+   "total": 11
+  },
+  {
+   "subject": "Đồ án chuyên ngành 2 -4",
+   "lecturer": "Thúy Ngọc",
+   "aspect": "ky_nang_giang_day",
+   "positive": 19,
+   "negative": 1,
+   "total": 20
+  },
+  {
+   "subject": "Đồ án chuyên ngành 2 -4",
+   "lecturer": "Thúy Ngọc",
+   "aspect": "hanh_vi",
+   "positive": 8,
+   "negative": 4,
+   "total": 13
+  },
+  {
+   "subject": "Đồ án chuyên ngành 2 -4",
+   "lecturer": "Thúy Ngọc",
+   "aspect": "kien_thuc",
+   "positive": 12,
+   "negative": 0,
+   "total": 12
+  },
+  {
+   "subject": "Đồ án chuyên ngành 2 -6",
+   "lecturer": "Thu Nga",
+   "aspect": "ky_nang_giang_day",
+   "positive": 8,
+   "negative": 4,
+   "total": 13
+  },
+  {
+   "subject": "Đồ án chuyên ngành 2 -6",
+   "lecturer": "Thu Nga",
+   "aspect": "bai_tap",
+   "positive": 10,
+   "negative": 0,
+   "total": 18
+  },
+  {
+   "subject": "Đồ án chuyên ngành 2 -6",
+   "lecturer": "Thu Nga",
+   "aspect": "kien_thuc",
+   "positive": 7,
+   "negative": 0,
+   "total": 8
+  },
+  {
+   "subject": "Đồ án chuyên ngành 2 -6",
+   "lecturer": "Lê Tân",
+   "aspect": "hanh_vi",
+   "positive": 10,
+   "negative": 3,
+   "total": 13
+  },
+  {
+   "subject": "Đồ án chuyên ngành 2 -6",
+   "lecturer": "Lê Tân",
+   "aspect": "cham_diem",
+   "positive": 1,
+   "negative": 0,
+   "total": 4
+  },
+  {
+   "subject": "Đồ án chuyên ngành 2 -6",
+   "lecturer": "Công Pháp",
+   "aspect": "cham_diem",
+   "positive": 4,
+   "negative": 12,
+   "total": 18
+  },
+  {
+   "subject": "Đồ án chuyên ngành 2 -6",
+   "lecturer": "Công Pháp",
+   "aspect": "bai_tap",
+   "positive": 11,
+   "negative": 1,
+   "total": 12
+  },
+  {
+   "subject": "Đồ án chuyên ngành 2 -6",
+   "lecturer": "Thúy Ngọc",
+   "aspect": "ky_nang_giang_day",
+   "positive": 1,
+   "negative": 0,
+   "total": 1
+  },
+  {
+   "subject": "Đồ án chuyên ngành 2 -6",
+   "lecturer": "Thúy Ngọc",
+   "aspect": "hanh_vi",
+   "positive": 1,
+   "negative": 2,
+   "total": 12
+  },
+  {
+   "subject": "Đồ án chuyên ngành 2 -6",
+   "lecturer": "Thúy Ngọc",
+   "aspect": "cham_diem",
+   "positive": 12,
+   "negative": 2,
+   "total": 15
+  },
+  {
+   "subject": "Đồ án chuyên ngành 2 -3",
+   "lecturer": "Minh Phương",
+   "aspect": "ky_nang_giang_day",
+   "positive": 6,
+   "negative": 7,
+   "total": 15
+  },
+  {
+   "subject": "Đồ án chuyên ngành 2 -3",
+   "lecturer": "Minh Phương",
+   "aspect": "hanh_vi",
+   "positive": 0,
+   "negative": 0,
+   "total": 0
+  },
+  {
+   "subject": "Đồ án chuyên ngành 2 -3",
+   "lecturer": "Minh Phương",
+   "aspect": "cham_diem",
+   "positive": 1,
+   "negative": 3,
+   "total": 16
+  },
+  {
+   "subject": "Đồ án chuyên ngành 2 -3",
+   "lecturer": "Minh Phương",
+   "aspect": "bai_tap",
+   "positive": 3,
+   "negative": 2,
+   "total": 5
+  },
+  {
+   "subject": "Đồ án chuyên ngành 2 -3",
+   "lecturer": "Anh Tuấn",
+   "aspect": "ky_nang_giang_day",
+   "positive": 0,
+   "negative": 1,
+   "total": 4
+  },
+  {
+   "subject": "Đồ án chuyên ngành 2 -3",
+   "lecturer": "Anh Tuấn",
+   "aspect": "cham_diem",
+   "positive": 13,
+   "negative": 4,
+   "total": 17
+  },
+  {
+   "subject": "Đồ án chuyên ngành 2 -3",
+   "lecturer": "Anh Tuấn",
+   "aspect": "bai_tap",
+   "positive": 12,
+   "negative": 0,
+   "total": 16
+  },
+  {
+   "subject": "Đồ án chuyên ngành 2 -3",
+   "lecturer": "Anh Tuấn",
+   "aspect": "kien_thuc",
+   "positive": 4,
+   "negative": 1,
+   "total": 5
+  },
+  {
+   "subject": "Đồ án chuyên ngành 2 -3",
+   "lecturer": "Công Thành",
+   "aspect": "ky_nang_giang_day",
+   "positive": 4,
+   "negative": 7,
+   "total": 15
+  },
+  {
+   "subject": "Đồ án chuyên ngành 2 -3",
+   "lecturer": "Công Thành",
+   "aspect": "bai_tap",
+   "positive": 12,
+   "negative": 0,
+   "total": 19
+  },
+  {
+   "subject": "Đồ án chuyên ngành 2 -3",
+   "lecturer": "Công Thành",
+   "aspect": "kien_thuc",
+   "positive": 1,
+   "negative": 0,
+   "total": 2
+  },
+  {
+   "subject": "Đồ án chuyên ngành 2 -3",
+   "lecturer": "Công Pháp",
+   "aspect": "ky_nang_giang_day",
+   "positive": 16,
+   "negative": 1,
+   "total": 18
+  },
+  {
+   "subject": "Đồ án chuyên ngành 2 -3",
+   "lecturer": "Công Pháp",
+   "aspect": "hanh_vi",
+   "positive": 2,
+   "negative": 3,
+   "total": 5
+  },
+  {
+   "subject": "Đồ án chuyên ngành 2 -3",
+   "lecturer": "Công Pháp",
+   "aspect": "cham_diem",
+   "positive": 5,
+   "negative": 0,
+   "total": 5
+  },
+  {
+   "subject": "Đồ án chuyên ngành 2 -3",
+   "lecturer": "Công Pháp",
+   "aspect": "bai_tap",
+   "positive": 0,
+   "negative": 1,
+   "total": 3
+  },
+  {
+   "subject": "Đồ án chuyên ngành 2 -3",
+   "lecturer": "Công Pháp",
+   "aspect": "kien_thuc",
+   "positive": 0,
+   "negative": 0,
+   "total": 0
+  },
+  {
+   "subject": "Đồ án chuyên ngành 2 -3",
+   "lecturer": "Hạ Quyên",
+   "aspect": "hanh_vi",
+   "positive": 1,
+   "negative": 0,
+   "total": 1
+  },
+  {
+   "subject": "Đồ án chuyên ngành 2 -3",
+   "lecturer": "Hạ Quyên",
+   "aspect": "bai_tap",
+   "positive": 5,
+   "negative": 0,
+   "total": 5
+  },
+  {
+   "subject": "Đồ án chuyên ngành 2 -3",
+   "lecturer": "Hạ Quyên",
+   "aspect": "kien_thuc",
+   "positive": 2,
+   "negative": 12,
+   "total": 14
+  },
+  {
+   "subject": "Đồ án chuyên ngành 2 -9",
+   "lecturer": "Văn Phi",
+   "aspect": "ky_nang_giang_day",
+   "positive": 4,
+   "negative": 2,
+   "total": 8
+  },
+  {
+   "subject": "Đồ án chuyên ngành 2 -9",
+   "lecturer": "Quang Vũ",
+   "aspect": "bai_tap",
+   "positive": 5,
+   "negative": 2,
+   "total": 7
+  },
+  {
+   "subject": "Đồ án chuyên ngành 2 -9",
+   "lecturer": "Quang Vũ",
+   "aspect": "kien_thuc",
+   "positive": 1,
+   "negative": 0,
+   "total": 2
+  },
+  {
+   "subject": "Đồ án chuyên ngành 2 -9",
+   "lecturer": "Sĩ Thìn",
+   "aspect": "ky_nang_giang_day",
+   "positive": 0,
+   "negative": 0,
+   "total": 5
+  },
+  {
+   "subject": "Đồ án chuyên ngành 2 -9",
+   "lecturer": "Sĩ Thìn",
+   "aspect": "cham_diem",
+   "positive": 1,
+   "negative": 1,
+   "total": 6
+  },
+  {
+   "subject": "Đồ án chuyên ngành 2 -9",
+   "lecturer": "Sĩ Thìn",
+   "aspect": "bai_tap",
+   "positive": 9,
+   "negative": 5,
+   "total": 15
+  },
+  {
+   "subject": "Đồ án chuyên ngành 2 -9",
+   "lecturer": "Sĩ Thìn",
+   "aspect": "kien_thuc",
+   "positive": 3,
+   "negative": 2,
+   "total": 14
+  },
+  {
+   "subject": "Đồ án chuyên ngành 2 -1",
+   "lecturer": "Công Pháp",
+   "aspect": "ky_nang_giang_day",
+   "positive": 5,
+   "negative": 0,
+   "total": 7
+  },
+  {
+   "subject": "Đồ án chuyên ngành 2 -1",
+   "lecturer": "Công Pháp",
+   "aspect": "cham_diem",
+   "positive": 12,
+   "negative": 1,
+   "total": 19
+  },
+  {
+   "subject": "Đồ án chuyên ngành 2 -1",
+   "lecturer": "Công Pháp",
+   "aspect": "kien_thuc",
+   "positive": 4,
+   "negative": 4,
+   "total": 9
+  },
+  {
+   "subject": "Đồ án chuyên ngành 2 -1",
+   "lecturer": "Thanh Bình",
+   "aspect": "hanh_vi",
+   "positive": 6,
+   "negative": 1,
+   "total": 19
+  },
+  {
+   "subject": "Đồ án chuyên ngành 2 -1",
+   "lecturer": "Thanh Bình",
+   "aspect": "bai_tap",
+   "positive": 1,
+   "negative": 0,
+   "total": 5
+  },
+  {
+   "subject": "Đồ án chuyên ngành 2 -1",
+   "lecturer": "Đình Nguyên",
+   "aspect": "hanh_vi",
+   "positive": 3,
+   "negative": 2,
+   "total": 11
+  },
+  {
+   "subject": "Đồ án chuyên ngành 2 -1",
+   "lecturer": "Đình Nguyên",
+   "aspect": "cham_diem",
+   "positive": 0,
+   "negative": 0,
+   "total": 13
+  },
+  {
+   "subject": "Đồ án chuyên ngành 2 -1",
+   "lecturer": "Đình Nguyên",
+   "aspect": "bai_tap",
+   "positive": 11,
+   "negative": 4,
+   "total": 19
+  },
+  {
+   "subject": "Đồ án chuyên ngành 2 -1",
+   "lecturer": "Công Thành",
+   "aspect": "hanh_vi",
+   "positive": 9,
+   "negative": 1,
+   "total": 10
+  },
+  {
+   "subject": "Đồ án chuyên ngành 2 -1",
+   "lecturer": "Công Thành",
+   "aspect": "cham_diem",
+   "positive": 2,
+   "negative": 2,
+   "total": 5
+  },
+  {
+   "subject": "Đồ án chuyên ngành 2 -1",
+   "lecturer": "Đại Việt",
+   "aspect": "ky_nang_giang_day",
+   "positive": 0,
+   "negative": 3,
+   "total": 3
+  },
+  {
+   "subject": "Đồ án chuyên ngành 2 -1",
+   "lecturer": "Đại Việt",
+   "aspect": "cham_diem",
+   "positive": 13,
+   "negative": 1,
+   "total": 14
+  },
+  {
+   "subject": "Đồ án chuyên ngành 2 -1",
+   "lecturer": "Đại Việt",
+   "aspect": "kien_thuc",
+   "positive": 15,
+   "negative": 0,
+   "total": 17
+  }
+ ],
+ "pinned": {}
+}

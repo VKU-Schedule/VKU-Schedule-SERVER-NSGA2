@@ -1,0 +1,4007 @@
+{
+ "id": "real_n5_max_medium",
+ "kind": "real",
+ "n": 5,
+ "tier": "max",
+ "density": "medium",
+ "field": "IT",
+ "space": 25668,
+ "courses": {
+  "Đồ án cơ sở 4 -6": [
+   {
+    "course_name": "Đồ án cơ sở 4 -6",
+    "sub_topic": null,
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Lê Thành Công",
+    "day": "Thứ Ba",
+    "periods": [
+     1,
+     2
+    ],
+    "area": "K",
+    "room": "A104",
+    "class_size": null
+   },
+   {
+    "course_name": "Đồ án cơ sở 4 -6",
+    "sub_topic": null,
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": "IT",
+    "teacher": "ThS.Dương Thị Mai Nga",
+    "day": "Thứ Sáu",
+    "periods": [
+     2,
+     3,
+     4
+    ],
+    "area": "K",
+    "room": "D1.302 (P. Seminar Khoa KTMT)",
+    "class_size": null
+   },
+   {
+    "course_name": "Đồ án cơ sở 4 -6",
+    "sub_topic": null,
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Phan Đăng Thiếu Hiệp",
+    "day": "Thứ _",
+    "periods": [],
+    "area": "Khác",
+    "room": "_",
+    "class_size": null
+   }
+  ],
+  "Chuyên đề 3": [
+   {
+    "course_name": "Chuyên đề 3",
+    "sub_topic": "Hệ khuyến nghị",
+    "class_index": "4",
+    "language": "Tiếng Việt",
+    "field": "IT",
+    "teacher": "TS.Nguyễn Sĩ Thìn",
+    "day": "Thứ Năm",
+    "periods": [
+     8,
+     9
+    ],
+    "area": "K",
+    "room": "A214",
+    "class_size": 60
+   },
+   {
+    "course_name": "Chuyên đề 3",
+    "sub_topic": "Hệ khuyến nghị",
+    "class_index": "5",
+    "language": "Tiếng Việt",
+    "field": "IT",
+    "teacher": "TS.Nguyễn Sĩ Thìn",
+    "day": "Thứ Năm",
+    "periods": [
+     6,
+     7
+    ],
+    "area": "K",
+    "room": "A214",
+    "class_size": 60
+   }
+  ],
+  "Tiếng Anh chuyên ngành 1": [
+   {
+    "course_name": "Tiếng Anh chuyên ngành 1",
+    "sub_topic": null,
+    "class_index": "1",
+    "language": "Tiếng Việt",
+    "field": "CE",
+    "teacher": "TS.Vương Công Đạt",
+    "day": "Thứ Ba",
+    "periods": [
+     1,
+     2,
+     3,
+     4
+    ],
+    "area": "K",
+    "room": "B308",
+    "class_size": 0
+   },
+   {
+    "course_name": "Tiếng Anh chuyên ngành 1",
+    "sub_topic": null,
+    "class_index": "1",
+    "language": "Tiếng Việt",
+    "field": "BA",
+    "teacher": "ThS.Bùi Trần Huân",
+    "day": "Thứ Sáu",
+    "periods": [
+     1,
+     2,
+     3
+    ],
+    "area": "K",
+    "room": "B101",
+    "class_size": 50
+   },
+   {
+    "course_name": "Tiếng Anh chuyên ngành 1",
+    "sub_topic": null,
+    "class_index": "1",
+    "language": "Tiếng Việt",
+    "field": "IT",
+    "teacher": "TS.Đặng Đại  Thọ",
+    "day": "Thứ Sáu",
+    "periods": [
+     1,
+     2,
+     3,
+     4
+    ],
+    "area": "K",
+    "room": "B107",
+    "class_size": 0
+   },
+   {
+    "course_name": "Tiếng Anh chuyên ngành 1",
+    "sub_topic": null,
+    "class_index": "10",
+    "language": "Tiếng Việt",
+    "field": "IT",
+    "teacher": "ThS.Nguyễn Đỗ Công Pháp",
+    "day": "Thứ Tư",
+    "periods": [
+     1,
+     2,
+     3,
+     4
+    ],
+    "area": "K",
+    "room": "B303",
+    "class_size": 0
+   },
+   {
+    "course_name": "Tiếng Anh chuyên ngành 1",
+    "sub_topic": null,
+    "class_index": "11",
+    "language": "Tiếng Việt",
+    "field": "IT",
+    "teacher": "ThS.Nguyễn Đỗ Công Pháp",
+    "day": "Thứ Năm",
+    "periods": [
+     6,
+     7,
+     8,
+     9
+    ],
+    "area": "K",
+    "room": "B303",
+    "class_size": 0
+   },
+   {
+    "course_name": "Tiếng Anh chuyên ngành 1",
+    "sub_topic": null,
+    "class_index": "12",
+    "language": "Tiếng Việt",
+    "field": "IT",
+    "teacher": "ThS.Lê Đình  Nguyên",
+    "day": "Thứ Ba",
+    "periods": [
+     6,
+     7,
+     8,
+     9
+    ],
+    "area": "K",
+    "room": "B306",
+    "class_size": 50
+   },
+   {
+    "course_name": "Tiếng Anh chuyên ngành 1",
+    "sub_topic": null,
+    "class_index": "13",
+    "language": "Tiếng Việt",
+    "field": "IT",
+    "teacher": "ThS.Lê Đình  Nguyên",
+    "day": "Thứ Năm",
+    "periods": [
+     6,
+     7,
+     8,
+     9
+    ],
+    "area": "K",
+    "room": "B304",
+    "class_size": 50
+   },
+   {
+    "course_name": "Tiếng Anh chuyên ngành 1",
+    "sub_topic": null,
+    "class_index": "14",
+    "language": "Tiếng Việt",
+    "field": "IT",
+    "teacher": "TS.Nguyễn Văn Lợi",
+    "day": "Thứ Sáu",
+    "periods": [
+     6,
+     7,
+     8,
+     9
+    ],
+    "area": "K",
+    "room": "B107",
+    "class_size": 50
+   },
+   {
+    "course_name": "Tiếng Anh chuyên ngành 1",
+    "sub_topic": null,
+    "class_index": "15",
+    "language": "Tiếng Việt",
+    "field": "IT",
+    "teacher": "ThS.Mai Lam",
+    "day": "Thứ Tư",
+    "periods": [
+     6,
+     7,
+     8,
+     9
+    ],
+    "area": "K",
+    "room": "B305",
+    "class_size": 50
+   },
+   {
+    "course_name": "Tiếng Anh chuyên ngành 1",
+    "sub_topic": null,
+    "class_index": "16",
+    "language": "Tiếng Việt",
+    "field": "IT",
+    "teacher": "ThS.Ninh Khánh Chi",
+    "day": "Thứ Ba",
+    "periods": [
+     6,
+     7,
+     8,
+     9
+    ],
+    "area": "K",
+    "room": "B303",
+    "class_size": 60
+   },
+   {
+    "course_name": "Tiếng Anh chuyên ngành 1",
+    "sub_topic": null,
+    "class_index": "2",
+    "language": "Tiếng Việt",
+    "field": "BA",
+    "teacher": "TS.Ngô Hải Quỳnh",
+    "day": "Thứ Ba",
+    "periods": [
+     6,
+     7,
+     8
+    ],
+    "area": "K",
+    "room": "B103",
+    "class_size": 50
+   },
+   {
+    "course_name": "Tiếng Anh chuyên ngành 1",
+    "sub_topic": null,
+    "class_index": "2",
+    "language": "Tiếng Việt",
+    "field": "CE",
+    "teacher": "TS.Vương Công Đạt",
+    "day": "Thứ Hai",
+    "periods": [
+     1,
+     2,
+     3,
+     4
+    ],
+    "area": "K",
+    "room": "B305",
+    "class_size": 0
+   },
+   {
+    "course_name": "Tiếng Anh chuyên ngành 1",
+    "sub_topic": null,
+    "class_index": "2",
+    "language": "Tiếng Việt",
+    "field": "IT",
+    "teacher": "TS.Đặng Đại  Thọ",
+    "day": "Thứ Hai",
+    "periods": [
+     6,
+     7,
+     8,
+     9
+    ],
+    "area": "K",
+    "room": "B103",
+    "class_size": 0
+   },
+   {
+    "course_name": "Tiếng Anh chuyên ngành 1",
+    "sub_topic": null,
+    "class_index": "3",
+    "language": "Tiếng Việt",
+    "field": "CE",
+    "teacher": "ThS.Nguyễn Thị Huyền Trang",
+    "day": "Thứ Hai",
+    "periods": [
+     1,
+     2,
+     3,
+     4
+    ],
+    "area": "K",
+    "room": "B303",
+    "class_size": 0
+   },
+   {
+    "course_name": "Tiếng Anh chuyên ngành 1",
+    "sub_topic": null,
+    "class_index": "3",
+    "language": "Tiếng Việt",
+    "field": "BA",
+    "teacher": "TS.Ngô Hải Quỳnh",
+    "day": "Thứ Năm",
+    "periods": [
+     6,
+     7,
+     8
+    ],
+    "area": "K",
+    "room": "B107",
+    "class_size": 50
+   },
+   {
+    "course_name": "Tiếng Anh chuyên ngành 1",
+    "sub_topic": null,
+    "class_index": "3",
+    "language": "Tiếng Việt",
+    "field": "IT",
+    "teacher": "TS.Lý Quỳnh Trân",
+    "day": "Thứ Tư",
+    "periods": [
+     1,
+     2,
+     3,
+     4
+    ],
+    "area": "K",
+    "room": "B106",
+    "class_size": 0
+   },
+   {
+    "course_name": "Tiếng Anh chuyên ngành 1",
+    "sub_topic": null,
+    "class_index": "4",
+    "language": "Tiếng Việt",
+    "field": "IT",
+    "teacher": "TS.Lý Quỳnh Trân",
+    "day": "Thứ Ba",
+    "periods": [
+     1,
+     2,
+     3,
+     4
+    ],
+    "area": "K",
+    "room": "B306",
+    "class_size": 0
+   },
+   {
+    "course_name": "Tiếng Anh chuyên ngành 1",
+    "sub_topic": null,
+    "class_index": "4",
+    "language": "Tiếng Việt",
+    "field": "CE",
+    "teacher": "ThS.Nguyễn Thị Huyền Trang",
+    "day": "Thứ Hai",
+    "periods": [
+     6,
+     7,
+     8,
+     9
+    ],
+    "area": "K",
+    "room": "B303",
+    "class_size": 0
+   },
+   {
+    "course_name": "Tiếng Anh chuyên ngành 1",
+    "sub_topic": null,
+    "class_index": "4",
+    "language": "Tiếng Việt",
+    "field": "BA",
+    "teacher": "ThS.Nguyễn Thị Thảo Nhi",
+    "day": "Thứ Tư",
+    "periods": [
+     1,
+     2,
+     3
+    ],
+    "area": "K",
+    "room": "B103",
+    "class_size": 50
+   },
+   {
+    "course_name": "Tiếng Anh chuyên ngành 1",
+    "sub_topic": null,
+    "class_index": "5",
+    "language": "Tiếng Việt",
+    "field": "BA",
+    "teacher": "ThS.Nguyễn Thị Thảo Nhi",
+    "day": "Thứ Ba",
+    "periods": [
+     1,
+     2,
+     3
+    ],
+    "area": "K",
+    "room": "B107",
+    "class_size": 50
+   },
+   {
+    "course_name": "Tiếng Anh chuyên ngành 1",
+    "sub_topic": null,
+    "class_index": "5",
+    "language": "Tiếng Việt",
+    "field": "CE",
+    "teacher": ".",
+    "day": "Thứ Sáu",
+    "periods": [
+     6,
+     7,
+     8,
+     9
+    ],
+    "area": "(Chọn)",
+    "room": null,
+    "class_size": 0
+   },
+   {
+    "course_name": "Tiếng Anh chuyên ngành 1",
+    "sub_topic": null,
+    "class_index": "5",
+    "language": "Tiếng Việt",
+    "field": "IT",
+    "teacher": "TS.Nguyễn Văn Lợi",
+    "day": "Thứ Tư",
+    "periods": [
+     6,
+     7,
+     8,
+     9
+    ],
+    "area": "K",
+    "room": "A114",
+    "class_size": 0
+   },
+   {
+    "course_name": "Tiếng Anh chuyên ngành 1",
+    "sub_topic": null,
+    "class_index": "6",
+    "language": "Tiếng Việt",
+    "field": "BA",
+    "teacher": "ThS.Đinh Nguyễn Khánh Phương",
+    "day": "Thứ Ba",
+    "periods": [
+     6,
+     7,
+     8
+    ],
+    "area": "K",
+    "room": "B107",
+    "class_size": 50
+   },
+   {
+    "course_name": "Tiếng Anh chuyên ngành 1",
+    "sub_topic": null,
+    "class_index": "6",
+    "language": "Tiếng Việt",
+    "field": "CE",
+    "teacher": ".",
+    "day": "Thứ Hai",
+    "periods": [
+     6,
+     7,
+     8,
+     9
+    ],
+    "area": "(Chọn)",
+    "room": null,
+    "class_size": 0
+   },
+   {
+    "course_name": "Tiếng Anh chuyên ngành 1",
+    "sub_topic": null,
+    "class_index": "6",
+    "language": "Tiếng Việt",
+    "field": "IT",
+    "teacher": "ThS.Bank Agribank",
+    "day": "Thứ Hai",
+    "periods": [
+     6,
+     7,
+     8,
+     9
+    ],
+    "area": "(Chọn)",
+    "room": null,
+    "class_size": 0
+   },
+   {
+    "course_name": "Tiếng Anh chuyên ngành 1",
+    "sub_topic": null,
+    "class_index": "7",
+    "language": "Tiếng Việt",
+    "field": "BA",
+    "teacher": "ThS.Vũ Thành Nhân",
+    "day": "Thứ Hai",
+    "periods": [
+     1,
+     2,
+     3
+    ],
+    "area": "K",
+    "room": "B304",
+    "class_size": 50
+   },
+   {
+    "course_name": "Tiếng Anh chuyên ngành 1",
+    "sub_topic": null,
+    "class_index": "7",
+    "language": "Tiếng Việt",
+    "field": "IT",
+    "teacher": "ThS.Hà Thị Minh Phương",
+    "day": "Thứ Năm",
+    "periods": [
+     1,
+     2,
+     3,
+     4
+    ],
+    "area": "K",
+    "room": "B106",
+    "class_size": 0
+   },
+   {
+    "course_name": "Tiếng Anh chuyên ngành 1",
+    "sub_topic": null,
+    "class_index": "8",
+    "language": "Tiếng Việt",
+    "field": "IT",
+    "teacher": "TS.Nguyễn Sĩ Thìn",
+    "day": "Thứ Ba",
+    "periods": [
+     1,
+     2,
+     3,
+     4
+    ],
+    "area": "K",
+    "room": "B307",
+    "class_size": 0
+   },
+   {
+    "course_name": "Tiếng Anh chuyên ngành 1",
+    "sub_topic": null,
+    "class_index": "8",
+    "language": "Tiếng Việt",
+    "field": "BA",
+    "teacher": "ThS.Vũ Thành Nhân",
+    "day": "Thứ Hai",
+    "periods": [
+     6,
+     7,
+     8
+    ],
+    "area": "K",
+    "room": "B306",
+    "class_size": 50
+   },
+   {
+    "course_name": "Tiếng Anh chuyên ngành 1",
+    "sub_topic": null,
+    "class_index": "9",
+    "language": "Tiếng Việt",
+    "field": "IT",
+    "teacher": "TS.Nguyễn Sĩ Thìn",
+    "day": "Thứ Hai",
+    "periods": [
+     6,
+     7,
+     8,
+     9
+    ],
+    "area": "K",
+    "room": "B107",
+    "class_size": 0
+   },
+   {
+    "course_name": "Tiếng Anh chuyên ngành 1",
+    "sub_topic": null,
+    "class_index": "9",
+    "language": "Tiếng Việt",
+    "field": "BA",
+    "teacher": "ThS.Vũ Thành Nhân",
+    "day": "Thứ Sáu",
+    "periods": [
+     6,
+     7,
+     8
+    ],
+    "area": "K",
+    "room": "B303",
+    "class_size": 50
+   }
+  ],
+  "Đồ án cơ sở 4 -18": [
+   {
+    "course_name": "Đồ án cơ sở 4 -18",
+    "sub_topic": null,
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "TS.Nguyễn Thanh Tuấn",
+    "day": "Thứ Hai",
+    "periods": [
+     6,
+     7
+    ],
+    "area": "K",
+    "room": "A204",
+    "class_size": null
+   },
+   {
+    "course_name": "Đồ án cơ sở 4 -18",
+    "sub_topic": null,
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": "IT",
+    "teacher": "ThS.Nguyễn Thanh Cẩm",
+    "day": "Thứ Năm",
+    "periods": [
+     2,
+     3,
+     4
+    ],
+    "area": "K",
+    "room": "D1.302 (P. Seminar Khoa KTMT)",
+    "class_size": null
+   }
+  ],
+  "Thực tập tốt nghiệp": [
+   {
+    "course_name": "Thực tập tốt nghiệp",
+    "sub_topic": null,
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "TS.Võ Thị Thanh  Thảo",
+    "day": "Thứ Ba",
+    "periods": [
+     1,
+     2
+    ],
+    "area": "K",
+    "room": "A210",
+    "class_size": null
+   },
+   {
+    "course_name": "Thực tập tốt nghiệp",
+    "sub_topic": null,
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "TS.Ngô Hải Quỳnh",
+    "day": "Thứ Hai",
+    "periods": [
+     1,
+     2
+    ],
+    "area": "K",
+    "room": "A208",
+    "class_size": null
+   },
+   {
+    "course_name": "Thực tập tốt nghiệp",
+    "sub_topic": null,
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "TS.Nguyễn Thanh Hoài",
+    "day": "Thứ Hai",
+    "periods": [
+     8,
+     9
+    ],
+    "area": "K",
+    "room": "A108",
+    "class_size": null
+   },
+   {
+    "course_name": "Thực tập tốt nghiệp",
+    "sub_topic": null,
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "TS.Lê Phước Cửu Long",
+    "day": "Thứ Sáu",
+    "periods": [
+     1,
+     2,
+     3
+    ],
+    "area": "V",
+    "room": "A103 (P. Đào tạo)",
+    "class_size": null
+   },
+   {
+    "course_name": "Thực tập tốt nghiệp",
+    "sub_topic": null,
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "TS.Phan Văn Thành",
+    "day": "Thứ Sáu",
+    "periods": [
+     1,
+     2,
+     3,
+     4
+    ],
+    "area": "Khác",
+    "room": "D1.203 (Phòng Seminar)",
+    "class_size": null
+   },
+   {
+    "course_name": "Thực tập tốt nghiệp",
+    "sub_topic": null,
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "TS.Văn Hùng Trọng",
+    "day": "Thứ _",
+    "periods": [],
+    "area": "Khác",
+    "room": "_",
+    "class_size": null
+   },
+   {
+    "course_name": "Thực tập tốt nghiệp",
+    "sub_topic": null,
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Bùi Trần Huân",
+    "day": "Thứ _",
+    "periods": [],
+    "area": "Khác",
+    "room": "_",
+    "class_size": null
+   },
+   {
+    "course_name": "Thực tập tốt nghiệp",
+    "sub_topic": null,
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Lê Thị Hải Vân",
+    "day": "Thứ _",
+    "periods": [],
+    "area": "Khác",
+    "room": "_",
+    "class_size": null
+   },
+   {
+    "course_name": "Thực tập tốt nghiệp",
+    "sub_topic": null,
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Nguyễn Thị Kim Ánh",
+    "day": "Thứ _",
+    "periods": [],
+    "area": "Khác",
+    "room": "_",
+    "class_size": null
+   },
+   {
+    "course_name": "Thực tập tốt nghiệp",
+    "sub_topic": null,
+    "class_index": "1",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "CN.Nguyễn Văn Hồng Phúc",
+    "day": "Thứ _",
+    "periods": [],
+    "area": "Khác",
+    "room": "_",
+    "class_size": null
+   },
+   {
+    "course_name": "Thực tập tốt nghiệp",
+    "sub_topic": null,
+    "class_index": "1",
+    "language": "Tiếng Việt",
+    "field": "IT",
+    "teacher": "Khoa.KH MT",
+    "day": "Thứ _",
+    "periods": [],
+    "area": "(Chọn)",
+    "room": null,
+    "class_size": 1500
+   },
+   {
+    "course_name": "Thực tập tốt nghiệp",
+    "sub_topic": null,
+    "class_index": "1",
+    "language": "Tiếng Việt",
+    "field": "CE",
+    "teacher": "Khoa.KTMT _ĐT",
+    "day": "Thứ _",
+    "periods": [],
+    "area": "(Chọn)",
+    "room": null,
+    "class_size": 1500
+   },
+   {
+    "course_name": "Thực tập tốt nghiệp",
+    "sub_topic": null,
+    "class_index": "10",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Lê Thành Công",
+    "day": "Thứ Hai",
+    "periods": [
+     1,
+     2
+    ],
+    "area": "K",
+    "room": "A210",
+    "class_size": null
+   },
+   {
+    "course_name": "Thực tập tốt nghiệp",
+    "sub_topic": null,
+    "class_index": "11",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Lê Viết Trương",
+    "day": "Thứ Sáu",
+    "periods": [
+     3,
+     4
+    ],
+    "area": "K",
+    "room": "A104",
+    "class_size": null
+   },
+   {
+    "course_name": "Thực tập tốt nghiệp",
+    "sub_topic": null,
+    "class_index": "12",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Lương Khánh Tý",
+    "day": "Thứ Hai",
+    "periods": [
+     1,
+     2
+    ],
+    "area": "V",
+    "room": "A103 (P. Đào tạo)",
+    "class_size": null
+   },
+   {
+    "course_name": "Thực tập tốt nghiệp",
+    "sub_topic": null,
+    "class_index": "13",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Mai Lam",
+    "day": "Thứ Bảy",
+    "periods": [
+     3,
+     4
+    ],
+    "area": "K",
+    "room": "A108",
+    "class_size": null
+   },
+   {
+    "course_name": "Thực tập tốt nghiệp",
+    "sub_topic": null,
+    "class_index": "14",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Ngô Lê Quân",
+    "day": "Thứ _",
+    "periods": [],
+    "area": "Khác",
+    "room": "_",
+    "class_size": null
+   },
+   {
+    "course_name": "Thực tập tốt nghiệp",
+    "sub_topic": null,
+    "class_index": "15",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Nguyễn Anh Tuấn",
+    "day": "Thứ Hai",
+    "periods": [
+     3,
+     4
+    ],
+    "area": "V",
+    "room": "B402",
+    "class_size": null
+   },
+   {
+    "course_name": "Thực tập tốt nghiệp",
+    "sub_topic": null,
+    "class_index": "16",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Nguyễn Đỗ Công Pháp",
+    "day": "Thứ Bảy",
+    "periods": [
+     8,
+     9
+    ],
+    "area": "K",
+    "room": "A310",
+    "class_size": null
+   },
+   {
+    "course_name": "Thực tập tốt nghiệp",
+    "sub_topic": null,
+    "class_index": "17",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Nguyễn Ngọc Huyền Trân",
+    "day": "Thứ Hai",
+    "periods": [
+     6,
+     7
+    ],
+    "area": "K",
+    "room": "A310",
+    "class_size": null
+   },
+   {
+    "course_name": "Thực tập tốt nghiệp",
+    "sub_topic": null,
+    "class_index": "18",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Nguyễn Thanh Cẩm",
+    "day": "Thứ Hai",
+    "periods": [
+     2,
+     3,
+     4
+    ],
+    "area": "K",
+    "room": "D1.302 (P. Seminar Khoa KTMT)",
+    "class_size": null
+   },
+   {
+    "course_name": "Thực tập tốt nghiệp",
+    "sub_topic": null,
+    "class_index": "19",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Nguyễn Thị Thanh Thúy",
+    "day": "Thứ _",
+    "periods": [],
+    "area": "Khác",
+    "room": "_",
+    "class_size": null
+   },
+   {
+    "course_name": "Thực tập tốt nghiệp",
+    "sub_topic": null,
+    "class_index": "2",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "PGS.TS.Huỳnh Công  Pháp",
+    "day": "Thứ Hai",
+    "periods": [
+     3,
+     4
+    ],
+    "area": "V",
+    "room": "A103 (P. Đào tạo)",
+    "class_size": null
+   },
+   {
+    "course_name": "Thực tập tốt nghiệp",
+    "sub_topic": null,
+    "class_index": "2",
+    "language": "Tiếng Việt",
+    "field": "IT",
+    "teacher": "Khoa.KTMT _ĐT",
+    "day": "Thứ _",
+    "periods": [],
+    "area": "(Chọn)",
+    "room": null,
+    "class_size": 1500
+   },
+   {
+    "course_name": "Thực tập tốt nghiệp",
+    "sub_topic": null,
+    "class_index": "20",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Nguyễn Trọng Công Thành",
+    "day": "Thứ Năm",
+    "periods": [
+     3,
+     4
+    ],
+    "area": "K",
+    "room": "D1.302 (P. Seminar Khoa KTMT)",
+    "class_size": null
+   },
+   {
+    "course_name": "Thực tập tốt nghiệp",
+    "sub_topic": null,
+    "class_index": "21",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Phạm Tuấn  Anh",
+    "day": "Thứ Hai",
+    "periods": [
+     8,
+     9
+    ],
+    "area": "K",
+    "room": "A302",
+    "class_size": null
+   },
+   {
+    "course_name": "Thực tập tốt nghiệp",
+    "sub_topic": null,
+    "class_index": "22",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Phan Đăng Thiếu Hiệp",
+    "day": "Thứ _",
+    "periods": [],
+    "area": "Khác",
+    "room": "_",
+    "class_size": null
+   },
+   {
+    "course_name": "Thực tập tốt nghiệp",
+    "sub_topic": null,
+    "class_index": "23",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Trà Văn Sơn",
+    "day": "Thứ _",
+    "periods": [],
+    "area": "Khác",
+    "room": "_",
+    "class_size": null
+   },
+   {
+    "course_name": "Thực tập tốt nghiệp",
+    "sub_topic": null,
+    "class_index": "24",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Trần Đình Sơn",
+    "day": "Thứ Tư",
+    "periods": [
+     7,
+     8,
+     9
+    ],
+    "area": "V",
+    "room": "A210",
+    "class_size": null
+   },
+   {
+    "course_name": "Thực tập tốt nghiệp",
+    "sub_topic": null,
+    "class_index": "25",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Trần Thanh Liêm",
+    "day": "Thứ Bảy",
+    "periods": [
+     6,
+     7
+    ],
+    "area": "K",
+    "room": "A310",
+    "class_size": null
+   },
+   {
+    "course_name": "Thực tập tốt nghiệp",
+    "sub_topic": null,
+    "class_index": "26",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Trần Thị Hạ Quyên",
+    "day": "Thứ _",
+    "periods": [],
+    "area": "Khác",
+    "room": "_",
+    "class_size": null
+   },
+   {
+    "course_name": "Thực tập tốt nghiệp",
+    "sub_topic": null,
+    "class_index": "27",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Trần Thị Thúy Ngọc",
+    "day": "Thứ Năm",
+    "periods": [
+     2,
+     3
+    ],
+    "area": "K",
+    "room": "A104",
+    "class_size": null
+   },
+   {
+    "course_name": "Thực tập tốt nghiệp",
+    "sub_topic": null,
+    "class_index": "28",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Trịnh Thị Ngọc Linh",
+    "day": "Thứ Bảy",
+    "periods": [
+     6,
+     7
+    ],
+    "area": "K",
+    "room": "A304",
+    "class_size": null
+   },
+   {
+    "course_name": "Thực tập tốt nghiệp",
+    "sub_topic": null,
+    "class_index": "29",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Võ Ngọc Đạt",
+    "day": "Thứ Hai",
+    "periods": [
+     1,
+     2
+    ],
+    "area": "V",
+    "room": "B402",
+    "class_size": null
+   },
+   {
+    "course_name": "Thực tập tốt nghiệp",
+    "sub_topic": null,
+    "class_index": "3",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "PGS.TS.Nguyễn Thanh Bình",
+    "day": "Thứ _",
+    "periods": [],
+    "area": "Khác",
+    "room": "_",
+    "class_size": null
+   },
+   {
+    "course_name": "Thực tập tốt nghiệp",
+    "sub_topic": null,
+    "class_index": "30",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Võ Văn Lường",
+    "day": "Thứ Bảy",
+    "periods": [
+     1,
+     2
+    ],
+    "area": "V",
+    "room": "A103 (P. Đào tạo)",
+    "class_size": null
+   },
+   {
+    "course_name": "Thực tập tốt nghiệp",
+    "sub_topic": null,
+    "class_index": "31",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "TS.Cao Xuân Tuấn",
+    "day": "Thứ _",
+    "periods": [],
+    "area": "Khác",
+    "room": "_",
+    "class_size": null
+   },
+   {
+    "course_name": "Thực tập tốt nghiệp",
+    "sub_topic": null,
+    "class_index": "32",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "TS.Đặng Đại  Thọ",
+    "day": "Thứ _",
+    "periods": [],
+    "area": "Khác",
+    "room": "_",
+    "class_size": null
+   },
+   {
+    "course_name": "Thực tập tốt nghiệp",
+    "sub_topic": null,
+    "class_index": "33",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "TS.Đặng Văn Cường",
+    "day": "Thứ Hai",
+    "periods": [
+     2,
+     3,
+     4
+    ],
+    "area": "K",
+    "room": "A104",
+    "class_size": null
+   },
+   {
+    "course_name": "Thực tập tốt nghiệp",
+    "sub_topic": null,
+    "class_index": "34",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "TS.Hồ Phan Hiếu",
+    "day": "Thứ _",
+    "periods": [],
+    "area": "Khác",
+    "room": "_",
+    "class_size": null
+   },
+   {
+    "course_name": "Thực tập tốt nghiệp",
+    "sub_topic": null,
+    "class_index": "35",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "TS.Hồ Văn Hùng",
+    "day": "Thứ _",
+    "periods": [],
+    "area": "Khác",
+    "room": "_",
+    "class_size": null
+   },
+   {
+    "course_name": "Thực tập tốt nghiệp",
+    "sub_topic": null,
+    "class_index": "36",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "TS.Hồ Văn Phi",
+    "day": "Thứ Hai",
+    "periods": [
+     3,
+     4
+    ],
+    "area": "K",
+    "room": "A210",
+    "class_size": null
+   },
+   {
+    "course_name": "Thực tập tốt nghiệp",
+    "sub_topic": null,
+    "class_index": "37",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "TS.Hoàng Nguyên Vũ",
+    "day": "Thứ _",
+    "periods": [],
+    "area": "Khác",
+    "room": "_",
+    "class_size": null
+   },
+   {
+    "course_name": "Thực tập tốt nghiệp",
+    "sub_topic": null,
+    "class_index": "38",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "TS.Huỳnh Ngọc Thọ",
+    "day": "Thứ Hai",
+    "periods": [
+     1,
+     2
+    ],
+    "area": "V",
+    "room": "A205 (P. Hiệu phó)",
+    "class_size": null
+   },
+   {
+    "course_name": "Thực tập tốt nghiệp",
+    "sub_topic": null,
+    "class_index": "39",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "TS.Lâm Tùng Giang",
+    "day": "Thứ Ba",
+    "periods": [
+     2,
+     3
+    ],
+    "area": "V",
+    "room": "A103 (P. Đào tạo)",
+    "class_size": null
+   },
+   {
+    "course_name": "Thực tập tốt nghiệp",
+    "sub_topic": null,
+    "class_index": "4",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Đặng Đại Việt",
+    "day": "Thứ Ba",
+    "periods": [
+     6,
+     7
+    ],
+    "area": "K",
+    "room": "D1.302 (P. Seminar Khoa KTMT)",
+    "class_size": null
+   },
+   {
+    "course_name": "Thực tập tốt nghiệp",
+    "sub_topic": null,
+    "class_index": "40",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "TS.Lê Tân",
+    "day": "Thứ Ba",
+    "periods": [
+     8,
+     9
+    ],
+    "area": "K",
+    "room": "A210",
+    "class_size": null
+   },
+   {
+    "course_name": "Thực tập tốt nghiệp",
+    "sub_topic": null,
+    "class_index": "41",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "TS.Lê Thị Thu Nga",
+    "day": "Thứ Hai",
+    "periods": [
+     7,
+     8,
+     9
+    ],
+    "area": "K",
+    "room": "D1.302 (P. Seminar Khoa KTMT)",
+    "class_size": null
+   },
+   {
+    "course_name": "Thực tập tốt nghiệp",
+    "sub_topic": null,
+    "class_index": "42",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "TS.Lê Văn Minh",
+    "day": "Thứ _",
+    "periods": [],
+    "area": "Khác",
+    "room": "_",
+    "class_size": null
+   },
+   {
+    "course_name": "Thực tập tốt nghiệp",
+    "sub_topic": null,
+    "class_index": "43",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "TS.Lý Quỳnh Trân",
+    "day": "Thứ Hai",
+    "periods": [
+     1,
+     2,
+     3,
+     4
+    ],
+    "area": "V",
+    "room": "A313",
+    "class_size": null
+   },
+   {
+    "course_name": "Thực tập tốt nghiệp",
+    "sub_topic": null,
+    "class_index": "44",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "TS.Nguyễn Đức Hiển",
+    "day": "Thứ Hai",
+    "periods": [
+     6,
+     7,
+     8,
+     9
+    ],
+    "area": "K",
+    "room": "D1.302 (P. Seminar Khoa KTMT)",
+    "class_size": null
+   },
+   {
+    "course_name": "Thực tập tốt nghiệp",
+    "sub_topic": null,
+    "class_index": "45",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "TS.Nguyễn Hà Huy Cường",
+    "day": "Thứ Sáu",
+    "periods": [
+     8,
+     9
+    ],
+    "area": "K",
+    "room": "A208",
+    "class_size": null
+   },
+   {
+    "course_name": "Thực tập tốt nghiệp",
+    "sub_topic": null,
+    "class_index": "46",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "TS.Nguyễn Hữu Nhật Minh",
+    "day": "Thứ _",
+    "periods": [],
+    "area": "Khác",
+    "room": "_",
+    "class_size": null
+   },
+   {
+    "course_name": "Thực tập tốt nghiệp",
+    "sub_topic": null,
+    "class_index": "47",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "TS.Nguyễn Nho Túy",
+    "day": "Thứ _",
+    "periods": [],
+    "area": "Khác",
+    "room": "_",
+    "class_size": null
+   },
+   {
+    "course_name": "Thực tập tốt nghiệp",
+    "sub_topic": null,
+    "class_index": "48",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "TS.Nguyễn Quang Vũ",
+    "day": "Thứ Hai",
+    "periods": [
+     8,
+     9
+    ],
+    "area": "V",
+    "room": "A103 (P. Đào tạo)",
+    "class_size": null
+   },
+   {
+    "course_name": "Thực tập tốt nghiệp",
+    "sub_topic": null,
+    "class_index": "49",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "TS.Nguyễn Sĩ Thìn",
+    "day": "Thứ Bảy",
+    "periods": [
+     1,
+     2
+    ],
+    "area": "K",
+    "room": "A202",
+    "class_size": null
+   },
+   {
+    "course_name": "Thực tập tốt nghiệp",
+    "sub_topic": null,
+    "class_index": "5",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Đặng Thị Kim Ngân",
+    "day": "Thứ _",
+    "periods": [],
+    "area": "Khác",
+    "room": "_",
+    "class_size": null
+   },
+   {
+    "course_name": "Thực tập tốt nghiệp",
+    "sub_topic": null,
+    "class_index": "50",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "TS.Nguyễn Thanh",
+    "day": "Thứ _",
+    "periods": [],
+    "area": "Khác",
+    "room": "_",
+    "class_size": null
+   },
+   {
+    "course_name": "Thực tập tốt nghiệp",
+    "sub_topic": null,
+    "class_index": "51",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "TS.Nguyễn Thanh Tuấn",
+    "day": "Thứ Hai",
+    "periods": [
+     3,
+     4
+    ],
+    "area": "K",
+    "room": "A210",
+    "class_size": null
+   },
+   {
+    "course_name": "Thực tập tốt nghiệp",
+    "sub_topic": null,
+    "class_index": "52",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "TS.Nguyễn Văn  Bình",
+    "day": "Thứ _",
+    "periods": [],
+    "area": "Khác",
+    "room": "_",
+    "class_size": null
+   },
+   {
+    "course_name": "Thực tập tốt nghiệp",
+    "sub_topic": null,
+    "class_index": "53",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "TS.Nguyễn Văn Lợi",
+    "day": "Thứ Sáu",
+    "periods": [
+     8,
+     9
+    ],
+    "area": "K",
+    "room": "A208",
+    "class_size": null
+   },
+   {
+    "course_name": "Thực tập tốt nghiệp",
+    "sub_topic": null,
+    "class_index": "54",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "TS.Phạm Nguyễn Minh Nhựt",
+    "day": "Thứ _",
+    "periods": [],
+    "area": "Khác",
+    "room": "_",
+    "class_size": null
+   },
+   {
+    "course_name": "Thực tập tốt nghiệp",
+    "sub_topic": null,
+    "class_index": "55",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "TS.Trần Nguyễn Hồng Phúc",
+    "day": "Thứ Hai",
+    "periods": [
+     1,
+     2
+    ],
+    "area": "V",
+    "room": "A103 (P. Đào tạo)",
+    "class_size": null
+   },
+   {
+    "course_name": "Thực tập tốt nghiệp",
+    "sub_topic": null,
+    "class_index": "56",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "TS.Trần Uyên Trang",
+    "day": "Thứ _",
+    "periods": [],
+    "area": "Khác",
+    "room": "_",
+    "class_size": null
+   },
+   {
+    "course_name": "Thực tập tốt nghiệp",
+    "sub_topic": null,
+    "class_index": "57",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "TS.Trần Văn Đại",
+    "day": "Thứ Ba",
+    "periods": [
+     8,
+     9
+    ],
+    "area": "K",
+    "room": "A104",
+    "class_size": null
+   },
+   {
+    "course_name": "Thực tập tốt nghiệp",
+    "sub_topic": null,
+    "class_index": "58",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "TS.Võ Duy Thanh",
+    "day": "Thứ Sáu",
+    "periods": [
+     6,
+     7,
+     8
+    ],
+    "area": "K",
+    "room": "A204",
+    "class_size": null
+   },
+   {
+    "course_name": "Thực tập tốt nghiệp",
+    "sub_topic": null,
+    "class_index": "6",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Đỗ Công Đức",
+    "day": "Thứ Hai",
+    "periods": [
+     1,
+     2
+    ],
+    "area": "K",
+    "room": "A204",
+    "class_size": null
+   },
+   {
+    "course_name": "Thực tập tốt nghiệp",
+    "sub_topic": null,
+    "class_index": "7",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Dương Thị Mai Nga",
+    "day": "Thứ Năm",
+    "periods": [
+     1,
+     2,
+     3
+    ],
+    "area": "K",
+    "room": "D1.302 (P. Seminar Khoa KTMT)",
+    "class_size": null
+   },
+   {
+    "course_name": "Thực tập tốt nghiệp",
+    "sub_topic": null,
+    "class_index": "8",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Hà Thị Minh Phương",
+    "day": "Thứ Hai",
+    "periods": [
+     1,
+     2,
+     3,
+     4
+    ],
+    "area": "V",
+    "room": "A212",
+    "class_size": null
+   },
+   {
+    "course_name": "Thực tập tốt nghiệp",
+    "sub_topic": null,
+    "class_index": "9",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Lê Đình  Nguyên",
+    "day": "Thứ Tư",
+    "periods": [
+     3,
+     4
+    ],
+    "area": "K",
+    "room": "D1.302 (P. Seminar Khoa KTMT)",
+    "class_size": null
+   }
+  ]
+ },
+ "preferences": {
+  "version": "2.0",
+  "constraints": [
+   {
+    "limit": "subjects_per_day",
+    "max": 3
+   },
+   {
+    "limit": "study_days",
+    "max": 1
+   },
+   {
+    "prefer": {
+     "area": "V"
+    },
+    "scope": {
+     "course": "Chuyên đề 3"
+    }
+   },
+   {
+    "limit": "subjects_per_session",
+    "max": 2
+   },
+   {
+    "avoid": {
+     "class_group": [
+      16,
+      12
+     ]
+    },
+    "scope": {
+     "course": "Tiếng Anh chuyên ngành 1"
+    },
+    "level": "high"
+   }
+  ]
+ },
+ "review_stats": [
+  {
+   "subject": "Đồ án cơ sở 4 -6",
+   "lecturer": "Mai Nga",
+   "aspect": "hanh_vi",
+   "positive": 1,
+   "negative": 1,
+   "total": 6
+  },
+  {
+   "subject": "Đồ án cơ sở 4 -6",
+   "lecturer": "Mai Nga",
+   "aspect": "cham_diem",
+   "positive": 0,
+   "negative": 0,
+   "total": 0
+  },
+  {
+   "subject": "Đồ án cơ sở 4 -6",
+   "lecturer": "Thành Công",
+   "aspect": "hanh_vi",
+   "positive": 2,
+   "negative": 1,
+   "total": 6
+  },
+  {
+   "subject": "Đồ án cơ sở 4 -6",
+   "lecturer": "Thành Công",
+   "aspect": "kien_thuc",
+   "positive": 0,
+   "negative": 3,
+   "total": 3
+  },
+  {
+   "subject": "Đồ án cơ sở 4 -6",
+   "lecturer": "Thiếu Hiệp",
+   "aspect": "ky_nang_giang_day",
+   "positive": 1,
+   "negative": 2,
+   "total": 4
+  },
+  {
+   "subject": "Đồ án cơ sở 4 -6",
+   "lecturer": "Thiếu Hiệp",
+   "aspect": "hanh_vi",
+   "positive": 3,
+   "negative": 5,
+   "total": 12
+  },
+  {
+   "subject": "Đồ án cơ sở 4 -6",
+   "lecturer": "Thiếu Hiệp",
+   "aspect": "cham_diem",
+   "positive": 17,
+   "negative": 1,
+   "total": 18
+  },
+  {
+   "subject": "Đồ án cơ sở 4 -6",
+   "lecturer": "Thiếu Hiệp",
+   "aspect": "kien_thuc",
+   "positive": 2,
+   "negative": 1,
+   "total": 5
+  },
+  {
+   "subject": "Chuyên đề 3",
+   "lecturer": "Sĩ Thìn",
+   "aspect": "ky_nang_giang_day",
+   "positive": 3,
+   "negative": 14,
+   "total": 19
+  },
+  {
+   "subject": "Chuyên đề 3",
+   "lecturer": "Sĩ Thìn",
+   "aspect": "hanh_vi",
+   "positive": 3,
+   "negative": 1,
+   "total": 4
+  },
+  {
+   "subject": "Chuyên đề 3",
+   "lecturer": "Sĩ Thìn",
+   "aspect": "cham_diem",
+   "positive": 2,
+   "negative": 0,
+   "total": 5
+  },
+  {
+   "subject": "Chuyên đề 3",
+   "lecturer": "Sĩ Thìn",
+   "aspect": "kien_thuc",
+   "positive": 2,
+   "negative": 0,
+   "total": 2
+  },
+  {
+   "subject": "Tiếng Anh chuyên ngành 1",
+   "lecturer": "Quỳnh Trân",
+   "aspect": "ky_nang_giang_day",
+   "positive": 10,
+   "negative": 5,
+   "total": 18
+  },
+  {
+   "subject": "Tiếng Anh chuyên ngành 1",
+   "lecturer": "Quỳnh Trân",
+   "aspect": "hanh_vi",
+   "positive": 4,
+   "negative": 0,
+   "total": 11
+  },
+  {
+   "subject": "Tiếng Anh chuyên ngành 1",
+   "lecturer": "Quỳnh Trân",
+   "aspect": "bai_tap",
+   "positive": 3,
+   "negative": 5,
+   "total": 13
+  },
+  {
+   "subject": "Tiếng Anh chuyên ngành 1",
+   "lecturer": "Sĩ Thìn",
+   "aspect": "ky_nang_giang_day",
+   "positive": 4,
+   "negative": 5,
+   "total": 9
+  },
+  {
+   "subject": "Tiếng Anh chuyên ngành 1",
+   "lecturer": "Sĩ Thìn",
+   "aspect": "kien_thuc",
+   "positive": 2,
+   "negative": 0,
+   "total": 9
+  },
+  {
+   "subject": "Tiếng Anh chuyên ngành 1",
+   "lecturer": "Văn Lợi",
+   "aspect": "ky_nang_giang_day",
+   "positive": 0,
+   "negative": 4,
+   "total": 7
+  },
+  {
+   "subject": "Tiếng Anh chuyên ngành 1",
+   "lecturer": "Văn Lợi",
+   "aspect": "cham_diem",
+   "positive": 10,
+   "negative": 0,
+   "total": 10
+  },
+  {
+   "subject": "Tiếng Anh chuyên ngành 1",
+   "lecturer": "Hải Quỳnh",
+   "aspect": "ky_nang_giang_day",
+   "positive": 10,
+   "negative": 1,
+   "total": 17
+  },
+  {
+   "subject": "Tiếng Anh chuyên ngành 1",
+   "lecturer": "Hải Quỳnh",
+   "aspect": "hanh_vi",
+   "positive": 5,
+   "negative": 7,
+   "total": 12
+  },
+  {
+   "subject": "Tiếng Anh chuyên ngành 1",
+   "lecturer": "Hải Quỳnh",
+   "aspect": "cham_diem",
+   "positive": 1,
+   "negative": 3,
+   "total": 9
+  },
+  {
+   "subject": "Tiếng Anh chuyên ngành 1",
+   "lecturer": "Công Đạt",
+   "aspect": "cham_diem",
+   "positive": 4,
+   "negative": 3,
+   "total": 9
+  },
+  {
+   "subject": "Tiếng Anh chuyên ngành 1",
+   "lecturer": "Công Đạt",
+   "aspect": "bai_tap",
+   "positive": 2,
+   "negative": 3,
+   "total": 5
+  },
+  {
+   "subject": "Tiếng Anh chuyên ngành 1",
+   "lecturer": "Đại Thọ",
+   "aspect": "ky_nang_giang_day",
+   "positive": 4,
+   "negative": 1,
+   "total": 15
+  },
+  {
+   "subject": "Tiếng Anh chuyên ngành 1",
+   "lecturer": "Đại Thọ",
+   "aspect": "hanh_vi",
+   "positive": 3,
+   "negative": 2,
+   "total": 6
+  },
+  {
+   "subject": "Tiếng Anh chuyên ngành 1",
+   "lecturer": "Đại Thọ",
+   "aspect": "cham_diem",
+   "positive": 0,
+   "negative": 2,
+   "total": 2
+  },
+  {
+   "subject": "Tiếng Anh chuyên ngành 1",
+   "lecturer": "Đại Thọ",
+   "aspect": "kien_thuc",
+   "positive": 12,
+   "negative": 1,
+   "total": 14
+  },
+  {
+   "subject": "Tiếng Anh chuyên ngành 1",
+   "lecturer": "Bank Agribank",
+   "aspect": "ky_nang_giang_day",
+   "positive": 0,
+   "negative": 0,
+   "total": 0
+  },
+  {
+   "subject": "Tiếng Anh chuyên ngành 1",
+   "lecturer": "Bank Agribank",
+   "aspect": "hanh_vi",
+   "positive": 9,
+   "negative": 6,
+   "total": 20
+  },
+  {
+   "subject": "Tiếng Anh chuyên ngành 1",
+   "lecturer": "Bank Agribank",
+   "aspect": "cham_diem",
+   "positive": 11,
+   "negative": 1,
+   "total": 17
+  },
+  {
+   "subject": "Tiếng Anh chuyên ngành 1",
+   "lecturer": "Bank Agribank",
+   "aspect": "bai_tap",
+   "positive": 10,
+   "negative": 4,
+   "total": 16
+  },
+  {
+   "subject": "Tiếng Anh chuyên ngành 1",
+   "lecturer": "Bank Agribank",
+   "aspect": "kien_thuc",
+   "positive": 6,
+   "negative": 2,
+   "total": 8
+  },
+  {
+   "subject": "Tiếng Anh chuyên ngành 1",
+   "lecturer": "Trần Huân",
+   "aspect": "ky_nang_giang_day",
+   "positive": 9,
+   "negative": 3,
+   "total": 12
+  },
+  {
+   "subject": "Tiếng Anh chuyên ngành 1",
+   "lecturer": "Trần Huân",
+   "aspect": "cham_diem",
+   "positive": 6,
+   "negative": 12,
+   "total": 19
+  },
+  {
+   "subject": "Tiếng Anh chuyên ngành 1",
+   "lecturer": "Trần Huân",
+   "aspect": "bai_tap",
+   "positive": 0,
+   "negative": 0,
+   "total": 0
+  },
+  {
+   "subject": "Tiếng Anh chuyên ngành 1",
+   "lecturer": "Minh Phương",
+   "aspect": "ky_nang_giang_day",
+   "positive": 3,
+   "negative": 3,
+   "total": 8
+  },
+  {
+   "subject": "Tiếng Anh chuyên ngành 1",
+   "lecturer": "Minh Phương",
+   "aspect": "hanh_vi",
+   "positive": 1,
+   "negative": 2,
+   "total": 4
+  },
+  {
+   "subject": "Tiếng Anh chuyên ngành 1",
+   "lecturer": "Minh Phương",
+   "aspect": "cham_diem",
+   "positive": 11,
+   "negative": 0,
+   "total": 20
+  },
+  {
+   "subject": "Tiếng Anh chuyên ngành 1",
+   "lecturer": "Minh Phương",
+   "aspect": "kien_thuc",
+   "positive": 4,
+   "negative": 0,
+   "total": 11
+  },
+  {
+   "subject": "Tiếng Anh chuyên ngành 1",
+   "lecturer": "Đình Nguyên",
+   "aspect": "hanh_vi",
+   "positive": 2,
+   "negative": 10,
+   "total": 20
+  },
+  {
+   "subject": "Tiếng Anh chuyên ngành 1",
+   "lecturer": "Đình Nguyên",
+   "aspect": "cham_diem",
+   "positive": 1,
+   "negative": 1,
+   "total": 3
+  },
+  {
+   "subject": "Tiếng Anh chuyên ngành 1",
+   "lecturer": "Đình Nguyên",
+   "aspect": "bai_tap",
+   "positive": 1,
+   "negative": 2,
+   "total": 7
+  },
+  {
+   "subject": "Tiếng Anh chuyên ngành 1",
+   "lecturer": "Đình Nguyên",
+   "aspect": "kien_thuc",
+   "positive": 11,
+   "negative": 5,
+   "total": 17
+  },
+  {
+   "subject": "Tiếng Anh chuyên ngành 1",
+   "lecturer": "Mai Lam",
+   "aspect": "ky_nang_giang_day",
+   "positive": 14,
+   "negative": 0,
+   "total": 15
+  },
+  {
+   "subject": "Tiếng Anh chuyên ngành 1",
+   "lecturer": "Mai Lam",
+   "aspect": "hanh_vi",
+   "positive": 6,
+   "negative": 1,
+   "total": 16
+  },
+  {
+   "subject": "Tiếng Anh chuyên ngành 1",
+   "lecturer": "Mai Lam",
+   "aspect": "cham_diem",
+   "positive": 10,
+   "negative": 0,
+   "total": 10
+  },
+  {
+   "subject": "Tiếng Anh chuyên ngành 1",
+   "lecturer": "Mai Lam",
+   "aspect": "bai_tap",
+   "positive": 1,
+   "negative": 0,
+   "total": 2
+  },
+  {
+   "subject": "Tiếng Anh chuyên ngành 1",
+   "lecturer": "Mai Lam",
+   "aspect": "kien_thuc",
+   "positive": 10,
+   "negative": 1,
+   "total": 11
+  },
+  {
+   "subject": "Tiếng Anh chuyên ngành 1",
+   "lecturer": "Huyền Trang",
+   "aspect": "cham_diem",
+   "positive": 12,
+   "negative": 2,
+   "total": 14
+  },
+  {
+   "subject": "Tiếng Anh chuyên ngành 1",
+   "lecturer": "Huyền Trang",
+   "aspect": "kien_thuc",
+   "positive": 8,
+   "negative": 5,
+   "total": 14
+  },
+  {
+   "subject": "Tiếng Anh chuyên ngành 1",
+   "lecturer": "Thảo Nhi",
+   "aspect": "cham_diem",
+   "positive": 8,
+   "negative": 0,
+   "total": 9
+  },
+  {
+   "subject": "Tiếng Anh chuyên ngành 1",
+   "lecturer": "Công Pháp",
+   "aspect": "ky_nang_giang_day",
+   "positive": 17,
+   "negative": 0,
+   "total": 18
+  },
+  {
+   "subject": "Tiếng Anh chuyên ngành 1",
+   "lecturer": "Công Pháp",
+   "aspect": "hanh_vi",
+   "positive": 1,
+   "negative": 0,
+   "total": 1
+  },
+  {
+   "subject": "Tiếng Anh chuyên ngành 1",
+   "lecturer": "Công Pháp",
+   "aspect": "cham_diem",
+   "positive": 1,
+   "negative": 0,
+   "total": 2
+  },
+  {
+   "subject": "Tiếng Anh chuyên ngành 1",
+   "lecturer": "Công Pháp",
+   "aspect": "bai_tap",
+   "positive": 0,
+   "negative": 1,
+   "total": 1
+  },
+  {
+   "subject": "Tiếng Anh chuyên ngành 1",
+   "lecturer": "Công Pháp",
+   "aspect": "kien_thuc",
+   "positive": 0,
+   "negative": 1,
+   "total": 3
+  },
+  {
+   "subject": "Tiếng Anh chuyên ngành 1",
+   "lecturer": "Khánh Chi",
+   "aspect": "hanh_vi",
+   "positive": 7,
+   "negative": 1,
+   "total": 8
+  },
+  {
+   "subject": "Tiếng Anh chuyên ngành 1",
+   "lecturer": "Khánh Chi",
+   "aspect": "cham_diem",
+   "positive": 0,
+   "negative": 0,
+   "total": 5
+  },
+  {
+   "subject": "Tiếng Anh chuyên ngành 1",
+   "lecturer": "Khánh Chi",
+   "aspect": "bai_tap",
+   "positive": 1,
+   "negative": 0,
+   "total": 4
+  },
+  {
+   "subject": "Tiếng Anh chuyên ngành 1",
+   "lecturer": "Khánh Chi",
+   "aspect": "kien_thuc",
+   "positive": 6,
+   "negative": 1,
+   "total": 15
+  },
+  {
+   "subject": "Tiếng Anh chuyên ngành 1",
+   "lecturer": "Thành Nhân",
+   "aspect": "cham_diem",
+   "positive": 11,
+   "negative": 0,
+   "total": 14
+  },
+  {
+   "subject": "Tiếng Anh chuyên ngành 1",
+   "lecturer": "Thành Nhân",
+   "aspect": "bai_tap",
+   "positive": 0,
+   "negative": 7,
+   "total": 11
+  },
+  {
+   "subject": "Tiếng Anh chuyên ngành 1",
+   "lecturer": "Khánh Phương",
+   "aspect": "hanh_vi",
+   "positive": 6,
+   "negative": 4,
+   "total": 11
+  },
+  {
+   "subject": "Tiếng Anh chuyên ngành 1",
+   "lecturer": "Khánh Phương",
+   "aspect": "bai_tap",
+   "positive": 2,
+   "negative": 4,
+   "total": 16
+  },
+  {
+   "subject": "Đồ án cơ sở 4 -18",
+   "lecturer": "Thanh Tuấn",
+   "aspect": "hanh_vi",
+   "positive": 7,
+   "negative": 10,
+   "total": 19
+  },
+  {
+   "subject": "Đồ án cơ sở 4 -18",
+   "lecturer": "Thanh Tuấn",
+   "aspect": "bai_tap",
+   "positive": 4,
+   "negative": 0,
+   "total": 4
+  },
+  {
+   "subject": "Đồ án cơ sở 4 -18",
+   "lecturer": "Thanh Tuấn",
+   "aspect": "kien_thuc",
+   "positive": 12,
+   "negative": 0,
+   "total": 15
+  },
+  {
+   "subject": "Đồ án cơ sở 4 -18",
+   "lecturer": "Thanh Cẩm",
+   "aspect": "ky_nang_giang_day",
+   "positive": 1,
+   "negative": 0,
+   "total": 1
+  },
+  {
+   "subject": "Đồ án cơ sở 4 -18",
+   "lecturer": "Thanh Cẩm",
+   "aspect": "hanh_vi",
+   "positive": 2,
+   "negative": 5,
+   "total": 7
+  },
+  {
+   "subject": "Đồ án cơ sở 4 -18",
+   "lecturer": "Thanh Cẩm",
+   "aspect": "cham_diem",
+   "positive": 1,
+   "negative": 0,
+   "total": 1
+  },
+  {
+   "subject": "Đồ án cơ sở 4 -18",
+   "lecturer": "Thanh Cẩm",
+   "aspect": "bai_tap",
+   "positive": 10,
+   "negative": 0,
+   "total": 10
+  },
+  {
+   "subject": "Đồ án cơ sở 4 -18",
+   "lecturer": "Thanh Cẩm",
+   "aspect": "kien_thuc",
+   "positive": 5,
+   "negative": 4,
+   "total": 14
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Hồng Phúc",
+   "aspect": "ky_nang_giang_day",
+   "positive": 8,
+   "negative": 1,
+   "total": 9
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Hồng Phúc",
+   "aspect": "bai_tap",
+   "positive": 0,
+   "negative": 0,
+   "total": 1
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Hồng Phúc",
+   "aspect": "kien_thuc",
+   "positive": 0,
+   "negative": 4,
+   "total": 5
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Công Pháp",
+   "aspect": "cham_diem",
+   "positive": 2,
+   "negative": 17,
+   "total": 20
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Công Pháp",
+   "aspect": "bai_tap",
+   "positive": 7,
+   "negative": 6,
+   "total": 15
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Công Pháp",
+   "aspect": "kien_thuc",
+   "positive": 1,
+   "negative": 1,
+   "total": 2
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Thanh Bình",
+   "aspect": "ky_nang_giang_day",
+   "positive": 4,
+   "negative": 11,
+   "total": 18
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Thanh Bình",
+   "aspect": "cham_diem",
+   "positive": 9,
+   "negative": 6,
+   "total": 18
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Xuân Tuấn",
+   "aspect": "ky_nang_giang_day",
+   "positive": 6,
+   "negative": 2,
+   "total": 8
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Xuân Tuấn",
+   "aspect": "hanh_vi",
+   "positive": 18,
+   "negative": 1,
+   "total": 19
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Xuân Tuấn",
+   "aspect": "cham_diem",
+   "positive": 5,
+   "negative": 4,
+   "total": 11
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Xuân Tuấn",
+   "aspect": "bai_tap",
+   "positive": 17,
+   "negative": 2,
+   "total": 19
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Xuân Tuấn",
+   "aspect": "kien_thuc",
+   "positive": 2,
+   "negative": 0,
+   "total": 5
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Nguyên Vũ",
+   "aspect": "bai_tap",
+   "positive": 4,
+   "negative": 1,
+   "total": 6
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Nguyên Vũ",
+   "aspect": "kien_thuc",
+   "positive": 17,
+   "negative": 0,
+   "total": 18
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Ngọc Thọ",
+   "aspect": "hanh_vi",
+   "positive": 6,
+   "negative": 2,
+   "total": 10
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Ngọc Thọ",
+   "aspect": "cham_diem",
+   "positive": 4,
+   "negative": 6,
+   "total": 17
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Ngọc Thọ",
+   "aspect": "bai_tap",
+   "positive": 8,
+   "negative": 4,
+   "total": 13
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Phan Hiếu",
+   "aspect": "hanh_vi",
+   "positive": 3,
+   "negative": 1,
+   "total": 5
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Phan Hiếu",
+   "aspect": "kien_thuc",
+   "positive": 4,
+   "negative": 3,
+   "total": 7
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Văn Hùng",
+   "aspect": "ky_nang_giang_day",
+   "positive": 0,
+   "negative": 5,
+   "total": 5
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Văn Hùng",
+   "aspect": "cham_diem",
+   "positive": 0,
+   "negative": 0,
+   "total": 0
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Văn Hùng",
+   "aspect": "bai_tap",
+   "positive": 9,
+   "negative": 0,
+   "total": 10
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Văn Hùng",
+   "aspect": "kien_thuc",
+   "positive": 16,
+   "negative": 0,
+   "total": 17
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Văn Phi",
+   "aspect": "ky_nang_giang_day",
+   "positive": 11,
+   "negative": 5,
+   "total": 17
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Văn Phi",
+   "aspect": "kien_thuc",
+   "positive": 6,
+   "negative": 1,
+   "total": 20
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Tùng Giang",
+   "aspect": "ky_nang_giang_day",
+   "positive": 4,
+   "negative": 0,
+   "total": 14
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Tùng Giang",
+   "aspect": "hanh_vi",
+   "positive": 4,
+   "negative": 0,
+   "total": 5
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Tùng Giang",
+   "aspect": "bai_tap",
+   "positive": 0,
+   "negative": 0,
+   "total": 0
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Tùng Giang",
+   "aspect": "kien_thuc",
+   "positive": 1,
+   "negative": 1,
+   "total": 9
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Cửu Long",
+   "aspect": "cham_diem",
+   "positive": 0,
+   "negative": 0,
+   "total": 0
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Cửu Long",
+   "aspect": "bai_tap",
+   "positive": 2,
+   "negative": 8,
+   "total": 15
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Cửu Long",
+   "aspect": "kien_thuc",
+   "positive": 1,
+   "negative": 2,
+   "total": 19
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Thu Nga",
+   "aspect": "hanh_vi",
+   "positive": 15,
+   "negative": 3,
+   "total": 18
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Thu Nga",
+   "aspect": "cham_diem",
+   "positive": 8,
+   "negative": 0,
+   "total": 8
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Thu Nga",
+   "aspect": "bai_tap",
+   "positive": 3,
+   "negative": 4,
+   "total": 13
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Văn Minh",
+   "aspect": "ky_nang_giang_day",
+   "positive": 12,
+   "negative": 0,
+   "total": 12
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Văn Minh",
+   "aspect": "hanh_vi",
+   "positive": 0,
+   "negative": 0,
+   "total": 0
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Văn Minh",
+   "aspect": "kien_thuc",
+   "positive": 6,
+   "negative": 0,
+   "total": 8
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Quỳnh Trân",
+   "aspect": "cham_diem",
+   "positive": 1,
+   "negative": 0,
+   "total": 1
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Quỳnh Trân",
+   "aspect": "bai_tap",
+   "positive": 12,
+   "negative": 0,
+   "total": 20
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Huy Cường",
+   "aspect": "ky_nang_giang_day",
+   "positive": 0,
+   "negative": 0,
+   "total": 0
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Huy Cường",
+   "aspect": "hanh_vi",
+   "positive": 8,
+   "negative": 0,
+   "total": 13
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Huy Cường",
+   "aspect": "cham_diem",
+   "positive": 1,
+   "negative": 5,
+   "total": 17
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Huy Cường",
+   "aspect": "bai_tap",
+   "positive": 0,
+   "negative": 0,
+   "total": 0
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Huy Cường",
+   "aspect": "kien_thuc",
+   "positive": 14,
+   "negative": 0,
+   "total": 15
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Nhật Minh",
+   "aspect": "ky_nang_giang_day",
+   "positive": 1,
+   "negative": 12,
+   "total": 20
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Nhật Minh",
+   "aspect": "hanh_vi",
+   "positive": 0,
+   "negative": 1,
+   "total": 2
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Nho Túy",
+   "aspect": "ky_nang_giang_day",
+   "positive": 8,
+   "negative": 3,
+   "total": 12
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Nho Túy",
+   "aspect": "hanh_vi",
+   "positive": 8,
+   "negative": 1,
+   "total": 11
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Nho Túy",
+   "aspect": "cham_diem",
+   "positive": 7,
+   "negative": 1,
+   "total": 8
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Nho Túy",
+   "aspect": "bai_tap",
+   "positive": 14,
+   "negative": 1,
+   "total": 15
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Nho Túy",
+   "aspect": "kien_thuc",
+   "positive": 1,
+   "negative": 0,
+   "total": 1
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Quang Vũ",
+   "aspect": "hanh_vi",
+   "positive": 3,
+   "negative": 5,
+   "total": 8
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Quang Vũ",
+   "aspect": "cham_diem",
+   "positive": 1,
+   "negative": 6,
+   "total": 12
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Quang Vũ",
+   "aspect": "kien_thuc",
+   "positive": 9,
+   "negative": 6,
+   "total": 18
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Sĩ Thìn",
+   "aspect": "ky_nang_giang_day",
+   "positive": 7,
+   "negative": 0,
+   "total": 16
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Sĩ Thìn",
+   "aspect": "hanh_vi",
+   "positive": 16,
+   "negative": 0,
+   "total": 19
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Sĩ Thìn",
+   "aspect": "cham_diem",
+   "positive": 3,
+   "negative": 2,
+   "total": 8
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Nguyễn Thanh",
+   "aspect": "hanh_vi",
+   "positive": 0,
+   "negative": 0,
+   "total": 0
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Nguyễn Thanh",
+   "aspect": "cham_diem",
+   "positive": 8,
+   "negative": 5,
+   "total": 14
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Nguyễn Thanh",
+   "aspect": "bai_tap",
+   "positive": 7,
+   "negative": 2,
+   "total": 10
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Nguyễn Thanh",
+   "aspect": "kien_thuc",
+   "positive": 2,
+   "negative": 6,
+   "total": 19
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Thanh Hoài",
+   "aspect": "ky_nang_giang_day",
+   "positive": 8,
+   "negative": 5,
+   "total": 19
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Thanh Hoài",
+   "aspect": "kien_thuc",
+   "positive": 1,
+   "negative": 1,
+   "total": 2
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Thanh Tuấn",
+   "aspect": "ky_nang_giang_day",
+   "positive": 6,
+   "negative": 0,
+   "total": 6
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Thanh Tuấn",
+   "aspect": "hanh_vi",
+   "positive": 2,
+   "negative": 7,
+   "total": 12
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Thanh Tuấn",
+   "aspect": "cham_diem",
+   "positive": 2,
+   "negative": 12,
+   "total": 17
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Thanh Tuấn",
+   "aspect": "bai_tap",
+   "positive": 3,
+   "negative": 3,
+   "total": 16
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Văn Bình",
+   "aspect": "hanh_vi",
+   "positive": 1,
+   "negative": 3,
+   "total": 4
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Văn Bình",
+   "aspect": "cham_diem",
+   "positive": 12,
+   "negative": 0,
+   "total": 13
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Văn Bình",
+   "aspect": "bai_tap",
+   "positive": 6,
+   "negative": 1,
+   "total": 8
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Văn Lợi",
+   "aspect": "ky_nang_giang_day",
+   "positive": 0,
+   "negative": 6,
+   "total": 17
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Văn Lợi",
+   "aspect": "bai_tap",
+   "positive": 3,
+   "negative": 1,
+   "total": 4
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Văn Lợi",
+   "aspect": "kien_thuc",
+   "positive": 6,
+   "negative": 1,
+   "total": 7
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Đức Hiển",
+   "aspect": "ky_nang_giang_day",
+   "positive": 4,
+   "negative": 3,
+   "total": 10
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Đức Hiển",
+   "aspect": "hanh_vi",
+   "positive": 5,
+   "negative": 3,
+   "total": 9
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Đức Hiển",
+   "aspect": "cham_diem",
+   "positive": 10,
+   "negative": 1,
+   "total": 15
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Đức Hiển",
+   "aspect": "bai_tap",
+   "positive": 0,
+   "negative": 1,
+   "total": 1
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Đức Hiển",
+   "aspect": "kien_thuc",
+   "positive": 10,
+   "negative": 0,
+   "total": 12
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Hải Quỳnh",
+   "aspect": "ky_nang_giang_day",
+   "positive": 3,
+   "negative": 10,
+   "total": 13
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Hải Quỳnh",
+   "aspect": "cham_diem",
+   "positive": 6,
+   "negative": 7,
+   "total": 14
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Hải Quỳnh",
+   "aspect": "bai_tap",
+   "positive": 4,
+   "negative": 3,
+   "total": 11
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Văn Thành",
+   "aspect": "hanh_vi",
+   "positive": 3,
+   "negative": 1,
+   "total": 5
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Văn Thành",
+   "aspect": "cham_diem",
+   "positive": 1,
+   "negative": 0,
+   "total": 3
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Văn Thành",
+   "aspect": "kien_thuc",
+   "positive": 4,
+   "negative": 6,
+   "total": 13
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Minh Nhựt",
+   "aspect": "ky_nang_giang_day",
+   "positive": 5,
+   "negative": 3,
+   "total": 9
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Minh Nhựt",
+   "aspect": "hanh_vi",
+   "positive": 4,
+   "negative": 5,
+   "total": 14
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Minh Nhựt",
+   "aspect": "cham_diem",
+   "positive": 2,
+   "negative": 0,
+   "total": 2
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Hồng Phúc",
+   "aspect": "ky_nang_giang_day",
+   "positive": 10,
+   "negative": 7,
+   "total": 17
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Hồng Phúc",
+   "aspect": "hanh_vi",
+   "positive": 1,
+   "negative": 1,
+   "total": 4
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Hồng Phúc",
+   "aspect": "cham_diem",
+   "positive": 11,
+   "negative": 1,
+   "total": 13
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Uyên Trang",
+   "aspect": "ky_nang_giang_day",
+   "positive": 4,
+   "negative": 3,
+   "total": 7
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Uyên Trang",
+   "aspect": "hanh_vi",
+   "positive": 6,
+   "negative": 0,
+   "total": 8
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Uyên Trang",
+   "aspect": "cham_diem",
+   "positive": 11,
+   "negative": 0,
+   "total": 11
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Uyên Trang",
+   "aspect": "bai_tap",
+   "positive": 1,
+   "negative": 0,
+   "total": 1
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Văn Đại",
+   "aspect": "ky_nang_giang_day",
+   "positive": 10,
+   "negative": 6,
+   "total": 17
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Văn Đại",
+   "aspect": "cham_diem",
+   "positive": 5,
+   "negative": 0,
+   "total": 7
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Văn Đại",
+   "aspect": "bai_tap",
+   "positive": 3,
+   "negative": 1,
+   "total": 4
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Duy Thanh",
+   "aspect": "ky_nang_giang_day",
+   "positive": 10,
+   "negative": 9,
+   "total": 19
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Duy Thanh",
+   "aspect": "hanh_vi",
+   "positive": 5,
+   "negative": 0,
+   "total": 5
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Duy Thanh",
+   "aspect": "cham_diem",
+   "positive": 3,
+   "negative": 0,
+   "total": 8
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Duy Thanh",
+   "aspect": "kien_thuc",
+   "positive": 4,
+   "negative": 1,
+   "total": 5
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Thanh Thảo",
+   "aspect": "ky_nang_giang_day",
+   "positive": 2,
+   "negative": 4,
+   "total": 14
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Thanh Thảo",
+   "aspect": "bai_tap",
+   "positive": 9,
+   "negative": 8,
+   "total": 19
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Hùng Trọng",
+   "aspect": "hanh_vi",
+   "positive": 6,
+   "negative": 9,
+   "total": 17
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Hùng Trọng",
+   "aspect": "cham_diem",
+   "positive": 8,
+   "negative": 1,
+   "total": 12
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Hùng Trọng",
+   "aspect": "kien_thuc",
+   "positive": 4,
+   "negative": 0,
+   "total": 4
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Văn Cường",
+   "aspect": "hanh_vi",
+   "positive": 7,
+   "negative": 0,
+   "total": 7
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Văn Cường",
+   "aspect": "kien_thuc",
+   "positive": 9,
+   "negative": 3,
+   "total": 13
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Đại Thọ",
+   "aspect": "hanh_vi",
+   "positive": 3,
+   "negative": 7,
+   "total": 15
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Đại Thọ",
+   "aspect": "bai_tap",
+   "positive": 0,
+   "negative": 10,
+   "total": 19
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Đại Thọ",
+   "aspect": "kien_thuc",
+   "positive": 9,
+   "negative": 0,
+   "total": 10
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Trần Huân",
+   "aspect": "cham_diem",
+   "positive": 1,
+   "negative": 7,
+   "total": 11
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Trần Huân",
+   "aspect": "bai_tap",
+   "positive": 5,
+   "negative": 7,
+   "total": 14
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Mai Nga",
+   "aspect": "ky_nang_giang_day",
+   "positive": 1,
+   "negative": 1,
+   "total": 2
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Mai Nga",
+   "aspect": "hanh_vi",
+   "positive": 16,
+   "negative": 1,
+   "total": 17
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Mai Nga",
+   "aspect": "bai_tap",
+   "positive": 4,
+   "negative": 2,
+   "total": 6
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Mai Nga",
+   "aspect": "kien_thuc",
+   "positive": 1,
+   "negative": 0,
+   "total": 1
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Minh Phương",
+   "aspect": "ky_nang_giang_day",
+   "positive": 0,
+   "negative": 1,
+   "total": 11
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Minh Phương",
+   "aspect": "hanh_vi",
+   "positive": 8,
+   "negative": 0,
+   "total": 10
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Minh Phương",
+   "aspect": "bai_tap",
+   "positive": 11,
+   "negative": 0,
+   "total": 11
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Minh Phương",
+   "aspect": "kien_thuc",
+   "positive": 0,
+   "negative": 0,
+   "total": 0
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Thành Công",
+   "aspect": "ky_nang_giang_day",
+   "positive": 1,
+   "negative": 5,
+   "total": 9
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Thành Công",
+   "aspect": "kien_thuc",
+   "positive": 18,
+   "negative": 1,
+   "total": 20
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Viết Trương",
+   "aspect": "ky_nang_giang_day",
+   "positive": 0,
+   "negative": 0,
+   "total": 1
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Viết Trương",
+   "aspect": "cham_diem",
+   "positive": 12,
+   "negative": 3,
+   "total": 20
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Đình Nguyên",
+   "aspect": "cham_diem",
+   "positive": 0,
+   "negative": 0,
+   "total": 0
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Đình Nguyên",
+   "aspect": "bai_tap",
+   "positive": 4,
+   "negative": 0,
+   "total": 4
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Khánh Tý",
+   "aspect": "ky_nang_giang_day",
+   "positive": 3,
+   "negative": 0,
+   "total": 4
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Khánh Tý",
+   "aspect": "hanh_vi",
+   "positive": 15,
+   "negative": 3,
+   "total": 18
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Khánh Tý",
+   "aspect": "cham_diem",
+   "positive": 14,
+   "negative": 2,
+   "total": 17
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Khánh Tý",
+   "aspect": "bai_tap",
+   "positive": 3,
+   "negative": 1,
+   "total": 8
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Khánh Tý",
+   "aspect": "kien_thuc",
+   "positive": 8,
+   "negative": 0,
+   "total": 8
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Mai Lam",
+   "aspect": "bai_tap",
+   "positive": 6,
+   "negative": 0,
+   "total": 8
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Mai Lam",
+   "aspect": "kien_thuc",
+   "positive": 2,
+   "negative": 5,
+   "total": 17
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Anh Tuấn",
+   "aspect": "ky_nang_giang_day",
+   "positive": 5,
+   "negative": 0,
+   "total": 7
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Anh Tuấn",
+   "aspect": "hanh_vi",
+   "positive": 5,
+   "negative": 5,
+   "total": 19
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Anh Tuấn",
+   "aspect": "kien_thuc",
+   "positive": 0,
+   "negative": 2,
+   "total": 2
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Huyền Trân",
+   "aspect": "ky_nang_giang_day",
+   "positive": 0,
+   "negative": 0,
+   "total": 0
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Huyền Trân",
+   "aspect": "cham_diem",
+   "positive": 7,
+   "negative": 2,
+   "total": 11
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Thanh Cẩm",
+   "aspect": "ky_nang_giang_day",
+   "positive": 2,
+   "negative": 5,
+   "total": 12
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Thanh Cẩm",
+   "aspect": "bai_tap",
+   "positive": 9,
+   "negative": 6,
+   "total": 16
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Thanh Cẩm",
+   "aspect": "kien_thuc",
+   "positive": 11,
+   "negative": 1,
+   "total": 18
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Kim Ánh",
+   "aspect": "hanh_vi",
+   "positive": 5,
+   "negative": 0,
+   "total": 5
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Kim Ánh",
+   "aspect": "kien_thuc",
+   "positive": 4,
+   "negative": 2,
+   "total": 8
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Thanh Thúy",
+   "aspect": "cham_diem",
+   "positive": 1,
+   "negative": 8,
+   "total": 13
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Thanh Thúy",
+   "aspect": "bai_tap",
+   "positive": 0,
+   "negative": 9,
+   "total": 9
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Thanh Thúy",
+   "aspect": "kien_thuc",
+   "positive": 0,
+   "negative": 3,
+   "total": 4
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Công Thành",
+   "aspect": "ky_nang_giang_day",
+   "positive": 10,
+   "negative": 0,
+   "total": 10
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Công Thành",
+   "aspect": "hanh_vi",
+   "positive": 1,
+   "negative": 0,
+   "total": 1
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Công Thành",
+   "aspect": "cham_diem",
+   "positive": 12,
+   "negative": 1,
+   "total": 18
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Công Thành",
+   "aspect": "bai_tap",
+   "positive": 5,
+   "negative": 10,
+   "total": 16
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Công Thành",
+   "aspect": "kien_thuc",
+   "positive": 2,
+   "negative": 3,
+   "total": 15
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Công Pháp",
+   "aspect": "ky_nang_giang_day",
+   "positive": 0,
+   "negative": 0,
+   "total": 0
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Công Pháp",
+   "aspect": "hanh_vi",
+   "positive": 0,
+   "negative": 0,
+   "total": 1
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Công Pháp",
+   "aspect": "cham_diem",
+   "positive": 7,
+   "negative": 0,
+   "total": 7
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Công Pháp",
+   "aspect": "kien_thuc",
+   "positive": 4,
+   "negative": 0,
+   "total": 4
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Lê Quân",
+   "aspect": "hanh_vi",
+   "positive": 0,
+   "negative": 8,
+   "total": 9
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Lê Quân",
+   "aspect": "cham_diem",
+   "positive": 2,
+   "negative": 0,
+   "total": 2
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Lê Quân",
+   "aspect": "kien_thuc",
+   "positive": 12,
+   "negative": 4,
+   "total": 19
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Thiếu Hiệp",
+   "aspect": "hanh_vi",
+   "positive": 4,
+   "negative": 2,
+   "total": 6
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Thiếu Hiệp",
+   "aspect": "bai_tap",
+   "positive": 7,
+   "negative": 3,
+   "total": 10
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Thiếu Hiệp",
+   "aspect": "kien_thuc",
+   "positive": 0,
+   "negative": 8,
+   "total": 12
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Tuấn Anh",
+   "aspect": "ky_nang_giang_day",
+   "positive": 6,
+   "negative": 0,
+   "total": 6
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Tuấn Anh",
+   "aspect": "hanh_vi",
+   "positive": 3,
+   "negative": 7,
+   "total": 15
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Tuấn Anh",
+   "aspect": "cham_diem",
+   "positive": 15,
+   "negative": 3,
+   "total": 19
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Tuấn Anh",
+   "aspect": "bai_tap",
+   "positive": 8,
+   "negative": 0,
+   "total": 9
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Tuấn Anh",
+   "aspect": "kien_thuc",
+   "positive": 12,
+   "negative": 1,
+   "total": 14
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Văn Sơn",
+   "aspect": "ky_nang_giang_day",
+   "positive": 16,
+   "negative": 1,
+   "total": 17
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Văn Sơn",
+   "aspect": "hanh_vi",
+   "positive": 2,
+   "negative": 1,
+   "total": 5
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Văn Sơn",
+   "aspect": "cham_diem",
+   "positive": 3,
+   "negative": 0,
+   "total": 3
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Văn Sơn",
+   "aspect": "bai_tap",
+   "positive": 10,
+   "negative": 0,
+   "total": 10
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Văn Sơn",
+   "aspect": "kien_thuc",
+   "positive": 1,
+   "negative": 0,
+   "total": 2
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Thanh Liêm",
+   "aspect": "hanh_vi",
+   "positive": 6,
+   "negative": 1,
+   "total": 8
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Hạ Quyên",
+   "aspect": "ky_nang_giang_day",
+   "positive": 0,
+   "negative": 0,
+   "total": 0
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Hạ Quyên",
+   "aspect": "hanh_vi",
+   "positive": 2,
+   "negative": 0,
+   "total": 2
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Hạ Quyên",
+   "aspect": "cham_diem",
+   "positive": 5,
+   "negative": 0,
+   "total": 11
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Hạ Quyên",
+   "aspect": "bai_tap",
+   "positive": 3,
+   "negative": 2,
+   "total": 8
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Thúy Ngọc",
+   "aspect": "hanh_vi",
+   "positive": 14,
+   "negative": 0,
+   "total": 18
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Thúy Ngọc",
+   "aspect": "cham_diem",
+   "positive": 5,
+   "negative": 0,
+   "total": 16
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Thúy Ngọc",
+   "aspect": "bai_tap",
+   "positive": 10,
+   "negative": 1,
+   "total": 14
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Thúy Ngọc",
+   "aspect": "kien_thuc",
+   "positive": 6,
+   "negative": 0,
+   "total": 6
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Đình Sơn",
+   "aspect": "bai_tap",
+   "positive": 0,
+   "negative": 1,
+   "total": 1
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Đình Sơn",
+   "aspect": "kien_thuc",
+   "positive": 0,
+   "negative": 2,
+   "total": 5
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Ngọc Linh",
+   "aspect": "ky_nang_giang_day",
+   "positive": 2,
+   "negative": 2,
+   "total": 16
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Ngọc Linh",
+   "aspect": "hanh_vi",
+   "positive": 0,
+   "negative": 0,
+   "total": 1
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Ngọc Linh",
+   "aspect": "cham_diem",
+   "positive": 2,
+   "negative": 3,
+   "total": 6
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Ngọc Đạt",
+   "aspect": "ky_nang_giang_day",
+   "positive": 0,
+   "negative": 1,
+   "total": 8
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Ngọc Đạt",
+   "aspect": "hanh_vi",
+   "positive": 0,
+   "negative": 0,
+   "total": 0
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Ngọc Đạt",
+   "aspect": "cham_diem",
+   "positive": 6,
+   "negative": 0,
+   "total": 8
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Ngọc Đạt",
+   "aspect": "kien_thuc",
+   "positive": 4,
+   "negative": 8,
+   "total": 14
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Văn Lường",
+   "aspect": "ky_nang_giang_day",
+   "positive": 2,
+   "negative": 0,
+   "total": 4
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Văn Lường",
+   "aspect": "hanh_vi",
+   "positive": 2,
+   "negative": 14,
+   "total": 20
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Văn Lường",
+   "aspect": "cham_diem",
+   "positive": 0,
+   "negative": 1,
+   "total": 1
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Văn Lường",
+   "aspect": "bai_tap",
+   "positive": 3,
+   "negative": 12,
+   "total": 17
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Văn Lường",
+   "aspect": "kien_thuc",
+   "positive": 2,
+   "negative": 0,
+   "total": 3
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Kim Ngân",
+   "aspect": "ky_nang_giang_day",
+   "positive": 0,
+   "negative": 0,
+   "total": 0
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Kim Ngân",
+   "aspect": "hanh_vi",
+   "positive": 0,
+   "negative": 0,
+   "total": 7
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Kim Ngân",
+   "aspect": "bai_tap",
+   "positive": 1,
+   "negative": 12,
+   "total": 16
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Kim Ngân",
+   "aspect": "kien_thuc",
+   "positive": 0,
+   "negative": 0,
+   "total": 0
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Đại Việt",
+   "aspect": "hanh_vi",
+   "positive": 7,
+   "negative": 9,
+   "total": 20
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Đại Việt",
+   "aspect": "cham_diem",
+   "positive": 3,
+   "negative": 1,
+   "total": 5
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Công Đức",
+   "aspect": "ky_nang_giang_day",
+   "positive": 4,
+   "negative": 3,
+   "total": 10
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Công Đức",
+   "aspect": "hanh_vi",
+   "positive": 11,
+   "negative": 0,
+   "total": 11
+  },
+  {
+   "subject": "Thực tập tốt nghiệp",
+   "lecturer": "Công Đức",
+   "aspect": "cham_diem",
+   "positive": 3,
+   "negative": 1,
+   "total": 4
+  }
+ ],
+ "pinned": {}
+}

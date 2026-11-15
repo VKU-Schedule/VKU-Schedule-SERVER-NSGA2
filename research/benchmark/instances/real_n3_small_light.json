@@ -1,0 +1,244 @@
+{
+ "id": "real_n3_small_light",
+ "kind": "real",
+ "n": 3,
+ "tier": "small",
+ "density": "light",
+ "field": "IT",
+ "space": 4,
+ "courses": {
+  "Đồ án cơ sở 4 -10": [
+   {
+    "course_name": "Đồ án cơ sở 4 -10",
+    "sub_topic": null,
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Võ Văn Lường",
+    "day": "Thứ Ba",
+    "periods": [
+     1,
+     2
+    ],
+    "area": "V",
+    "room": "A313",
+    "class_size": null
+   },
+   {
+    "course_name": "Đồ án cơ sở 4 -10",
+    "sub_topic": null,
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": "IT",
+    "teacher": "ThS.Lê Viết Trương",
+    "day": "Thứ Ba",
+    "periods": [
+     6,
+     7
+    ],
+    "area": "K",
+    "room": "A304",
+    "class_size": null
+   }
+  ],
+  "Đồ án cơ sở 4 -18": [
+   {
+    "course_name": "Đồ án cơ sở 4 -18",
+    "sub_topic": null,
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "TS.Nguyễn Thanh Tuấn",
+    "day": "Thứ Hai",
+    "periods": [
+     6,
+     7
+    ],
+    "area": "K",
+    "room": "A204",
+    "class_size": null
+   },
+   {
+    "course_name": "Đồ án cơ sở 4 -18",
+    "sub_topic": null,
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": "IT",
+    "teacher": "ThS.Nguyễn Thanh Cẩm",
+    "day": "Thứ Năm",
+    "periods": [
+     2,
+     3,
+     4
+    ],
+    "area": "K",
+    "room": "D1.302 (P. Seminar Khoa KTMT)",
+    "class_size": null
+   }
+  ],
+  "Chuyên đề 3": [
+   {
+    "course_name": "Chuyên đề 3",
+    "sub_topic": "AI-Data Science Projects",
+    "class_index": "1",
+    "language": "Tiếng Anh",
+    "field": "IT",
+    "teacher": "TS.Nguyễn Lương Vương",
+    "day": "Thứ Năm",
+    "periods": [
+     1,
+     2,
+     3
+    ],
+    "area": "V",
+    "room": "A207",
+    "class_size": 70
+   }
+  ]
+ },
+ "preferences": {
+  "version": "2.0",
+  "constraints": [
+   {
+    "prefer": {
+     "end_period": {
+      "max": 6
+     }
+    }
+   },
+   {
+    "limit": "study_days",
+    "max": 4,
+    "scope": {
+     "day": [
+      "thứ 4",
+      "thứ 4"
+     ]
+    }
+   }
+  ]
+ },
+ "review_stats": [
+  {
+   "subject": "Đồ án cơ sở 4 -10",
+   "lecturer": "Viết Trương",
+   "aspect": "bai_tap",
+   "positive": 16,
+   "negative": 2,
+   "total": 20
+  },
+  {
+   "subject": "Đồ án cơ sở 4 -10",
+   "lecturer": "Viết Trương",
+   "aspect": "kien_thuc",
+   "positive": 10,
+   "negative": 1,
+   "total": 17
+  },
+  {
+   "subject": "Đồ án cơ sở 4 -10",
+   "lecturer": "Văn Lường",
+   "aspect": "ky_nang_giang_day",
+   "positive": 0,
+   "negative": 5,
+   "total": 5
+  },
+  {
+   "subject": "Đồ án cơ sở 4 -10",
+   "lecturer": "Văn Lường",
+   "aspect": "cham_diem",
+   "positive": 9,
+   "negative": 0,
+   "total": 9
+  },
+  {
+   "subject": "Đồ án cơ sở 4 -10",
+   "lecturer": "Văn Lường",
+   "aspect": "kien_thuc",
+   "positive": 14,
+   "negative": 0,
+   "total": 17
+  },
+  {
+   "subject": "Đồ án cơ sở 4 -18",
+   "lecturer": "Thanh Tuấn",
+   "aspect": "ky_nang_giang_day",
+   "positive": 6,
+   "negative": 7,
+   "total": 16
+  },
+  {
+   "subject": "Đồ án cơ sở 4 -18",
+   "lecturer": "Thanh Tuấn",
+   "aspect": "hanh_vi",
+   "positive": 9,
+   "negative": 0,
+   "total": 9
+  },
+  {
+   "subject": "Đồ án cơ sở 4 -18",
+   "lecturer": "Thanh Tuấn",
+   "aspect": "bai_tap",
+   "positive": 15,
+   "negative": 3,
+   "total": 20
+  },
+  {
+   "subject": "Đồ án cơ sở 4 -18",
+   "lecturer": "Thanh Tuấn",
+   "aspect": "kien_thuc",
+   "positive": 10,
+   "negative": 3,
+   "total": 17
+  },
+  {
+   "subject": "Đồ án cơ sở 4 -18",
+   "lecturer": "Thanh Cẩm",
+   "aspect": "hanh_vi",
+   "positive": 1,
+   "negative": 2,
+   "total": 6
+  },
+  {
+   "subject": "Đồ án cơ sở 4 -18",
+   "lecturer": "Thanh Cẩm",
+   "aspect": "bai_tap",
+   "positive": 3,
+   "negative": 1,
+   "total": 7
+  },
+  {
+   "subject": "Đồ án cơ sở 4 -18",
+   "lecturer": "Thanh Cẩm",
+   "aspect": "kien_thuc",
+   "positive": 8,
+   "negative": 1,
+   "total": 14
+  },
+  {
+   "subject": "Chuyên đề 3",
+   "lecturer": "Lương Vương",
+   "aspect": "ky_nang_giang_day",
+   "positive": 3,
+   "negative": 2,
+   "total": 6
+  },
+  {
+   "subject": "Chuyên đề 3",
+   "lecturer": "Lương Vương",
+   "aspect": "bai_tap",
+   "positive": 1,
+   "negative": 0,
+   "total": 1
+  },
+  {
+   "subject": "Chuyên đề 3",
+   "lecturer": "Lương Vương",
+   "aspect": "kien_thuc",
+   "positive": 2,
+   "negative": 0,
+   "total": 2
+  }
+ ],
+ "pinned": {}
+}

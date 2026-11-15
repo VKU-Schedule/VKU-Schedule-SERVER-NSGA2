@@ -1,0 +1,1079 @@
+{
+ "id": "real_n9_small_light",
+ "kind": "real",
+ "n": 9,
+ "tier": "small",
+ "density": "light",
+ "field": "?",
+ "space": 264,
+ "courses": {
+  "Quản trị xuất nhập khẩu": [
+   {
+    "course_name": "Quản trị xuất nhập khẩu",
+    "sub_topic": null,
+    "class_index": "1",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Ngô Thị Hiền Trang",
+    "day": "Thứ Hai",
+    "periods": [
+     1,
+     2
+    ],
+    "area": "K",
+    "room": "A103",
+    "class_size": 68
+   },
+   {
+    "course_name": "Quản trị xuất nhập khẩu",
+    "sub_topic": null,
+    "class_index": "2",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Ngô Thị Hiền Trang",
+    "day": "Thứ Hai",
+    "periods": [
+     3,
+     4
+    ],
+    "area": "K",
+    "room": "A103",
+    "class_size": 68
+   }
+  ],
+  "Thanh toán điện tử": [
+   {
+    "course_name": "Thanh toán điện tử",
+    "sub_topic": "GBA,BA",
+    "class_index": "1",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Ngô Thị Hiền Trang",
+    "day": "Thứ Tư",
+    "periods": [
+     6,
+     7,
+     8
+    ],
+    "area": "V",
+    "room": "A301",
+    "class_size": 65
+   }
+  ],
+  "Thiết kế UX/UI": [
+   {
+    "course_name": "Thiết kế UX/UI",
+    "sub_topic": null,
+    "class_index": "1",
+    "language": "Tiếng Anh",
+    "field": null,
+    "teacher": "TS.Trần Văn Đại",
+    "day": "Thứ Tư",
+    "periods": [
+     6,
+     7,
+     8
+    ],
+    "area": "V",
+    "room": "A211",
+    "class_size": 67
+   },
+   {
+    "course_name": "Thiết kế UX/UI",
+    "sub_topic": null,
+    "class_index": "2",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "TS.Lý Quỳnh Trân",
+    "day": "Thứ Sáu",
+    "periods": [
+     6,
+     7,
+     8
+    ],
+    "area": "V",
+    "room": "A214",
+    "class_size": 67
+   },
+   {
+    "course_name": "Thiết kế UX/UI",
+    "sub_topic": null,
+    "class_index": "3",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "TS.Lý Quỳnh Trân",
+    "day": "Thứ Năm",
+    "periods": [
+     6,
+     7,
+     8
+    ],
+    "area": "V",
+    "room": "A214",
+    "class_size": 67
+   }
+  ],
+  "Tiếng anh 3": [
+   {
+    "course_name": "Tiếng anh 3",
+    "sub_topic": null,
+    "class_index": "1",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Nguyễn Thị Diệu Thanh",
+    "day": "Thứ Ba",
+    "periods": [
+     1,
+     2
+    ],
+    "area": "K",
+    "room": "B102",
+    "class_size": 50
+   },
+   {
+    "course_name": "Tiếng anh 3",
+    "sub_topic": null,
+    "class_index": "10",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Hồ Phạm Xuân Phương",
+    "day": "Thứ Hai",
+    "periods": [
+     3,
+     4
+    ],
+    "area": "K",
+    "room": "B102",
+    "class_size": 50
+   },
+   {
+    "course_name": "Tiếng anh 3",
+    "sub_topic": null,
+    "class_index": "11",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Lê Thị Nhi",
+    "day": "Thứ Hai",
+    "periods": [
+     6,
+     7
+    ],
+    "area": "K",
+    "room": "B102",
+    "class_size": 50
+   },
+   {
+    "course_name": "Tiếng anh 3",
+    "sub_topic": null,
+    "class_index": "12",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Lê Thị Nhi",
+    "day": "Thứ Hai",
+    "periods": [
+     8,
+     9
+    ],
+    "area": "K",
+    "room": "B102",
+    "class_size": 50
+   },
+   {
+    "course_name": "Tiếng anh 3",
+    "sub_topic": null,
+    "class_index": "13",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Lê Thị Nhi",
+    "day": "Thứ Hai",
+    "periods": [
+     1,
+     2
+    ],
+    "area": "K",
+    "room": "B107",
+    "class_size": 50
+   },
+   {
+    "course_name": "Tiếng anh 3",
+    "sub_topic": null,
+    "class_index": "14",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "TS.Phạm Thị Tài",
+    "day": "Thứ Tư",
+    "periods": [
+     6,
+     7
+    ],
+    "area": "K",
+    "room": "B107",
+    "class_size": 50
+   },
+   {
+    "course_name": "Tiếng anh 3",
+    "sub_topic": null,
+    "class_index": "15",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "TS.Phạm Thị Tài",
+    "day": "Thứ Tư",
+    "periods": [
+     8,
+     9
+    ],
+    "area": "K",
+    "room": "B107",
+    "class_size": 50
+   },
+   {
+    "course_name": "Tiếng anh 3",
+    "sub_topic": null,
+    "class_index": "16",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "TS.Nguyễn Nữ Thùy Uyên",
+    "day": "Thứ Năm",
+    "periods": [
+     1,
+     2
+    ],
+    "area": "K",
+    "room": "B101",
+    "class_size": 50
+   },
+   {
+    "course_name": "Tiếng anh 3",
+    "sub_topic": null,
+    "class_index": "17",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "TS.Nguyễn Nữ Thùy Uyên",
+    "day": "Thứ Năm",
+    "periods": [
+     3,
+     4
+    ],
+    "area": "K",
+    "room": "B101",
+    "class_size": 50
+   },
+   {
+    "course_name": "Tiếng anh 3",
+    "sub_topic": null,
+    "class_index": "18",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Tôn Nữ Xuân Phương",
+    "day": "Thứ Ba",
+    "periods": [
+     1,
+     2
+    ],
+    "area": "K",
+    "room": "B103",
+    "class_size": 50
+   },
+   {
+    "course_name": "Tiếng anh 3",
+    "sub_topic": null,
+    "class_index": "19",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Tôn Nữ Xuân Phương",
+    "day": "Thứ Ba",
+    "periods": [
+     3,
+     4
+    ],
+    "area": "K",
+    "room": "B103",
+    "class_size": 50
+   },
+   {
+    "course_name": "Tiếng anh 3",
+    "sub_topic": null,
+    "class_index": "2",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Nguyễn Thị Diệu Thanh",
+    "day": "Thứ Ba",
+    "periods": [
+     3,
+     4
+    ],
+    "area": "K",
+    "room": "B102",
+    "class_size": 50
+   },
+   {
+    "course_name": "Tiếng anh 3",
+    "sub_topic": null,
+    "class_index": "20",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Trần Thị Thanh Nhã",
+    "day": "Thứ Ba",
+    "periods": [
+     1,
+     2
+    ],
+    "area": "K",
+    "room": "B106",
+    "class_size": 50
+   },
+   {
+    "course_name": "Tiếng anh 3",
+    "sub_topic": null,
+    "class_index": "21",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Trần Thị Thanh Nhã",
+    "day": "Thứ Ba",
+    "periods": [
+     3,
+     4
+    ],
+    "area": "K",
+    "room": "B106",
+    "class_size": 50
+   },
+   {
+    "course_name": "Tiếng anh 3",
+    "sub_topic": null,
+    "class_index": "22",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Lê Thị Nhi",
+    "day": "Thứ Hai",
+    "periods": [
+     3,
+     4
+    ],
+    "area": "K",
+    "room": "B107",
+    "class_size": 60
+   },
+   {
+    "course_name": "Tiếng anh 3",
+    "sub_topic": null,
+    "class_index": "3",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Nguyễn Thị Diệu Thanh",
+    "day": "Thứ Ba",
+    "periods": [
+     6,
+     7
+    ],
+    "area": "K",
+    "room": "B102",
+    "class_size": 50
+   },
+   {
+    "course_name": "Tiếng anh 3",
+    "sub_topic": null,
+    "class_index": "4",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Nguyễn Thị Diệu Thanh",
+    "day": "Thứ Ba",
+    "periods": [
+     8,
+     9
+    ],
+    "area": "K",
+    "room": "B102",
+    "class_size": 50
+   },
+   {
+    "course_name": "Tiếng anh 3",
+    "sub_topic": null,
+    "class_index": "5",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Trần Thị Túy Phượng",
+    "day": "Thứ Hai",
+    "periods": [
+     1,
+     2
+    ],
+    "area": "K",
+    "room": "B101",
+    "class_size": 50
+   },
+   {
+    "course_name": "Tiếng anh 3",
+    "sub_topic": null,
+    "class_index": "6",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Trần Thị Túy Phượng",
+    "day": "Thứ Hai",
+    "periods": [
+     3,
+     4
+    ],
+    "area": "K",
+    "room": "B101",
+    "class_size": 50
+   },
+   {
+    "course_name": "Tiếng anh 3",
+    "sub_topic": null,
+    "class_index": "7",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Trần Thị Túy Phượng",
+    "day": "Thứ Hai",
+    "periods": [
+     6,
+     7
+    ],
+    "area": "K",
+    "room": "B101",
+    "class_size": 50
+   },
+   {
+    "course_name": "Tiếng anh 3",
+    "sub_topic": null,
+    "class_index": "8",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Trần Thị Túy Phượng",
+    "day": "Thứ Hai",
+    "periods": [
+     8,
+     9
+    ],
+    "area": "K",
+    "room": "B101",
+    "class_size": 50
+   },
+   {
+    "course_name": "Tiếng anh 3",
+    "sub_topic": null,
+    "class_index": "9",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Hồ Phạm Xuân Phương",
+    "day": "Thứ Hai",
+    "periods": [
+     1,
+     2
+    ],
+    "area": "K",
+    "room": "B102",
+    "class_size": 50
+   }
+  ],
+  "Thực tập tốt nghiệp CE": [
+   {
+    "course_name": "Thực tập tốt nghiệp CE",
+    "sub_topic": "1",
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "TS.Nguyễn Vũ Anh Quang",
+    "day": "Thứ Ba",
+    "periods": [
+     2,
+     3,
+     4
+    ],
+    "area": "K",
+    "room": "D1.302 (P. Seminar Khoa KTMT)",
+    "class_size": null
+   }
+  ],
+  "Thực tập doanh nghiệp IT": [
+   {
+    "course_name": "Thực tập doanh nghiệp IT",
+    "sub_topic": "5",
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Nguyễn Xuân  Tiến",
+    "day": "Thứ Bảy",
+    "periods": [
+     6,
+     7
+    ],
+    "area": "V",
+    "room": "A103 (P. Đào tạo)",
+    "class_size": null
+   }
+  ],
+  "Đồ án tốt nghiệp IT": [
+   {
+    "course_name": "Đồ án tốt nghiệp IT",
+    "sub_topic": "9",
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Lê Viết Trương",
+    "day": "Thứ Ba",
+    "periods": [
+     7,
+     8
+    ],
+    "area": "K",
+    "room": "D1.302 (P. Seminar Khoa KTMT)",
+    "class_size": null
+   }
+  ],
+  "Giải phẫu tạo hình": [
+   {
+    "course_name": "Giải phẫu tạo hình",
+    "sub_topic": null,
+    "class_index": "1",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Nguyễn Trọng Công Thành",
+    "day": "Thứ Năm",
+    "periods": [
+     1,
+     2,
+     3,
+     4
+    ],
+    "area": "K",
+    "room": "A307",
+    "class_size": 60
+   },
+   {
+    "course_name": "Giải phẫu tạo hình",
+    "sub_topic": null,
+    "class_index": "2",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Nguyễn Trọng Công Thành",
+    "day": "Thứ Ba",
+    "periods": [
+     6,
+     7,
+     8,
+     9
+    ],
+    "area": "K",
+    "room": "A313",
+    "class_size": 60
+   }
+  ],
+  "Thiết kế IC tương tự": [
+   {
+    "course_name": "Thiết kế IC tương tự",
+    "sub_topic": null,
+    "class_index": "1",
+    "language": "Tiếng Anh",
+    "field": null,
+    "teacher": "ThS.Nguyễn Thị Huyền Trang",
+    "day": "Thứ Sáu",
+    "periods": [
+     6,
+     7,
+     8,
+     9
+    ],
+    "area": "V",
+    "room": "A212",
+    "class_size": 30
+   }
+  ]
+ },
+ "preferences": {
+  "version": "2.0",
+  "constraints": [
+   {
+    "limit": "consecutive_periods",
+    "max": 5
+   },
+   {
+    "prefer": {
+     "class_group": [
+      12,
+      2
+     ]
+    },
+    "scope": {
+     "course": "Tiếng anh 3"
+    }
+   }
+  ]
+ },
+ "review_stats": [
+  {
+   "subject": "Quản trị xuất nhập khẩu",
+   "lecturer": "Hiền Trang",
+   "aspect": "hanh_vi",
+   "positive": 0,
+   "negative": 3,
+   "total": 4
+  },
+  {
+   "subject": "Quản trị xuất nhập khẩu",
+   "lecturer": "Hiền Trang",
+   "aspect": "cham_diem",
+   "positive": 5,
+   "negative": 2,
+   "total": 11
+  },
+  {
+   "subject": "Quản trị xuất nhập khẩu",
+   "lecturer": "Hiền Trang",
+   "aspect": "bai_tap",
+   "positive": 0,
+   "negative": 0,
+   "total": 2
+  },
+  {
+   "subject": "Thanh toán điện tử",
+   "lecturer": "Hiền Trang",
+   "aspect": "ky_nang_giang_day",
+   "positive": 10,
+   "negative": 4,
+   "total": 18
+  },
+  {
+   "subject": "Thanh toán điện tử",
+   "lecturer": "Hiền Trang",
+   "aspect": "cham_diem",
+   "positive": 6,
+   "negative": 6,
+   "total": 12
+  },
+  {
+   "subject": "Thanh toán điện tử",
+   "lecturer": "Hiền Trang",
+   "aspect": "bai_tap",
+   "positive": 0,
+   "negative": 0,
+   "total": 1
+  },
+  {
+   "subject": "Thanh toán điện tử",
+   "lecturer": "Hiền Trang",
+   "aspect": "kien_thuc",
+   "positive": 5,
+   "negative": 1,
+   "total": 19
+  },
+  {
+   "subject": "Thiết kế UX/UI",
+   "lecturer": "Quỳnh Trân",
+   "aspect": "ky_nang_giang_day",
+   "positive": 19,
+   "negative": 1,
+   "total": 20
+  },
+  {
+   "subject": "Thiết kế UX/UI",
+   "lecturer": "Quỳnh Trân",
+   "aspect": "hanh_vi",
+   "positive": 13,
+   "negative": 0,
+   "total": 13
+  },
+  {
+   "subject": "Thiết kế UX/UI",
+   "lecturer": "Quỳnh Trân",
+   "aspect": "cham_diem",
+   "positive": 13,
+   "negative": 3,
+   "total": 20
+  },
+  {
+   "subject": "Thiết kế UX/UI",
+   "lecturer": "Quỳnh Trân",
+   "aspect": "bai_tap",
+   "positive": 0,
+   "negative": 11,
+   "total": 14
+  },
+  {
+   "subject": "Thiết kế UX/UI",
+   "lecturer": "Quỳnh Trân",
+   "aspect": "kien_thuc",
+   "positive": 3,
+   "negative": 1,
+   "total": 5
+  },
+  {
+   "subject": "Thiết kế UX/UI",
+   "lecturer": "Văn Đại",
+   "aspect": "cham_diem",
+   "positive": 4,
+   "negative": 6,
+   "total": 18
+  },
+  {
+   "subject": "Thiết kế UX/UI",
+   "lecturer": "Văn Đại",
+   "aspect": "bai_tap",
+   "positive": 5,
+   "negative": 0,
+   "total": 6
+  },
+  {
+   "subject": "Thiết kế UX/UI",
+   "lecturer": "Văn Đại",
+   "aspect": "kien_thuc",
+   "positive": 1,
+   "negative": 4,
+   "total": 9
+  },
+  {
+   "subject": "Tiếng anh 3",
+   "lecturer": "Thùy Uyên",
+   "aspect": "ky_nang_giang_day",
+   "positive": 5,
+   "negative": 0,
+   "total": 5
+  },
+  {
+   "subject": "Tiếng anh 3",
+   "lecturer": "Thùy Uyên",
+   "aspect": "hanh_vi",
+   "positive": 17,
+   "negative": 0,
+   "total": 18
+  },
+  {
+   "subject": "Tiếng anh 3",
+   "lecturer": "Thùy Uyên",
+   "aspect": "cham_diem",
+   "positive": 6,
+   "negative": 2,
+   "total": 8
+  },
+  {
+   "subject": "Tiếng anh 3",
+   "lecturer": "Thùy Uyên",
+   "aspect": "bai_tap",
+   "positive": 0,
+   "negative": 2,
+   "total": 13
+  },
+  {
+   "subject": "Tiếng anh 3",
+   "lecturer": "Thùy Uyên",
+   "aspect": "kien_thuc",
+   "positive": 6,
+   "negative": 1,
+   "total": 8
+  },
+  {
+   "subject": "Tiếng anh 3",
+   "lecturer": "Thị Tài",
+   "aspect": "ky_nang_giang_day",
+   "positive": 3,
+   "negative": 7,
+   "total": 16
+  },
+  {
+   "subject": "Tiếng anh 3",
+   "lecturer": "Thị Tài",
+   "aspect": "hanh_vi",
+   "positive": 18,
+   "negative": 1,
+   "total": 19
+  },
+  {
+   "subject": "Tiếng anh 3",
+   "lecturer": "Thị Tài",
+   "aspect": "cham_diem",
+   "positive": 2,
+   "negative": 0,
+   "total": 4
+  },
+  {
+   "subject": "Tiếng anh 3",
+   "lecturer": "Thị Tài",
+   "aspect": "bai_tap",
+   "positive": 3,
+   "negative": 5,
+   "total": 14
+  },
+  {
+   "subject": "Tiếng anh 3",
+   "lecturer": "Thị Tài",
+   "aspect": "kien_thuc",
+   "positive": 1,
+   "negative": 3,
+   "total": 4
+  },
+  {
+   "subject": "Tiếng anh 3",
+   "lecturer": "Xuân Phương",
+   "aspect": "bai_tap",
+   "positive": 0,
+   "negative": 3,
+   "total": 7
+  },
+  {
+   "subject": "Tiếng anh 3",
+   "lecturer": "Xuân Phương",
+   "aspect": "kien_thuc",
+   "positive": 5,
+   "negative": 0,
+   "total": 8
+  },
+  {
+   "subject": "Tiếng anh 3",
+   "lecturer": "Thị Nhi",
+   "aspect": "ky_nang_giang_day",
+   "positive": 15,
+   "negative": 0,
+   "total": 16
+  },
+  {
+   "subject": "Tiếng anh 3",
+   "lecturer": "Thị Nhi",
+   "aspect": "hanh_vi",
+   "positive": 5,
+   "negative": 0,
+   "total": 5
+  },
+  {
+   "subject": "Tiếng anh 3",
+   "lecturer": "Thị Nhi",
+   "aspect": "cham_diem",
+   "positive": 10,
+   "negative": 1,
+   "total": 13
+  },
+  {
+   "subject": "Tiếng anh 3",
+   "lecturer": "Thị Nhi",
+   "aspect": "bai_tap",
+   "positive": 14,
+   "negative": 3,
+   "total": 18
+  },
+  {
+   "subject": "Tiếng anh 3",
+   "lecturer": "Thị Nhi",
+   "aspect": "kien_thuc",
+   "positive": 3,
+   "negative": 1,
+   "total": 8
+  },
+  {
+   "subject": "Tiếng anh 3",
+   "lecturer": "Diệu Thanh",
+   "aspect": "ky_nang_giang_day",
+   "positive": 4,
+   "negative": 3,
+   "total": 7
+  },
+  {
+   "subject": "Tiếng anh 3",
+   "lecturer": "Diệu Thanh",
+   "aspect": "hanh_vi",
+   "positive": 3,
+   "negative": 6,
+   "total": 17
+  },
+  {
+   "subject": "Tiếng anh 3",
+   "lecturer": "Diệu Thanh",
+   "aspect": "bai_tap",
+   "positive": 7,
+   "negative": 4,
+   "total": 20
+  },
+  {
+   "subject": "Tiếng anh 3",
+   "lecturer": "Diệu Thanh",
+   "aspect": "kien_thuc",
+   "positive": 11,
+   "negative": 1,
+   "total": 16
+  },
+  {
+   "subject": "Tiếng anh 3",
+   "lecturer": "Thanh Nhã",
+   "aspect": "ky_nang_giang_day",
+   "positive": 0,
+   "negative": 0,
+   "total": 0
+  },
+  {
+   "subject": "Tiếng anh 3",
+   "lecturer": "Thanh Nhã",
+   "aspect": "hanh_vi",
+   "positive": 9,
+   "negative": 0,
+   "total": 9
+  },
+  {
+   "subject": "Tiếng anh 3",
+   "lecturer": "Thanh Nhã",
+   "aspect": "cham_diem",
+   "positive": 7,
+   "negative": 0,
+   "total": 8
+  },
+  {
+   "subject": "Tiếng anh 3",
+   "lecturer": "Túy Phượng",
+   "aspect": "ky_nang_giang_day",
+   "positive": 2,
+   "negative": 0,
+   "total": 10
+  },
+  {
+   "subject": "Tiếng anh 3",
+   "lecturer": "Túy Phượng",
+   "aspect": "hanh_vi",
+   "positive": 7,
+   "negative": 0,
+   "total": 13
+  },
+  {
+   "subject": "Tiếng anh 3",
+   "lecturer": "Túy Phượng",
+   "aspect": "kien_thuc",
+   "positive": 6,
+   "negative": 1,
+   "total": 8
+  },
+  {
+   "subject": "Tiếng anh 3",
+   "lecturer": "Xuân Phương",
+   "aspect": "ky_nang_giang_day",
+   "positive": 11,
+   "negative": 2,
+   "total": 17
+  },
+  {
+   "subject": "Tiếng anh 3",
+   "lecturer": "Xuân Phương",
+   "aspect": "hanh_vi",
+   "positive": 3,
+   "negative": 5,
+   "total": 9
+  },
+  {
+   "subject": "Tiếng anh 3",
+   "lecturer": "Xuân Phương",
+   "aspect": "bai_tap",
+   "positive": 6,
+   "negative": 0,
+   "total": 9
+  },
+  {
+   "subject": "Tiếng anh 3",
+   "lecturer": "Xuân Phương",
+   "aspect": "kien_thuc",
+   "positive": 3,
+   "negative": 0,
+   "total": 6
+  },
+  {
+   "subject": "Thực tập tốt nghiệp CE",
+   "lecturer": "Anh Quang",
+   "aspect": "ky_nang_giang_day",
+   "positive": 15,
+   "negative": 2,
+   "total": 20
+  },
+  {
+   "subject": "Thực tập tốt nghiệp CE",
+   "lecturer": "Anh Quang",
+   "aspect": "cham_diem",
+   "positive": 5,
+   "negative": 0,
+   "total": 15
+  },
+  {
+   "subject": "Thực tập doanh nghiệp IT",
+   "lecturer": "Xuân Tiến",
+   "aspect": "hanh_vi",
+   "positive": 6,
+   "negative": 3,
+   "total": 15
+  },
+  {
+   "subject": "Thực tập doanh nghiệp IT",
+   "lecturer": "Xuân Tiến",
+   "aspect": "bai_tap",
+   "positive": 2,
+   "negative": 0,
+   "total": 2
+  },
+  {
+   "subject": "Thực tập doanh nghiệp IT",
+   "lecturer": "Xuân Tiến",
+   "aspect": "kien_thuc",
+   "positive": 15,
+   "negative": 4,
+   "total": 19
+  },
+  {
+   "subject": "Đồ án tốt nghiệp IT",
+   "lecturer": "Viết Trương",
+   "aspect": "ky_nang_giang_day",
+   "positive": 6,
+   "negative": 1,
+   "total": 11
+  },
+  {
+   "subject": "Đồ án tốt nghiệp IT",
+   "lecturer": "Viết Trương",
+   "aspect": "hanh_vi",
+   "positive": 3,
+   "negative": 0,
+   "total": 4
+  },
+  {
+   "subject": "Đồ án tốt nghiệp IT",
+   "lecturer": "Viết Trương",
+   "aspect": "cham_diem",
+   "positive": 3,
+   "negative": 8,
+   "total": 12
+  },
+  {
+   "subject": "Đồ án tốt nghiệp IT",
+   "lecturer": "Viết Trương",
+   "aspect": "bai_tap",
+   "positive": 3,
+   "negative": 6,
+   "total": 16
+  },
+  {
+   "subject": "Giải phẫu tạo hình",
+   "lecturer": "Công Thành",
+   "aspect": "ky_nang_giang_day",
+   "positive": 4,
+   "negative": 0,
+   "total": 7
+  },
+  {
+   "subject": "Giải phẫu tạo hình",
+   "lecturer": "Công Thành",
+   "aspect": "kien_thuc",
+   "positive": 13,
+   "negative": 0,
+   "total": 16
+  },
+  {
+   "subject": "Thiết kế IC tương tự",
+   "lecturer": "Huyền Trang",
+   "aspect": "ky_nang_giang_day",
+   "positive": 0,
+   "negative": 1,
+   "total": 6
+  },
+  {
+   "subject": "Thiết kế IC tương tự",
+   "lecturer": "Huyền Trang",
+   "aspect": "hanh_vi",
+   "positive": 10,
+   "negative": 0,
+   "total": 16
+  }
+ ],
+ "pinned": {}
+}

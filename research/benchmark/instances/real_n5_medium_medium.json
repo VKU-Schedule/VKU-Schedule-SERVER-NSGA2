@@ -1,0 +1,582 @@
+{
+ "id": "real_n5_medium_medium",
+ "kind": "real",
+ "n": 5,
+ "tier": "medium",
+ "density": "medium",
+ "field": "IT",
+ "space": 288,
+ "courses": {
+  "Đồ án cơ sở 4 -2": [
+   {
+    "course_name": "Đồ án cơ sở 4 -2",
+    "sub_topic": null,
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Lương Khánh Tý",
+    "day": "Thứ Ba",
+    "periods": [
+     1,
+     2
+    ],
+    "area": "K",
+    "room": "A104",
+    "class_size": null
+   },
+   {
+    "course_name": "Đồ án cơ sở 4 -2",
+    "sub_topic": null,
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "KS.Phạm Hòa Bình",
+    "day": "Thứ _",
+    "periods": [],
+    "area": "Khác",
+    "room": "_",
+    "class_size": null
+   },
+   {
+    "course_name": "Đồ án cơ sở 4 -2",
+    "sub_topic": null,
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": "IT",
+    "teacher": "PGS.TS.Huỳnh Công  Pháp",
+    "day": "Thứ _",
+    "periods": [],
+    "area": "Khác",
+    "room": "_",
+    "class_size": null
+   }
+  ],
+  "Chuyên đề 2": [
+   {
+    "course_name": "Chuyên đề 2",
+    "sub_topic": "Xe tự hành",
+    "class_index": "2",
+    "language": "Tiếng Việt",
+    "field": "IT",
+    "teacher": "TS.Nguyễn Vũ Anh Quang",
+    "day": "Thứ Tư",
+    "periods": [
+     6,
+     7
+    ],
+    "area": "K",
+    "room": "A113",
+    "class_size": 70
+   },
+   {
+    "course_name": "Chuyên đề 2",
+    "sub_topic": "Xe tự hành",
+    "class_index": "3",
+    "language": "Tiếng Việt",
+    "field": "IT",
+    "teacher": "TS.Nguyễn Vũ Anh Quang",
+    "day": "Thứ Tư",
+    "periods": [
+     8,
+     9
+    ],
+    "area": "K",
+    "room": "A113",
+    "class_size": 70
+   }
+  ],
+  "Đồ án cơ sở 4 -15": [
+   {
+    "course_name": "Đồ án cơ sở 4 -15",
+    "sub_topic": null,
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Lê Viết Trương",
+    "day": "Thứ Ba",
+    "periods": [
+     6,
+     7
+    ],
+    "area": "K",
+    "room": "A304",
+    "class_size": null
+   },
+   {
+    "course_name": "Đồ án cơ sở 4 -15",
+    "sub_topic": null,
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": "IT",
+    "teacher": "ThS.Nguyễn Đăng Ý",
+    "day": "Thứ Hai",
+    "periods": [
+     1,
+     2,
+     3,
+     4
+    ],
+    "area": "K",
+    "room": "D1.302 (P. Seminar Khoa KTMT)",
+    "class_size": null
+   }
+  ],
+  "Đồ án cơ sở 4 -12": [
+   {
+    "course_name": "Đồ án cơ sở 4 -12",
+    "sub_topic": null,
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": "IT",
+    "teacher": "ThS.Mai Lam",
+    "day": "Thứ Hai",
+    "periods": [
+     1,
+     2
+    ],
+    "area": "K",
+    "room": "A310",
+    "class_size": null
+   },
+   {
+    "course_name": "Đồ án cơ sở 4 -12",
+    "sub_topic": null,
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "TS.Lê Tân",
+    "day": "Thứ Tư",
+    "periods": [
+     3,
+     4
+    ],
+    "area": "V",
+    "room": "A312",
+    "class_size": null
+   }
+  ],
+  "Nhập môn ngành và kỹ năng mềm": [
+   {
+    "course_name": "Nhập môn ngành và kỹ năng mềm",
+    "sub_topic": null,
+    "class_index": "1",
+    "language": "Tiếng Việt",
+    "field": "CE",
+    "teacher": "Khoa.KTMT _ĐT",
+    "day": "Thứ Sáu",
+    "periods": [],
+    "area": "(Chọn)",
+    "room": null,
+    "class_size": 0
+   },
+   {
+    "course_name": "Nhập môn ngành và kỹ năng mềm",
+    "sub_topic": null,
+    "class_index": "10",
+    "language": "Tiếng Việt",
+    "field": "IT",
+    "teacher": "Khoa.KH MT",
+    "day": "Thứ Hai",
+    "periods": [
+     6,
+     7,
+     8,
+     9
+    ],
+    "area": "(Chọn)",
+    "room": null,
+    "class_size": 0
+   },
+   {
+    "course_name": "Nhập môn ngành và kỹ năng mềm",
+    "sub_topic": null,
+    "class_index": "11",
+    "language": "Tiếng Việt",
+    "field": "IT",
+    "teacher": "Khoa.KH MT",
+    "day": "Thứ Ba",
+    "periods": [
+     1,
+     2,
+     3,
+     4
+    ],
+    "area": "(Chọn)",
+    "room": null,
+    "class_size": 0
+   },
+   {
+    "course_name": "Nhập môn ngành và kỹ năng mềm",
+    "sub_topic": null,
+    "class_index": "12",
+    "language": "Tiếng Việt",
+    "field": "IT",
+    "teacher": "Khoa.KTMT _ĐT",
+    "day": "Thứ Tư",
+    "periods": [
+     1,
+     2,
+     3,
+     4
+    ],
+    "area": "(Chọn)",
+    "room": null,
+    "class_size": 0
+   },
+   {
+    "course_name": "Nhập môn ngành và kỹ năng mềm",
+    "sub_topic": null,
+    "class_index": "13",
+    "language": "Tiếng Việt",
+    "field": "IT",
+    "teacher": "Khoa.KH MT",
+    "day": "Thứ Tư",
+    "periods": [
+     6,
+     7,
+     8,
+     9
+    ],
+    "area": "(Chọn)",
+    "room": null,
+    "class_size": 70
+   },
+   {
+    "course_name": "Nhập môn ngành và kỹ năng mềm",
+    "sub_topic": null,
+    "class_index": "14",
+    "language": "Tiếng Việt",
+    "field": "IT",
+    "teacher": "Khoa.KTMT _ĐT",
+    "day": "Thứ Năm",
+    "periods": [
+     1,
+     2,
+     3,
+     4
+    ],
+    "area": "(Chọn)",
+    "room": null,
+    "class_size": 70
+   },
+   {
+    "course_name": "Nhập môn ngành và kỹ năng mềm",
+    "sub_topic": null,
+    "class_index": "2",
+    "language": "Tiếng Việt",
+    "field": "CE",
+    "teacher": "Khoa.KTMT _ĐT",
+    "day": "Thứ Ba",
+    "periods": [
+     1,
+     2,
+     3,
+     4
+    ],
+    "area": "(Chọn)",
+    "room": null,
+    "class_size": 0
+   },
+   {
+    "course_name": "Nhập môn ngành và kỹ năng mềm",
+    "sub_topic": null,
+    "class_index": "3",
+    "language": "Tiếng Việt",
+    "field": "CE",
+    "teacher": "Khoa.KTMT _ĐT",
+    "day": "Thứ Sáu",
+    "periods": [
+     6,
+     7,
+     8,
+     9
+    ],
+    "area": "K",
+    "room": "B301",
+    "class_size": 0
+   },
+   {
+    "course_name": "Nhập môn ngành và kỹ năng mềm",
+    "sub_topic": null,
+    "class_index": "4",
+    "language": "Tiếng Việt",
+    "field": "IT",
+    "teacher": "Khoa.KH MT",
+    "day": "Thứ Hai",
+    "periods": [
+     1,
+     2,
+     3,
+     4
+    ],
+    "area": "(Chọn)",
+    "room": null,
+    "class_size": 0
+   },
+   {
+    "course_name": "Nhập môn ngành và kỹ năng mềm",
+    "sub_topic": null,
+    "class_index": "5",
+    "language": "Tiếng Việt",
+    "field": "IT",
+    "teacher": "Khoa.KH MT",
+    "day": "Thứ Hai",
+    "periods": [
+     6,
+     7,
+     8,
+     9
+    ],
+    "area": "(Chọn)",
+    "room": null,
+    "class_size": 0
+   },
+   {
+    "course_name": "Nhập môn ngành và kỹ năng mềm",
+    "sub_topic": null,
+    "class_index": "6",
+    "language": "Tiếng Việt",
+    "field": "IT",
+    "teacher": "Khoa.KH MT",
+    "day": "Thứ Năm",
+    "periods": [
+     6,
+     7,
+     8,
+     9
+    ],
+    "area": "(Chọn)",
+    "room": null,
+    "class_size": 0
+   },
+   {
+    "course_name": "Nhập môn ngành và kỹ năng mềm",
+    "sub_topic": null,
+    "class_index": "7",
+    "language": "Tiếng Việt",
+    "field": "IT",
+    "teacher": "Khoa.KH MT",
+    "day": "Thứ Sáu",
+    "periods": [
+     1,
+     2,
+     3,
+     4
+    ],
+    "area": "(Chọn)",
+    "room": null,
+    "class_size": 0
+   }
+  ]
+ },
+ "preferences": {
+  "version": "2.0",
+  "constraints": [
+   {
+    "limit": "periods_per_day",
+    "max": 7,
+    "level": "must"
+   },
+   {
+    "relation": "before",
+    "courses": [
+     "Đồ án cơ sở 4 -12",
+     "Nhập môn ngành và kỹ năng mềm",
+     "Chuyên đề 2"
+    ],
+    "level": "must"
+   },
+   {
+    "prefer": {
+     "teacher": "Công Pháp"
+    },
+    "scope": {
+     "course": "Đồ án cơ sở 4 -2"
+    }
+   },
+   {
+    "relation": "same_day",
+    "courses": [
+     "Đồ án cơ sở 4 -2",
+     "Đồ án cơ sở 4 -12",
+     "Chuyên đề 2"
+    ]
+   },
+   {
+    "limit": "consecutive_periods",
+    "max": 3
+   }
+  ]
+ },
+ "review_stats": [
+  {
+   "subject": "Đồ án cơ sở 4 -2",
+   "lecturer": "Hòa Bình",
+   "aspect": "hanh_vi",
+   "positive": 5,
+   "negative": 0,
+   "total": 5
+  },
+  {
+   "subject": "Đồ án cơ sở 4 -2",
+   "lecturer": "Hòa Bình",
+   "aspect": "cham_diem",
+   "positive": 1,
+   "negative": 16,
+   "total": 19
+  },
+  {
+   "subject": "Đồ án cơ sở 4 -2",
+   "lecturer": "Công Pháp",
+   "aspect": "ky_nang_giang_day",
+   "positive": 1,
+   "negative": 13,
+   "total": 15
+  },
+  {
+   "subject": "Đồ án cơ sở 4 -2",
+   "lecturer": "Công Pháp",
+   "aspect": "hanh_vi",
+   "positive": 2,
+   "negative": 1,
+   "total": 3
+  },
+  {
+   "subject": "Đồ án cơ sở 4 -2",
+   "lecturer": "Công Pháp",
+   "aspect": "kien_thuc",
+   "positive": 4,
+   "negative": 1,
+   "total": 6
+  },
+  {
+   "subject": "Đồ án cơ sở 4 -2",
+   "lecturer": "Khánh Tý",
+   "aspect": "hanh_vi",
+   "positive": 0,
+   "negative": 1,
+   "total": 2
+  },
+  {
+   "subject": "Đồ án cơ sở 4 -2",
+   "lecturer": "Khánh Tý",
+   "aspect": "cham_diem",
+   "positive": 16,
+   "negative": 0,
+   "total": 16
+  },
+  {
+   "subject": "Đồ án cơ sở 4 -2",
+   "lecturer": "Khánh Tý",
+   "aspect": "bai_tap",
+   "positive": 3,
+   "negative": 5,
+   "total": 8
+  },
+  {
+   "subject": "Đồ án cơ sở 4 -2",
+   "lecturer": "Khánh Tý",
+   "aspect": "kien_thuc",
+   "positive": 4,
+   "negative": 1,
+   "total": 5
+  },
+  {
+   "subject": "Chuyên đề 2",
+   "lecturer": "Anh Quang",
+   "aspect": "cham_diem",
+   "positive": 12,
+   "negative": 5,
+   "total": 17
+  },
+  {
+   "subject": "Chuyên đề 2",
+   "lecturer": "Anh Quang",
+   "aspect": "bai_tap",
+   "positive": 11,
+   "negative": 5,
+   "total": 17
+  },
+  {
+   "subject": "Chuyên đề 2",
+   "lecturer": "Anh Quang",
+   "aspect": "kien_thuc",
+   "positive": 0,
+   "negative": 6,
+   "total": 6
+  },
+  {
+   "subject": "Đồ án cơ sở 4 -15",
+   "lecturer": "Viết Trương",
+   "aspect": "ky_nang_giang_day",
+   "positive": 6,
+   "negative": 4,
+   "total": 13
+  },
+  {
+   "subject": "Đồ án cơ sở 4 -15",
+   "lecturer": "Viết Trương",
+   "aspect": "hanh_vi",
+   "positive": 8,
+   "negative": 5,
+   "total": 14
+  },
+  {
+   "subject": "Đồ án cơ sở 4 -15",
+   "lecturer": "Viết Trương",
+   "aspect": "cham_diem",
+   "positive": 0,
+   "negative": 14,
+   "total": 16
+  },
+  {
+   "subject": "Đồ án cơ sở 4 -15",
+   "lecturer": "Viết Trương",
+   "aspect": "kien_thuc",
+   "positive": 1,
+   "negative": 6,
+   "total": 14
+  },
+  {
+   "subject": "Đồ án cơ sở 4 -15",
+   "lecturer": "Đăng Ý",
+   "aspect": "ky_nang_giang_day",
+   "positive": 0,
+   "negative": 2,
+   "total": 3
+  },
+  {
+   "subject": "Đồ án cơ sở 4 -15",
+   "lecturer": "Đăng Ý",
+   "aspect": "hanh_vi",
+   "positive": 0,
+   "negative": 5,
+   "total": 13
+  },
+  {
+   "subject": "Đồ án cơ sở 4 -15",
+   "lecturer": "Đăng Ý",
+   "aspect": "kien_thuc",
+   "positive": 2,
+   "negative": 3,
+   "total": 5
+  },
+  {
+   "subject": "Đồ án cơ sở 4 -12",
+   "lecturer": "Lê Tân",
+   "aspect": "hanh_vi",
+   "positive": 4,
+   "negative": 4,
+   "total": 9
+  },
+  {
+   "subject": "Đồ án cơ sở 4 -12",
+   "lecturer": "Lê Tân",
+   "aspect": "kien_thuc",
+   "positive": 0,
+   "negative": 12,
+   "total": 12
+  }
+ ],
+ "pinned": {}
+}

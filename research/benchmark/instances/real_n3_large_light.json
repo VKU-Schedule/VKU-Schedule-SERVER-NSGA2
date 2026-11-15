@@ -1,0 +1,1714 @@
+{
+ "id": "real_n3_large_light",
+ "kind": "real",
+ "n": 3,
+ "tier": "large",
+ "density": "light",
+ "field": "BA",
+ "space": 320,
+ "courses": {
+  "Đề án 2": [
+   {
+    "course_name": "Đề án 2",
+    "sub_topic": "1 tín chỉ",
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": "BA",
+    "teacher": "TS.Đặng Vinh",
+    "day": "Thứ Ba",
+    "periods": [
+     2,
+     3,
+     4
+    ],
+    "area": "K",
+    "room": "A104",
+    "class_size": null
+   },
+   {
+    "course_name": "Đề án 2",
+    "sub_topic": "1 tín chỉ",
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": "BA",
+    "teacher": "ThS.Ngô Thị Hiền Trang",
+    "day": "Thứ Ba",
+    "periods": [
+     2,
+     3,
+     4
+    ],
+    "area": "Khác",
+    "room": "D1.203 (Phòng Seminar)",
+    "class_size": null
+   },
+   {
+    "course_name": "Đề án 2",
+    "sub_topic": "1 tín chỉ",
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": "BA",
+    "teacher": "TS.Nguyễn Thị Thanh Huyền",
+    "day": "Thứ Ba",
+    "periods": [
+     3,
+     4
+    ],
+    "area": "Khác",
+    "room": "D1.203 (Phòng Seminar)",
+    "class_size": null
+   },
+   {
+    "course_name": "Đề án 2",
+    "sub_topic": "1 tín chỉ",
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": "BA",
+    "teacher": "TS.Trần Lương Nguyệt",
+    "day": "Thứ Ba",
+    "periods": [
+     3,
+     4
+    ],
+    "area": "Khác",
+    "room": "D1.203 (Phòng Seminar)",
+    "class_size": null
+   },
+   {
+    "course_name": "Đề án 2",
+    "sub_topic": "1 tín chỉ",
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": "BA",
+    "teacher": "TS.Võ Thị Thanh  Thảo",
+    "day": "Thứ Ba",
+    "periods": [
+     3,
+     4
+    ],
+    "area": "K",
+    "room": "A210",
+    "class_size": null
+   },
+   {
+    "course_name": "Đề án 2",
+    "sub_topic": "1 tín chỉ",
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": "BA",
+    "teacher": "TS.Lê Phước Cửu Long",
+    "day": "Thứ Ba",
+    "periods": [
+     6,
+     7
+    ],
+    "area": "Khác",
+    "room": "D1.203 (Phòng Seminar)",
+    "class_size": null
+   },
+   {
+    "course_name": "Đề án 2",
+    "sub_topic": "1 tín chỉ",
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": "BA",
+    "teacher": "TS.Ngô Hải Quỳnh",
+    "day": "Thứ Hai",
+    "periods": [
+     1,
+     2,
+     3,
+     4
+    ],
+    "area": "K",
+    "room": "A210",
+    "class_size": null
+   },
+   {
+    "course_name": "Đề án 2",
+    "sub_topic": "1 tín chỉ",
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": "BA",
+    "teacher": "TS.Trần Thiện Vũ",
+    "day": "Thứ Hai",
+    "periods": [
+     7,
+     8
+    ],
+    "area": "K",
+    "room": "A302",
+    "class_size": null
+   },
+   {
+    "course_name": "Đề án 2",
+    "sub_topic": "1 tín chỉ",
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": "BA",
+    "teacher": "ThS.Huỳnh Bá Thúy Diệu",
+    "day": "Thứ Hai",
+    "periods": [
+     8,
+     9
+    ],
+    "area": "V",
+    "room": "A314",
+    "class_size": null
+   },
+   {
+    "course_name": "Đề án 2",
+    "sub_topic": "1 tín chỉ",
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": "BA",
+    "teacher": "TS.Phan Văn Thành",
+    "day": "Thứ Năm",
+    "periods": [
+     1,
+     2
+    ],
+    "area": "Khác",
+    "room": "D1.203 (Phòng Seminar)",
+    "class_size": null
+   },
+   {
+    "course_name": "Đề án 2",
+    "sub_topic": "1 tín chỉ",
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": "BA",
+    "teacher": "TS.Nguyễn Thanh Hoài",
+    "day": "Thứ Sáu",
+    "periods": [
+     1,
+     2
+    ],
+    "area": "K",
+    "room": "A108",
+    "class_size": null
+   },
+   {
+    "course_name": "Đề án 2",
+    "sub_topic": "1 tín chỉ",
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": "BA",
+    "teacher": "TS.Bùi Nữ Thanh Hà",
+    "day": "Thứ Sáu",
+    "periods": [
+     3,
+     4
+    ],
+    "area": "K",
+    "room": "A206",
+    "class_size": null
+   },
+   {
+    "course_name": "Đề án 2",
+    "sub_topic": "1 tín chỉ",
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": "BA",
+    "teacher": "TS.Nguyễn Thị Kiều Trang",
+    "day": "Thứ Sáu",
+    "periods": [
+     3,
+     4
+    ],
+    "area": "Khác",
+    "room": "D1.203 (Phòng Seminar)",
+    "class_size": null
+   },
+   {
+    "course_name": "Đề án 2",
+    "sub_topic": "1 tín chỉ",
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": "BA",
+    "teacher": "ThS.Nguyễn Thị Thảo Nhi",
+    "day": "Thứ Sáu",
+    "periods": [
+     3,
+     4
+    ],
+    "area": "Khác",
+    "room": "D1.203 (Phòng Seminar)",
+    "class_size": null
+   },
+   {
+    "course_name": "Đề án 2",
+    "sub_topic": "1 tín chỉ",
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": "BA",
+    "teacher": "ThS.Nguyễn Lê Ngọc Trâm",
+    "day": "Thứ Sáu",
+    "periods": [
+     8,
+     9
+    ],
+    "area": "Khác",
+    "room": "D1.203 (Phòng Seminar)",
+    "class_size": null
+   },
+   {
+    "course_name": "Đề án 2",
+    "sub_topic": "1 tín chỉ",
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": "BA",
+    "teacher": "TS.Nguyễn Thị Kim Ngọc",
+    "day": "Thứ _",
+    "periods": [],
+    "area": "Khác",
+    "room": "_",
+    "class_size": null
+   },
+   {
+    "course_name": "Đề án 2",
+    "sub_topic": "1 tín chỉ",
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": "BA",
+    "teacher": "TS.Nguyễn Thị Minh Chi",
+    "day": "Thứ _",
+    "periods": [],
+    "area": "Khác",
+    "room": "_",
+    "class_size": null
+   },
+   {
+    "course_name": "Đề án 2",
+    "sub_topic": "1 tín chỉ",
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": "BA",
+    "teacher": "TS.Nguyễn Thị Thu Đến",
+    "day": "Thứ _",
+    "periods": [],
+    "area": "Khác",
+    "room": "_",
+    "class_size": null
+   },
+   {
+    "course_name": "Đề án 2",
+    "sub_topic": "1 tín chỉ",
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": "BA",
+    "teacher": "TS.Văn Hùng Trọng",
+    "day": "Thứ _",
+    "periods": [],
+    "area": "Khác",
+    "room": "_",
+    "class_size": null
+   },
+   {
+    "course_name": "Đề án 2",
+    "sub_topic": "1 tín chỉ",
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": "BA",
+    "teacher": "ThS.Bùi Trần Huân",
+    "day": "Thứ _",
+    "periods": [],
+    "area": "Khác",
+    "room": "_",
+    "class_size": null
+   },
+   {
+    "course_name": "Đề án 2",
+    "sub_topic": "1 tín chỉ",
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": "BA",
+    "teacher": "ThS.Lê Thị Hải Vân",
+    "day": "Thứ _",
+    "periods": [],
+    "area": "Khác",
+    "room": "_",
+    "class_size": null
+   },
+   {
+    "course_name": "Đề án 2",
+    "sub_topic": "1 tín chỉ",
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": "BA",
+    "teacher": "ThS.Lương Thủy Tiên",
+    "day": "Thứ _",
+    "periods": [],
+    "area": "Khác",
+    "room": "_",
+    "class_size": null
+   },
+   {
+    "course_name": "Đề án 2",
+    "sub_topic": "1 tín chỉ",
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": "BA",
+    "teacher": "ThS.Nguyễn Linh Giang",
+    "day": "Thứ _",
+    "periods": [],
+    "area": "Khác",
+    "room": "_",
+    "class_size": null
+   },
+   {
+    "course_name": "Đề án 2",
+    "sub_topic": "1 tín chỉ",
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": "BA",
+    "teacher": "ThS.Nguyễn Ngọc Thảo Vy",
+    "day": "Thứ _",
+    "periods": [],
+    "area": "Khác",
+    "room": "_",
+    "class_size": null
+   },
+   {
+    "course_name": "Đề án 2",
+    "sub_topic": "1 tín chỉ",
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": "BA",
+    "teacher": "ThS.Nguyễn Thị Khánh Hà",
+    "day": "Thứ _",
+    "periods": [],
+    "area": "Khác",
+    "room": "_",
+    "class_size": null
+   },
+   {
+    "course_name": "Đề án 2",
+    "sub_topic": "1 tín chỉ",
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": "BA",
+    "teacher": "ThS.Nguyễn Thị Khánh My",
+    "day": "Thứ _",
+    "periods": [],
+    "area": "Khác",
+    "room": "_",
+    "class_size": null
+   },
+   {
+    "course_name": "Đề án 2",
+    "sub_topic": "1 tín chỉ",
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": "BA",
+    "teacher": "ThS.Nguyễn Thị Kim Ánh",
+    "day": "Thứ _",
+    "periods": [],
+    "area": "Khác",
+    "room": "_",
+    "class_size": null
+   },
+   {
+    "course_name": "Đề án 2",
+    "sub_topic": "1 tín chỉ",
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": "BA",
+    "teacher": "ThS.Nguyễn Thị Như Quỳnh",
+    "day": "Thứ _",
+    "periods": [],
+    "area": "Khác",
+    "room": "_",
+    "class_size": null
+   },
+   {
+    "course_name": "Đề án 2",
+    "sub_topic": "1 tín chỉ",
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": "BA",
+    "teacher": "ThS.Nguyễn Thị Thanh Nhàn",
+    "day": "Thứ _",
+    "periods": [],
+    "area": "Khác",
+    "room": "_",
+    "class_size": null
+   },
+   {
+    "course_name": "Đề án 2",
+    "sub_topic": "1 tín chỉ",
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": "BA",
+    "teacher": "ThS.Nguyễn Thị Thu Ngân",
+    "day": "Thứ _",
+    "periods": [],
+    "area": "Khác",
+    "room": "_",
+    "class_size": null
+   },
+   {
+    "course_name": "Đề án 2",
+    "sub_topic": "1 tín chỉ",
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": "BA",
+    "teacher": "ThS.Trương Hoàng Tú Nhi",
+    "day": "Thứ _",
+    "periods": [],
+    "area": "Khác",
+    "room": "_",
+    "class_size": null
+   },
+   {
+    "course_name": "Đề án 2",
+    "sub_topic": "1 tín chỉ",
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": "BA",
+    "teacher": "ThS.Trương Thị Viên",
+    "day": "Thứ _",
+    "periods": [],
+    "area": "Khác",
+    "room": "_",
+    "class_size": null
+   },
+   {
+    "course_name": "Đề án 2",
+    "sub_topic": "1 tín chỉ",
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": "BA",
+    "teacher": "ThS.Trần Ngọc Phương Thảo",
+    "day": "Thứ _",
+    "periods": [],
+    "area": "Khác",
+    "room": "_",
+    "class_size": null
+   },
+   {
+    "course_name": "Đề án 2",
+    "sub_topic": "1 tín chỉ",
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": "BA",
+    "teacher": "ThS.Trần Phạm Huyền Trang",
+    "day": "Thứ _",
+    "periods": [],
+    "area": "Khác",
+    "room": "_",
+    "class_size": null
+   },
+   {
+    "course_name": "Đề án 2",
+    "sub_topic": "1 tín chỉ",
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": "BA",
+    "teacher": "ThS.Trần Thị Mỹ Châu",
+    "day": "Thứ _",
+    "periods": [],
+    "area": "Khác",
+    "room": "_",
+    "class_size": null
+   },
+   {
+    "course_name": "Đề án 2",
+    "sub_topic": "1 tín chỉ",
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": "BA",
+    "teacher": "ThS.Vũ Thu Hà",
+    "day": "Thứ _",
+    "periods": [],
+    "area": "Khác",
+    "room": "_",
+    "class_size": null
+   },
+   {
+    "course_name": "Đề án 2",
+    "sub_topic": "1 tín chỉ",
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": "BA",
+    "teacher": "ThS.Vũ Thành Nhân",
+    "day": "Thứ _",
+    "periods": [],
+    "area": "Khác",
+    "room": "_",
+    "class_size": null
+   },
+   {
+    "course_name": "Đề án 2",
+    "sub_topic": "1 tín chỉ",
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": "BA",
+    "teacher": "ThS.Vũ Thị Tuyết Mai",
+    "day": "Thứ _",
+    "periods": [],
+    "area": "Khác",
+    "room": "_",
+    "class_size": null
+   },
+   {
+    "course_name": "Đề án 2",
+    "sub_topic": "1 tín chỉ",
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": "BA",
+    "teacher": "ThS.Đinh Nguyễn Khánh Phương",
+    "day": "Thứ _",
+    "periods": [],
+    "area": "Khác",
+    "room": "_",
+    "class_size": null
+   },
+   {
+    "course_name": "Đề án 2",
+    "sub_topic": "1 tín chỉ",
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": "BA",
+    "teacher": "ThS.Đặng Thị Thanh Minh",
+    "day": "Thứ _",
+    "periods": [],
+    "area": "Khác",
+    "room": "_",
+    "class_size": null
+   }
+  ],
+  "Nhập môn ngành & kỹ năng mềm": [
+   {
+    "course_name": "Nhập môn ngành & kỹ năng mềm",
+    "sub_topic": null,
+    "class_index": "1",
+    "language": "Tiếng Anh",
+    "field": "BA",
+    "teacher": "ThS.Nguyễn Thị Thảo Nhi",
+    "day": "Thứ Sáu",
+    "periods": [
+     6,
+     7,
+     8
+    ],
+    "area": "K",
+    "room": "A211",
+    "class_size": 5
+   },
+   {
+    "course_name": "Nhập môn ngành & kỹ năng mềm",
+    "sub_topic": null,
+    "class_index": "2",
+    "language": "Tiếng Việt",
+    "field": "BA",
+    "teacher": "ThS.Nguyễn Lê Ngọc Trâm",
+    "day": "Thứ Năm",
+    "periods": [
+     1,
+     2,
+     3
+    ],
+    "area": "K",
+    "room": "A214",
+    "class_size": 5
+   },
+   {
+    "course_name": "Nhập môn ngành & kỹ năng mềm",
+    "sub_topic": null,
+    "class_index": "3",
+    "language": "Tiếng Việt",
+    "field": "BA",
+    "teacher": "ThS.Nguyễn Lê Ngọc Trâm",
+    "day": "Thứ Ba",
+    "periods": [
+     6,
+     7,
+     8
+    ],
+    "area": "K",
+    "room": "A213",
+    "class_size": 5
+   },
+   {
+    "course_name": "Nhập môn ngành & kỹ năng mềm",
+    "sub_topic": null,
+    "class_index": "4",
+    "language": "Tiếng Việt",
+    "field": "BA",
+    "teacher": "ThS.Nguyễn Lê Ngọc Trâm",
+    "day": "Thứ Năm",
+    "periods": [
+     6,
+     7,
+     8
+    ],
+    "area": "K",
+    "room": "A314",
+    "class_size": 5
+   },
+   {
+    "course_name": "Nhập môn ngành & kỹ năng mềm",
+    "sub_topic": null,
+    "class_index": "5",
+    "language": "Tiếng Anh",
+    "field": "BA",
+    "teacher": "ThS.Nguyễn Thị Thảo Nhi",
+    "day": "Thứ Sáu",
+    "periods": [
+     1,
+     2,
+     3
+    ],
+    "area": "K",
+    "room": "A313",
+    "class_size": 5
+   },
+   {
+    "course_name": "Nhập môn ngành & kỹ năng mềm",
+    "sub_topic": null,
+    "class_index": "6",
+    "language": "Tiếng Việt",
+    "field": "BA",
+    "teacher": "TS.Đặng Vinh",
+    "day": "Thứ Hai",
+    "periods": [
+     1,
+     2,
+     3
+    ],
+    "area": "K",
+    "room": "A314",
+    "class_size": 5
+   },
+   {
+    "course_name": "Nhập môn ngành & kỹ năng mềm",
+    "sub_topic": null,
+    "class_index": "7",
+    "language": "Tiếng Việt",
+    "field": "BA",
+    "teacher": "TS.Đặng Vinh",
+    "day": "Thứ Tư",
+    "periods": [
+     6,
+     7,
+     8
+    ],
+    "area": "K",
+    "room": "A211",
+    "class_size": 5
+   },
+   {
+    "course_name": "Nhập môn ngành & kỹ năng mềm",
+    "sub_topic": null,
+    "class_index": "8",
+    "language": "Tiếng Việt",
+    "field": "BA",
+    "teacher": "TS.Đặng Vinh",
+    "day": "Thứ Tư",
+    "periods": [
+     1,
+     2,
+     3
+    ],
+    "area": "K",
+    "room": "A214",
+    "class_size": 20
+   }
+  ],
+  "Lập trình Python": [
+   {
+    "course_name": "Lập trình Python",
+    "sub_topic": "Nhóm 2",
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": "BA",
+    "teacher": "TS.Phạm Nguyễn Minh Nhựt",
+    "day": "Thứ Sáu",
+    "periods": [
+     1,
+     2
+    ],
+    "area": "K",
+    "room": "B206",
+    "class_size": 35
+   }
+  ]
+ },
+ "preferences": {
+  "version": "2.0",
+  "constraints": [
+   {
+    "prefer": {
+     "periods": {
+      "min": 2,
+      "max": 5
+     }
+    }
+   }
+  ]
+ },
+ "review_stats": [
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Thanh Hà",
+   "aspect": "ky_nang_giang_day",
+   "positive": 3,
+   "negative": 2,
+   "total": 5
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Thanh Hà",
+   "aspect": "hanh_vi",
+   "positive": 0,
+   "negative": 2,
+   "total": 3
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Thanh Hà",
+   "aspect": "cham_diem",
+   "positive": 5,
+   "negative": 7,
+   "total": 19
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Thanh Hà",
+   "aspect": "bai_tap",
+   "positive": 3,
+   "negative": 11,
+   "total": 14
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Cửu Long",
+   "aspect": "ky_nang_giang_day",
+   "positive": 8,
+   "negative": 3,
+   "total": 12
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Cửu Long",
+   "aspect": "hanh_vi",
+   "positive": 3,
+   "negative": 2,
+   "total": 12
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Cửu Long",
+   "aspect": "bai_tap",
+   "positive": 17,
+   "negative": 1,
+   "total": 20
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Cửu Long",
+   "aspect": "kien_thuc",
+   "positive": 1,
+   "negative": 2,
+   "total": 7
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Thanh Hoài",
+   "aspect": "ky_nang_giang_day",
+   "positive": 5,
+   "negative": 5,
+   "total": 10
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Thanh Hoài",
+   "aspect": "bai_tap",
+   "positive": 0,
+   "negative": 1,
+   "total": 1
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Kim Ngọc",
+   "aspect": "bai_tap",
+   "positive": 0,
+   "negative": 5,
+   "total": 5
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Kim Ngọc",
+   "aspect": "kien_thuc",
+   "positive": 2,
+   "negative": 3,
+   "total": 7
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Kiều Trang",
+   "aspect": "hanh_vi",
+   "positive": 6,
+   "negative": 0,
+   "total": 11
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Kiều Trang",
+   "aspect": "bai_tap",
+   "positive": 8,
+   "negative": 3,
+   "total": 13
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Minh Chi",
+   "aspect": "ky_nang_giang_day",
+   "positive": 8,
+   "negative": 1,
+   "total": 9
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Minh Chi",
+   "aspect": "hanh_vi",
+   "positive": 5,
+   "negative": 0,
+   "total": 14
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Minh Chi",
+   "aspect": "kien_thuc",
+   "positive": 4,
+   "negative": 6,
+   "total": 12
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Thanh Huyền",
+   "aspect": "ky_nang_giang_day",
+   "positive": 6,
+   "negative": 8,
+   "total": 15
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Thanh Huyền",
+   "aspect": "hanh_vi",
+   "positive": 7,
+   "negative": 6,
+   "total": 19
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Thanh Huyền",
+   "aspect": "kien_thuc",
+   "positive": 11,
+   "negative": 1,
+   "total": 14
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Thu Đến",
+   "aspect": "bai_tap",
+   "positive": 1,
+   "negative": 1,
+   "total": 14
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Hải Quỳnh",
+   "aspect": "hanh_vi",
+   "positive": 13,
+   "negative": 2,
+   "total": 18
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Văn Thành",
+   "aspect": "ky_nang_giang_day",
+   "positive": 4,
+   "negative": 0,
+   "total": 4
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Lương Nguyệt",
+   "aspect": "ky_nang_giang_day",
+   "positive": 4,
+   "negative": 0,
+   "total": 10
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Lương Nguyệt",
+   "aspect": "bai_tap",
+   "positive": 4,
+   "negative": 6,
+   "total": 13
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Thiện Vũ",
+   "aspect": "ky_nang_giang_day",
+   "positive": 12,
+   "negative": 1,
+   "total": 17
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Thiện Vũ",
+   "aspect": "cham_diem",
+   "positive": 14,
+   "negative": 1,
+   "total": 16
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Thiện Vũ",
+   "aspect": "bai_tap",
+   "positive": 2,
+   "negative": 1,
+   "total": 4
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Thiện Vũ",
+   "aspect": "kien_thuc",
+   "positive": 4,
+   "negative": 1,
+   "total": 6
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Thanh Thảo",
+   "aspect": "ky_nang_giang_day",
+   "positive": 2,
+   "negative": 3,
+   "total": 11
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Thanh Thảo",
+   "aspect": "hanh_vi",
+   "positive": 1,
+   "negative": 0,
+   "total": 1
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Thanh Thảo",
+   "aspect": "cham_diem",
+   "positive": 6,
+   "negative": 0,
+   "total": 16
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Thanh Thảo",
+   "aspect": "bai_tap",
+   "positive": 11,
+   "negative": 1,
+   "total": 12
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Thanh Thảo",
+   "aspect": "kien_thuc",
+   "positive": 8,
+   "negative": 0,
+   "total": 20
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Hùng Trọng",
+   "aspect": "ky_nang_giang_day",
+   "positive": 5,
+   "negative": 1,
+   "total": 6
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Hùng Trọng",
+   "aspect": "hanh_vi",
+   "positive": 4,
+   "negative": 6,
+   "total": 11
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Hùng Trọng",
+   "aspect": "bai_tap",
+   "positive": 3,
+   "negative": 1,
+   "total": 5
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Đặng Vinh",
+   "aspect": "cham_diem",
+   "positive": 2,
+   "negative": 2,
+   "total": 5
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Trần Huân",
+   "aspect": "ky_nang_giang_day",
+   "positive": 4,
+   "negative": 0,
+   "total": 6
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Trần Huân",
+   "aspect": "hanh_vi",
+   "positive": 6,
+   "negative": 0,
+   "total": 7
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Trần Huân",
+   "aspect": "cham_diem",
+   "positive": 10,
+   "negative": 0,
+   "total": 13
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Trần Huân",
+   "aspect": "kien_thuc",
+   "positive": 5,
+   "negative": 2,
+   "total": 7
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Thúy Diệu",
+   "aspect": "hanh_vi",
+   "positive": 3,
+   "negative": 0,
+   "total": 7
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Thúy Diệu",
+   "aspect": "cham_diem",
+   "positive": 4,
+   "negative": 10,
+   "total": 17
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Thúy Diệu",
+   "aspect": "kien_thuc",
+   "positive": 0,
+   "negative": 5,
+   "total": 12
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Hải Vân",
+   "aspect": "ky_nang_giang_day",
+   "positive": 0,
+   "negative": 12,
+   "total": 17
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Hải Vân",
+   "aspect": "hanh_vi",
+   "positive": 2,
+   "negative": 3,
+   "total": 9
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Hải Vân",
+   "aspect": "cham_diem",
+   "positive": 1,
+   "negative": 1,
+   "total": 12
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Hải Vân",
+   "aspect": "bai_tap",
+   "positive": 2,
+   "negative": 6,
+   "total": 9
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Thủy Tiên",
+   "aspect": "cham_diem",
+   "positive": 7,
+   "negative": 1,
+   "total": 14
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Thủy Tiên",
+   "aspect": "bai_tap",
+   "positive": 2,
+   "negative": 1,
+   "total": 4
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Linh Giang",
+   "aspect": "ky_nang_giang_day",
+   "positive": 0,
+   "negative": 0,
+   "total": 4
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Linh Giang",
+   "aspect": "bai_tap",
+   "positive": 4,
+   "negative": 0,
+   "total": 4
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Ngọc Trâm",
+   "aspect": "ky_nang_giang_day",
+   "positive": 5,
+   "negative": 0,
+   "total": 10
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Ngọc Trâm",
+   "aspect": "cham_diem",
+   "positive": 3,
+   "negative": 4,
+   "total": 7
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Thảo Vy",
+   "aspect": "cham_diem",
+   "positive": 2,
+   "negative": 0,
+   "total": 11
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Thảo Vy",
+   "aspect": "bai_tap",
+   "positive": 7,
+   "negative": 3,
+   "total": 13
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Thảo Vy",
+   "aspect": "kien_thuc",
+   "positive": 1,
+   "negative": 0,
+   "total": 5
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Khánh Hà",
+   "aspect": "ky_nang_giang_day",
+   "positive": 9,
+   "negative": 1,
+   "total": 18
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Khánh Hà",
+   "aspect": "hanh_vi",
+   "positive": 2,
+   "negative": 2,
+   "total": 6
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Khánh My",
+   "aspect": "hanh_vi",
+   "positive": 4,
+   "negative": 4,
+   "total": 10
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Khánh My",
+   "aspect": "kien_thuc",
+   "positive": 0,
+   "negative": 3,
+   "total": 8
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Kim Ánh",
+   "aspect": "hanh_vi",
+   "positive": 3,
+   "negative": 10,
+   "total": 13
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Như Quỳnh",
+   "aspect": "ky_nang_giang_day",
+   "positive": 2,
+   "negative": 0,
+   "total": 3
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Như Quỳnh",
+   "aspect": "kien_thuc",
+   "positive": 0,
+   "negative": 0,
+   "total": 0
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Thanh Nhàn",
+   "aspect": "ky_nang_giang_day",
+   "positive": 0,
+   "negative": 2,
+   "total": 18
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Thanh Nhàn",
+   "aspect": "cham_diem",
+   "positive": 0,
+   "negative": 3,
+   "total": 3
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Thanh Nhàn",
+   "aspect": "kien_thuc",
+   "positive": 4,
+   "negative": 6,
+   "total": 12
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Thu Ngân",
+   "aspect": "cham_diem",
+   "positive": 3,
+   "negative": 0,
+   "total": 17
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Thu Ngân",
+   "aspect": "bai_tap",
+   "positive": 10,
+   "negative": 1,
+   "total": 13
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Thảo Nhi",
+   "aspect": "ky_nang_giang_day",
+   "positive": 1,
+   "negative": 0,
+   "total": 1
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Thảo Nhi",
+   "aspect": "hanh_vi",
+   "positive": 14,
+   "negative": 1,
+   "total": 16
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Thảo Nhi",
+   "aspect": "cham_diem",
+   "positive": 0,
+   "negative": 2,
+   "total": 3
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Thảo Nhi",
+   "aspect": "bai_tap",
+   "positive": 5,
+   "negative": 1,
+   "total": 11
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Hiền Trang",
+   "aspect": "ky_nang_giang_day",
+   "positive": 15,
+   "negative": 0,
+   "total": 15
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Hiền Trang",
+   "aspect": "hanh_vi",
+   "positive": 17,
+   "negative": 2,
+   "total": 19
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Hiền Trang",
+   "aspect": "kien_thuc",
+   "positive": 1,
+   "negative": 3,
+   "total": 6
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Tú Nhi",
+   "aspect": "hanh_vi",
+   "positive": 3,
+   "negative": 2,
+   "total": 17
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Thị Viên",
+   "aspect": "cham_diem",
+   "positive": 6,
+   "negative": 0,
+   "total": 7
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Thị Viên",
+   "aspect": "bai_tap",
+   "positive": 15,
+   "negative": 1,
+   "total": 17
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Thị Viên",
+   "aspect": "kien_thuc",
+   "positive": 6,
+   "negative": 1,
+   "total": 7
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Phương Thảo",
+   "aspect": "hanh_vi",
+   "positive": 3,
+   "negative": 2,
+   "total": 19
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Phương Thảo",
+   "aspect": "bai_tap",
+   "positive": 0,
+   "negative": 0,
+   "total": 0
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Phương Thảo",
+   "aspect": "kien_thuc",
+   "positive": 14,
+   "negative": 1,
+   "total": 15
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Huyền Trang",
+   "aspect": "ky_nang_giang_day",
+   "positive": 0,
+   "negative": 0,
+   "total": 0
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Huyền Trang",
+   "aspect": "hanh_vi",
+   "positive": 2,
+   "negative": 3,
+   "total": 5
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Huyền Trang",
+   "aspect": "cham_diem",
+   "positive": 7,
+   "negative": 0,
+   "total": 10
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Huyền Trang",
+   "aspect": "bai_tap",
+   "positive": 2,
+   "negative": 4,
+   "total": 9
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Huyền Trang",
+   "aspect": "kien_thuc",
+   "positive": 2,
+   "negative": 10,
+   "total": 15
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Mỹ Châu",
+   "aspect": "ky_nang_giang_day",
+   "positive": 5,
+   "negative": 2,
+   "total": 14
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Mỹ Châu",
+   "aspect": "cham_diem",
+   "positive": 2,
+   "negative": 0,
+   "total": 2
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Mỹ Châu",
+   "aspect": "bai_tap",
+   "positive": 6,
+   "negative": 1,
+   "total": 9
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Thu Hà",
+   "aspect": "ky_nang_giang_day",
+   "positive": 0,
+   "negative": 3,
+   "total": 5
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Thu Hà",
+   "aspect": "hanh_vi",
+   "positive": 7,
+   "negative": 5,
+   "total": 15
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Thu Hà",
+   "aspect": "cham_diem",
+   "positive": 15,
+   "negative": 0,
+   "total": 20
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Thu Hà",
+   "aspect": "bai_tap",
+   "positive": 0,
+   "negative": 5,
+   "total": 10
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Thu Hà",
+   "aspect": "kien_thuc",
+   "positive": 2,
+   "negative": 3,
+   "total": 9
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Thành Nhân",
+   "aspect": "hanh_vi",
+   "positive": 1,
+   "negative": 0,
+   "total": 1
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Thành Nhân",
+   "aspect": "kien_thuc",
+   "positive": 1,
+   "negative": 1,
+   "total": 5
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Tuyết Mai",
+   "aspect": "hanh_vi",
+   "positive": 10,
+   "negative": 1,
+   "total": 11
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Tuyết Mai",
+   "aspect": "bai_tap",
+   "positive": 2,
+   "negative": 3,
+   "total": 5
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Tuyết Mai",
+   "aspect": "kien_thuc",
+   "positive": 3,
+   "negative": 2,
+   "total": 16
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Khánh Phương",
+   "aspect": "hanh_vi",
+   "positive": 1,
+   "negative": 0,
+   "total": 1
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Khánh Phương",
+   "aspect": "cham_diem",
+   "positive": 2,
+   "negative": 14,
+   "total": 18
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Khánh Phương",
+   "aspect": "bai_tap",
+   "positive": 3,
+   "negative": 0,
+   "total": 4
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Thanh Minh",
+   "aspect": "ky_nang_giang_day",
+   "positive": 9,
+   "negative": 2,
+   "total": 14
+  },
+  {
+   "subject": "Đề án 2",
+   "lecturer": "Thanh Minh",
+   "aspect": "hanh_vi",
+   "positive": 4,
+   "negative": 1,
+   "total": 13
+  },
+  {
+   "subject": "Nhập môn ngành & kỹ năng mềm",
+   "lecturer": "Đặng Vinh",
+   "aspect": "ky_nang_giang_day",
+   "positive": 18,
+   "negative": 1,
+   "total": 20
+  },
+  {
+   "subject": "Nhập môn ngành & kỹ năng mềm",
+   "lecturer": "Đặng Vinh",
+   "aspect": "hanh_vi",
+   "positive": 1,
+   "negative": 5,
+   "total": 7
+  },
+  {
+   "subject": "Nhập môn ngành & kỹ năng mềm",
+   "lecturer": "Đặng Vinh",
+   "aspect": "cham_diem",
+   "positive": 4,
+   "negative": 2,
+   "total": 14
+  },
+  {
+   "subject": "Nhập môn ngành & kỹ năng mềm",
+   "lecturer": "Đặng Vinh",
+   "aspect": "bai_tap",
+   "positive": 8,
+   "negative": 1,
+   "total": 10
+  },
+  {
+   "subject": "Nhập môn ngành & kỹ năng mềm",
+   "lecturer": "Ngọc Trâm",
+   "aspect": "ky_nang_giang_day",
+   "positive": 1,
+   "negative": 0,
+   "total": 1
+  },
+  {
+   "subject": "Nhập môn ngành & kỹ năng mềm",
+   "lecturer": "Ngọc Trâm",
+   "aspect": "hanh_vi",
+   "positive": 1,
+   "negative": 8,
+   "total": 9
+  },
+  {
+   "subject": "Nhập môn ngành & kỹ năng mềm",
+   "lecturer": "Ngọc Trâm",
+   "aspect": "bai_tap",
+   "positive": 2,
+   "negative": 6,
+   "total": 8
+  },
+  {
+   "subject": "Nhập môn ngành & kỹ năng mềm",
+   "lecturer": "Ngọc Trâm",
+   "aspect": "kien_thuc",
+   "positive": 0,
+   "negative": 0,
+   "total": 0
+  },
+  {
+   "subject": "Nhập môn ngành & kỹ năng mềm",
+   "lecturer": "Thảo Nhi",
+   "aspect": "ky_nang_giang_day",
+   "positive": 1,
+   "negative": 1,
+   "total": 2
+  },
+  {
+   "subject": "Nhập môn ngành & kỹ năng mềm",
+   "lecturer": "Thảo Nhi",
+   "aspect": "hanh_vi",
+   "positive": 8,
+   "negative": 9,
+   "total": 19
+  },
+  {
+   "subject": "Nhập môn ngành & kỹ năng mềm",
+   "lecturer": "Thảo Nhi",
+   "aspect": "cham_diem",
+   "positive": 6,
+   "negative": 4,
+   "total": 17
+  },
+  {
+   "subject": "Nhập môn ngành & kỹ năng mềm",
+   "lecturer": "Thảo Nhi",
+   "aspect": "kien_thuc",
+   "positive": 3,
+   "negative": 3,
+   "total": 12
+  },
+  {
+   "subject": "Lập trình Python",
+   "lecturer": "Minh Nhựt",
+   "aspect": "ky_nang_giang_day",
+   "positive": 18,
+   "negative": 1,
+   "total": 20
+  }
+ ],
+ "pinned": {}
+}

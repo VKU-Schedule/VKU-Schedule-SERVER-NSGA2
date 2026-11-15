@@ -1,0 +1,716 @@
+{
+ "id": "real_n7_small_heavy",
+ "kind": "real",
+ "n": 7,
+ "tier": "small",
+ "density": "heavy",
+ "field": "?",
+ "space": 64,
+ "courses": {
+  "Học sâu": [
+   {
+    "course_name": "Học sâu",
+    "sub_topic": null,
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "TS.Nguyễn Hữu Nhật Minh",
+    "day": "Thứ Năm",
+    "periods": [
+     7,
+     8,
+     9
+    ],
+    "area": "K",
+    "room": "A101",
+    "class_size": 10
+   },
+   {
+    "course_name": "Học sâu",
+    "sub_topic": null,
+    "class_index": "1",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "TS.Trần Uyên Trang",
+    "day": "Thứ Ba",
+    "periods": [
+     6,
+     7,
+     8,
+     9
+    ],
+    "area": "V",
+    "room": "A214",
+    "class_size": 70
+   }
+  ],
+  "Tiếng Anh nâng cao 2": [
+   {
+    "course_name": "Tiếng Anh nâng cao 2",
+    "sub_topic": null,
+    "class_index": "1",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "TS.Trần Thị Thùy Liên",
+    "day": "Thứ Hai",
+    "periods": [
+     1,
+     2
+    ],
+    "area": "K",
+    "room": "B103",
+    "class_size": 68
+   },
+   {
+    "course_name": "Tiếng Anh nâng cao 2",
+    "sub_topic": null,
+    "class_index": "2",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "TS.Trần Thị Thùy Liên",
+    "day": "Thứ Hai",
+    "periods": [
+     3,
+     4
+    ],
+    "area": "K",
+    "room": "B103",
+    "class_size": 68
+   },
+   {
+    "course_name": "Tiếng Anh nâng cao 2",
+    "sub_topic": null,
+    "class_index": "3",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Phan Thị Hồng Việt",
+    "day": "Thứ Năm",
+    "periods": [
+     6,
+     7
+    ],
+    "area": "K",
+    "room": "B101",
+    "class_size": 68
+   },
+   {
+    "course_name": "Tiếng Anh nâng cao 2",
+    "sub_topic": null,
+    "class_index": "4",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Phan Thị Hồng Việt",
+    "day": "Thứ Năm",
+    "periods": [
+     8,
+     9
+    ],
+    "area": "K",
+    "room": "B101",
+    "class_size": 68
+   },
+   {
+    "course_name": "Tiếng Anh nâng cao 2",
+    "sub_topic": null,
+    "class_index": "5",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Phan Thị Hồng Việt",
+    "day": "Thứ Tư",
+    "periods": [
+     6,
+     7
+    ],
+    "area": "K",
+    "room": "B103",
+    "class_size": 68
+   },
+   {
+    "course_name": "Tiếng Anh nâng cao 2",
+    "sub_topic": null,
+    "class_index": "6",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Phạm Trần Mộc Miêng",
+    "day": "Thứ Tư",
+    "periods": [
+     1,
+     2
+    ],
+    "area": "K",
+    "room": "B107",
+    "class_size": 68
+   },
+   {
+    "course_name": "Tiếng Anh nâng cao 2",
+    "sub_topic": null,
+    "class_index": "7",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Phạm Trần Mộc Miêng",
+    "day": "Thứ Tư",
+    "periods": [
+     3,
+     4
+    ],
+    "area": "K",
+    "room": "B107",
+    "class_size": 68
+   },
+   {
+    "course_name": "Tiếng Anh nâng cao 2",
+    "sub_topic": null,
+    "class_index": "8",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Lê Thị Kim Tuyến",
+    "day": "Thứ Tư",
+    "periods": [
+     1,
+     2
+    ],
+    "area": "K",
+    "room": "A211",
+    "class_size": 50
+   }
+  ],
+  "Đồ án tốt nghiệp IT": [
+   {
+    "course_name": "Đồ án tốt nghiệp IT",
+    "sub_topic": "32",
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "TS.Huỳnh Ngọc Thọ",
+    "day": "Thứ Hai",
+    "periods": [
+     1,
+     2
+    ],
+    "area": "V",
+    "room": "A205 (P. Hiệu phó)",
+    "class_size": null
+   }
+  ],
+  "Quản trị trải nghiệm khách hàng": [
+   {
+    "course_name": "Quản trị trải nghiệm khách hàng",
+    "sub_topic": null,
+    "class_index": "2",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Lê Thị Hải Vân",
+    "day": "Thứ Sáu",
+    "periods": [
+     1,
+     2
+    ],
+    "area": "K",
+    "room": "A212",
+    "class_size": 68
+   }
+  ],
+  "Chiến lược Digital Marketing": [
+   {
+    "course_name": "Chiến lược Digital Marketing",
+    "sub_topic": null,
+    "class_index": "1",
+    "language": "Tiếng Anh",
+    "field": null,
+    "teacher": "TS.Lê Phước Cửu Long",
+    "day": "Thứ Tư",
+    "periods": [
+     1,
+     2,
+     3,
+     4
+    ],
+    "area": "V",
+    "room": "A302",
+    "class_size": 60
+   },
+   {
+    "course_name": "Chiến lược Digital Marketing",
+    "sub_topic": null,
+    "class_index": "2",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Huỳnh Bá Thúy Diệu",
+    "day": "Thứ Hai",
+    "periods": [
+     6,
+     7,
+     8,
+     9
+    ],
+    "area": "V",
+    "room": "A304",
+    "class_size": 60
+   }
+  ],
+  "Thực tập doanh nghiệp IT": [
+   {
+    "course_name": "Thực tập doanh nghiệp IT",
+    "sub_topic": "3",
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Nguyễn Xuân  Tiến",
+    "day": "Thứ Bảy",
+    "periods": [
+     6,
+     7
+    ],
+    "area": "K",
+    "room": "A210",
+    "class_size": null
+   },
+   {
+    "course_name": "Thực tập doanh nghiệp IT",
+    "sub_topic": "3",
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "TS.Nguyễn Hữu Nhật Minh",
+    "day": "Thứ _",
+    "periods": [],
+    "area": "Khác",
+    "room": "_",
+    "class_size": null
+   }
+  ],
+  "GDTC 3": [
+   {
+    "course_name": "GDTC 3",
+    "sub_topic": "Cầu lông",
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Hồ Anh Hưng",
+    "day": "Thứ Tư",
+    "periods": [
+     8,
+     9
+    ],
+    "area": "K",
+    "room": "T3-TTSV.1",
+    "class_size": 50
+   },
+   {
+    "course_name": "GDTC 3",
+    "sub_topic": "Cầu lông",
+    "class_index": "",
+    "language": "Tiếng Việt",
+    "field": null,
+    "teacher": "ThS.Hồ Anh Hưng",
+    "day": "Thứ Tư",
+    "periods": [
+     8,
+     9
+    ],
+    "area": "K",
+    "room": "T3-TTSV.1",
+    "class_size": 50
+   }
+  ]
+ },
+ "preferences": {
+  "version": "2.0",
+  "constraints": [
+   {
+    "relation": "different_day",
+    "courses": [
+     "GDTC 3",
+     "Học sâu"
+    ],
+    "level": "must"
+   },
+   {
+    "prefer": {
+     "review": {
+      "phrase": "giảng viên chấm điểm khắt khe",
+      "aspect": "cham_diem",
+      "sentiment": "negative"
+     }
+    },
+    "scope": {
+     "course": "Quản trị trải nghiệm khách hàng"
+    }
+   },
+   {
+    "avoid": {
+     "area": "K"
+    }
+   },
+   {
+    "limit": "consecutive_periods",
+    "max": 5
+   },
+   {
+    "relation": "different_day",
+    "courses": [
+     "GDTC 3",
+     "Quản trị trải nghiệm khách hàng"
+    ]
+   },
+   {
+    "prefer": {
+     "teacher": "Cửu Long"
+    },
+    "scope": {
+     "course": "Chiến lược Digital Marketing"
+    }
+   },
+   {
+    "avoid": {
+     "review": {
+      "phrase": "giảng viên dạy dễ hiểu",
+      "aspect": "ky_nang_giang_day",
+      "sentiment": "positive"
+     }
+    }
+   },
+   {
+    "avoid": {
+     "start_period": {
+      "max": 1
+     }
+    },
+    "scope": {
+     "day": "thứ 7"
+    }
+   },
+   {
+    "avoid": {
+     "end_period": {
+      "max": 5
+     }
+    },
+    "level": "high"
+   }
+  ]
+ },
+ "review_stats": [
+  {
+   "subject": "Học sâu",
+   "lecturer": "Nhật Minh",
+   "aspect": "cham_diem",
+   "positive": 4,
+   "negative": 0,
+   "total": 6
+  },
+  {
+   "subject": "Học sâu",
+   "lecturer": "Nhật Minh",
+   "aspect": "bai_tap",
+   "positive": 8,
+   "negative": 0,
+   "total": 12
+  },
+  {
+   "subject": "Học sâu",
+   "lecturer": "Uyên Trang",
+   "aspect": "ky_nang_giang_day",
+   "positive": 2,
+   "negative": 6,
+   "total": 19
+  },
+  {
+   "subject": "Học sâu",
+   "lecturer": "Uyên Trang",
+   "aspect": "hanh_vi",
+   "positive": 1,
+   "negative": 2,
+   "total": 6
+  },
+  {
+   "subject": "Học sâu",
+   "lecturer": "Uyên Trang",
+   "aspect": "cham_diem",
+   "positive": 2,
+   "negative": 2,
+   "total": 4
+  },
+  {
+   "subject": "Học sâu",
+   "lecturer": "Uyên Trang",
+   "aspect": "bai_tap",
+   "positive": 18,
+   "negative": 1,
+   "total": 19
+  },
+  {
+   "subject": "Tiếng Anh nâng cao 2",
+   "lecturer": "Thùy Liên",
+   "aspect": "hanh_vi",
+   "positive": 18,
+   "negative": 0,
+   "total": 19
+  },
+  {
+   "subject": "Tiếng Anh nâng cao 2",
+   "lecturer": "Thùy Liên",
+   "aspect": "bai_tap",
+   "positive": 7,
+   "negative": 0,
+   "total": 8
+  },
+  {
+   "subject": "Tiếng Anh nâng cao 2",
+   "lecturer": "Kim Tuyến",
+   "aspect": "bai_tap",
+   "positive": 1,
+   "negative": 1,
+   "total": 3
+  },
+  {
+   "subject": "Tiếng Anh nâng cao 2",
+   "lecturer": "Hồng Việt",
+   "aspect": "ky_nang_giang_day",
+   "positive": 12,
+   "negative": 0,
+   "total": 19
+  },
+  {
+   "subject": "Tiếng Anh nâng cao 2",
+   "lecturer": "Hồng Việt",
+   "aspect": "hanh_vi",
+   "positive": 2,
+   "negative": 3,
+   "total": 19
+  },
+  {
+   "subject": "Tiếng Anh nâng cao 2",
+   "lecturer": "Hồng Việt",
+   "aspect": "cham_diem",
+   "positive": 13,
+   "negative": 0,
+   "total": 15
+  },
+  {
+   "subject": "Tiếng Anh nâng cao 2",
+   "lecturer": "Hồng Việt",
+   "aspect": "kien_thuc",
+   "positive": 0,
+   "negative": 0,
+   "total": 0
+  },
+  {
+   "subject": "Tiếng Anh nâng cao 2",
+   "lecturer": "Mộc Miêng",
+   "aspect": "ky_nang_giang_day",
+   "positive": 15,
+   "negative": 1,
+   "total": 17
+  },
+  {
+   "subject": "Tiếng Anh nâng cao 2",
+   "lecturer": "Mộc Miêng",
+   "aspect": "hanh_vi",
+   "positive": 0,
+   "negative": 4,
+   "total": 4
+  },
+  {
+   "subject": "Tiếng Anh nâng cao 2",
+   "lecturer": "Mộc Miêng",
+   "aspect": "cham_diem",
+   "positive": 2,
+   "negative": 0,
+   "total": 3
+  },
+  {
+   "subject": "Tiếng Anh nâng cao 2",
+   "lecturer": "Mộc Miêng",
+   "aspect": "bai_tap",
+   "positive": 6,
+   "negative": 8,
+   "total": 15
+  },
+  {
+   "subject": "Đồ án tốt nghiệp IT",
+   "lecturer": "Ngọc Thọ",
+   "aspect": "hanh_vi",
+   "positive": 5,
+   "negative": 1,
+   "total": 7
+  },
+  {
+   "subject": "Đồ án tốt nghiệp IT",
+   "lecturer": "Ngọc Thọ",
+   "aspect": "cham_diem",
+   "positive": 0,
+   "negative": 0,
+   "total": 0
+  },
+  {
+   "subject": "Đồ án tốt nghiệp IT",
+   "lecturer": "Ngọc Thọ",
+   "aspect": "bai_tap",
+   "positive": 4,
+   "negative": 5,
+   "total": 18
+  },
+  {
+   "subject": "Quản trị trải nghiệm khách hàng",
+   "lecturer": "Hải Vân",
+   "aspect": "ky_nang_giang_day",
+   "positive": 5,
+   "negative": 0,
+   "total": 8
+  },
+  {
+   "subject": "Quản trị trải nghiệm khách hàng",
+   "lecturer": "Hải Vân",
+   "aspect": "hanh_vi",
+   "positive": 2,
+   "negative": 3,
+   "total": 7
+  },
+  {
+   "subject": "Quản trị trải nghiệm khách hàng",
+   "lecturer": "Hải Vân",
+   "aspect": "cham_diem",
+   "positive": 9,
+   "negative": 2,
+   "total": 15
+  },
+  {
+   "subject": "Quản trị trải nghiệm khách hàng",
+   "lecturer": "Hải Vân",
+   "aspect": "bai_tap",
+   "positive": 15,
+   "negative": 1,
+   "total": 20
+  },
+  {
+   "subject": "Quản trị trải nghiệm khách hàng",
+   "lecturer": "Hải Vân",
+   "aspect": "kien_thuc",
+   "positive": 1,
+   "negative": 2,
+   "total": 12
+  },
+  {
+   "subject": "Chiến lược Digital Marketing",
+   "lecturer": "Cửu Long",
+   "aspect": "hanh_vi",
+   "positive": 16,
+   "negative": 0,
+   "total": 16
+  },
+  {
+   "subject": "Chiến lược Digital Marketing",
+   "lecturer": "Cửu Long",
+   "aspect": "cham_diem",
+   "positive": 2,
+   "negative": 8,
+   "total": 16
+  },
+  {
+   "subject": "Chiến lược Digital Marketing",
+   "lecturer": "Thúy Diệu",
+   "aspect": "ky_nang_giang_day",
+   "positive": 3,
+   "negative": 5,
+   "total": 9
+  },
+  {
+   "subject": "Chiến lược Digital Marketing",
+   "lecturer": "Thúy Diệu",
+   "aspect": "cham_diem",
+   "positive": 6,
+   "negative": 2,
+   "total": 13
+  },
+  {
+   "subject": "Chiến lược Digital Marketing",
+   "lecturer": "Thúy Diệu",
+   "aspect": "bai_tap",
+   "positive": 0,
+   "negative": 1,
+   "total": 2
+  },
+  {
+   "subject": "Thực tập doanh nghiệp IT",
+   "lecturer": "Nhật Minh",
+   "aspect": "ky_nang_giang_day",
+   "positive": 11,
+   "negative": 3,
+   "total": 20
+  },
+  {
+   "subject": "Thực tập doanh nghiệp IT",
+   "lecturer": "Nhật Minh",
+   "aspect": "hanh_vi",
+   "positive": 4,
+   "negative": 0,
+   "total": 4
+  },
+  {
+   "subject": "Thực tập doanh nghiệp IT",
+   "lecturer": "Nhật Minh",
+   "aspect": "cham_diem",
+   "positive": 0,
+   "negative": 0,
+   "total": 1
+  },
+  {
+   "subject": "Thực tập doanh nghiệp IT",
+   "lecturer": "Nhật Minh",
+   "aspect": "bai_tap",
+   "positive": 1,
+   "negative": 0,
+   "total": 7
+  },
+  {
+   "subject": "Thực tập doanh nghiệp IT",
+   "lecturer": "Nhật Minh",
+   "aspect": "kien_thuc",
+   "positive": 1,
+   "negative": 0,
+   "total": 2
+  },
+  {
+   "subject": "Thực tập doanh nghiệp IT",
+   "lecturer": "Xuân Tiến",
+   "aspect": "cham_diem",
+   "positive": 15,
+   "negative": 0,
+   "total": 15
+  },
+  {
+   "subject": "Thực tập doanh nghiệp IT",
+   "lecturer": "Xuân Tiến",
+   "aspect": "bai_tap",
+   "positive": 18,
+   "negative": 1,
+   "total": 20
+  },
+  {
+   "subject": "GDTC 3",
+   "lecturer": "Anh Hưng",
+   "aspect": "ky_nang_giang_day",
+   "positive": 0,
+   "negative": 2,
+   "total": 6
+  },
+  {
+   "subject": "GDTC 3",
+   "lecturer": "Anh Hưng",
+   "aspect": "cham_diem",
+   "positive": 0,
+   "negative": 2,
+   "total": 11
+  },
+  {
+   "subject": "GDTC 3",
+   "lecturer": "Anh Hưng",
+   "aspect": "kien_thuc",
+   "positive": 12,
+   "negative": 5,
+   "total": 20
+  }
+ ],
+ "pinned": {}
+}
