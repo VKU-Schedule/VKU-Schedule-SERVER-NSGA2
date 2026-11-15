@@ -7,6 +7,7 @@ from app.api.schedule_api import schedule_bp
 from app.api.search_api import search_bp
 from app.api.list_all_api import list_all_bp
 from app.api.preferences_api import preferences_bp
+from app.api.v2.schedule_api import schedule_v2_bp
 app = Flask(__name__)
 CORS(app)
 
@@ -48,6 +49,7 @@ app.register_blueprint(schedule_bp, url_prefix='/api')
 app.register_blueprint(search_bp, url_prefix='/api')
 app.register_blueprint(list_all_bp, url_prefix="/api")
 app.register_blueprint(preferences_bp, url_prefix="/api")
+app.register_blueprint(schedule_v2_bp, url_prefix="/api/v2")
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5001, debug=True)
