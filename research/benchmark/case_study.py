@@ -124,11 +124,68 @@ def run(budget=5000, seed=0):
     print(f"-> {RESULTS / 'case_study.md'}")
 
 
+def _class_json(v):
+    return {"course": v.course, "group": v.class_index, "day": v.day, "periods": list(v.periods),
+            "teacher": v.teacher, "language": v.language, "area": v.area, "room": v.room}
+
+
+def _culprits(ev, x):
+    """Ràng buộc prefer/avoid -> các môn có lớp được chọn vi phạm nó."""
+    found = {}
+    for rule, coeff in ev.filter_rules:
+        for i in range(ev.problem.n):
+            if coeff[i][x[i]]:
+                found.setdefault(rule.constraint.id, []).append(ev.problem.courses[i])
+    return found
+
+
+def export_json(budget=5000, seed=0):
+    """Cùng lần chạy như run(), ghi đầy đủ dạng JSON cho report HTML (results/case_study.json)."""
+    out = {"budget": budget, "seed": seed, "cases": []}
+    for case_id in ("case_a_year2", "case_b_year3", "case_c_reschedule"):
+        data, document, problem = load(case_id)
+        probe = evaluator(case_id)
+        resolved = {}
+        for c in probe.constraints:  # ràng buộc review đã quy về giảng viên, theo môn
+            if "teacher" in c.condition and "review" in c.source.get(c.kind, {}):
+                resolved.setdefault(c.id, []).append(
+                    {"course": next(iter(c.scope["course"])), "teachers": sorted(c.condition["teacher"])})
+        constraints = [{"id": c.id, "kind": c.kind, "level": c.level, "weight": c.weight, "source": c.source,
+                        "review_teachers": resolved.get(c.id)} for c in document.constraints]
+        case = {
+            "id": case_id, "prompt": data["prompt"], "pinned": data["pinned"],
+            "courses": [{"name": name, "classes": size} for name, size in zip(problem.courses, problem.sizes)],
+            "space": problem.space_size(), "constraints": constraints,
+            "unsupported": [u.source for u in document.unsupported],
+            "warnings": list(document.warnings) + probe.warnings, "solvers": {},
+        }
+        for name in ORDER:
+            ev = evaluator(case_id)
+            result = SOLVERS[name](ev, k=5, budget=budget, seed=seed, time_limit=60)
+            case["solvers"][name] = {
+                "elapsed_ms": round(result.elapsed_ms, 1), "evaluations": result.evaluations,
+                "optimal": result.optimal,
+                "schedules": [{
+                    "hard": s.score.hard, "soft": s.score.soft, "objectives": list(s.score.objectives),
+                    "violations": [dict(v._asdict(), courses=_culprits(ev, s.x).get(v.constraint_id, []))
+                                   for v in ev.explain(s.x)],
+                    "classes": [_class_json(v) for v in problem.classes(s.x)],
+                } for s in result.schedules],
+            }
+        out["cases"].append(case)
+    path = RESULTS / "case_study.json"
+    path.write_text(json.dumps(out, ensure_ascii=False, indent=1, default=sorted), encoding="utf-8")
+    print(f"-> {path}")
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--write-instances", action="store_true")
+    parser.add_argument("--json", action="store_true", help="ghi results/case_study.json cho report HTML")
     args = parser.parse_args()
     if args.write_instances:
         write_instances()
+    elif args.json:
+        export_json()
     else:
         run()
